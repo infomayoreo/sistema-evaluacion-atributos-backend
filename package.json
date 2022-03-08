@@ -2,12 +2,14 @@
   "name": "template-backend-node-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/app.js",
     "dev": "nodemon dist/app.js",
-    "tsc": "tsc --watch"
+    "tsc": "tsc --watch",
+    "build-ts": "tsc",
+    "postinstall": "npm run build-ts"
   },
   "keywords": [],
   "author": "",
