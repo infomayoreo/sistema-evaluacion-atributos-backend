@@ -1,19 +1,23 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
+import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IUser extends Model {
-	uid: string;
+	id: string;
 	name: string;
 	email: string;
 	password: string;
 	status: number;
+	createAt:string;
+	updateAt:string;
 }
 
 export const UserDAO = db.define<IUser>('User', {
-		uid: {
+		id: {
 			primaryKey: true,
-			type: DataTypes.UUID,
-			defaultValue: DataTypes.UUIDV4
+			type: DataTypes.INTEGER,
+            autoIncrement:true,
+            field:'user_id'
 		},
 		name: {
 			allowNull: false,
@@ -33,7 +37,21 @@ export const UserDAO = db.define<IUser>('User', {
 			type: DataTypes.TINYINT,
 			defaultValue: 1
 		},
+		createAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'create_at'
+        },
+        updateAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'update_at'
+        }
 	}, 
 	{
-		tableName: 'users'
-	});
+		tableName: 'users',
+		timestamps:false 
+	}
+);

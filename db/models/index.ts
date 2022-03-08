@@ -18,8 +18,8 @@ import { ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetai
 import { ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader } from './participantEvaluationPeriodHeader';
 import { PermissionByRolDAO, IPermissionByRol } from './permissionByRol';
 import { PermissionByUserDAO, IPermissionByUser } from './permissionByUser';
-import { PermissionToEvaluateMettingAttributeDAO, IPermissionToEvaluateMeetingAttribute } from './permissionToEvaluateMeetingAttribute';
-import { PermissionToEvaluateParticipanteAttributeDAO, IPermissionToEvaluateParticipantAttribute } from './permissionToEvaluateParticipantAttribute';
+import { PermissionToEvaluateMeetingAttributeDAO, IPermissionToEvaluateMeetingAttribute } from './permissionToEvaluateMeetingAttribute';
+import { PermissionToEvaluateParticipantAttributeDAO, IPermissionToEvaluateParticipantAttribute } from './permissionToEvaluateParticipantAttribute';
 import { PersonDAO, IPerson } from './person';
 import { RolDAO, IRol } from './rol';
 import { SystemAuditableProcessDAO, ISystemAuditableProcess } from './systemAuditableProcess';
@@ -48,8 +48,8 @@ export {
     ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader,
     PermissionByRolDAO, IPermissionByRol,
     PermissionByUserDAO, IPermissionByUser,
-    PermissionToEvaluateMettingAttributeDAO, IPermissionToEvaluateMeetingAttribute,
-    PermissionToEvaluateParticipanteAttributeDAO, IPermissionToEvaluateParticipantAttribute,
+    PermissionToEvaluateMeetingAttributeDAO as PermissionToEvaluateMettingAttributeDAO, IPermissionToEvaluateMeetingAttribute,
+    PermissionToEvaluateParticipantAttributeDAO as PermissionToEvaluateParticipanteAttributeDAO, IPermissionToEvaluateParticipantAttribute,
     PersonDAO, IPerson,
     RolDAO, IRol,
     SystemAuditableProcessDAO, ISystemAuditableProcess,
