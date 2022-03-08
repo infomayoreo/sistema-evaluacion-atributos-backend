@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 
-import { User } from '../db/models';
+import { UserDAO } from '../db/models';
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 	try {
-		const users = await User.findAll({ where: { status: 1 } });
+		const users = await UserDAO.findAll({ where: { status: 1 } });
 		res.json(users);
 
 	} catch (error) {
@@ -22,7 +22,7 @@ export const getUserByUid = async (req: Request, res: Response): Promise<void> =
 
 	try {
 		// Search in DB
-		const user = await User.findByPk(uid);
+		const user = await UserDAO.findByPk(uid);
 		res.json(user);
 
 	} catch (error) {
@@ -42,7 +42,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 
 	try {
 		// Create and save
-		const user = await User.create({
+		const user = await UserDAO.create({
 			...restUser,
 			password: bcryptPassword
 		});
@@ -62,7 +62,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 	const { body } = req;
 
 	try {
-		const user = await User.findByPk(uid);
+		const user = await UserDAO.findByPk(uid);
 
 		// Update user
 		if (user) await user.update(body);
@@ -81,7 +81,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
 	const { uid } = req.params;
 
 	try {
-		const user = await User.findByPk(uid);
+		const user = await UserDAO.findByPk(uid);
 
 		// Logic delete
 		if (user) await user.update({ status: 0 });

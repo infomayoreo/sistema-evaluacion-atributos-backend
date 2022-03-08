@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 
-import { User } from '../db/models';
+import { UserDAO } from '../db/models';
 import { generateJWT } from '../helpers/generate-jwt';
 
 export const login = async( req: Request, res: Response ): Promise<void> => {
@@ -10,7 +10,7 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 
 	try {
 		// Verify if user exist by email
-		const user = await User.findOne({ where: { email } });
+		const user = await UserDAO.findOne({ where: { email } });
 
 		if ( !user ) {
 			res.status(400).json({
