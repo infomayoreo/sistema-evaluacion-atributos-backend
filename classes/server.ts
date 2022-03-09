@@ -3,7 +3,7 @@ import cors from 'cors';
 import { IUser } from '../db/models';
 
 // Database
-import db from '../db/connections';
+import db from '../db';
 
 // Routes
 import {
@@ -55,8 +55,8 @@ class Server {
             await db.authenticate();
             console.log('Database online');
 
-            await db.sync();
-            // await db.sync({ force: true });
+            // await db.sync();
+             await db.sync({ force: true });
 
         } catch (error: any) {
             throw new Error( error );

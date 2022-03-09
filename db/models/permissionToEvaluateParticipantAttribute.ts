@@ -7,6 +7,7 @@ import { getNowUtc } from '../utils/db-utc-date';
 */
 export interface IPermissionToEvaluateParticipantAttribute extends Model {
     id:number;
+    evaluatorParticipantId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -17,6 +18,11 @@ export const PermissionToEvaluateParticipantAttributeDAO = db.define<IPermission
         type: DataTypes.INTEGER,
         autoIncrement:true,
         field:'permission_to_evaluate_participant_attribute_id'
+    },
+    evaluatorParticipantId:{
+        type: DataTypes.INTEGER,
+        field:'evaluator_participant_id',
+        allowNull: false,
     },
     createAt:{
         type: DataTypes.DATE,

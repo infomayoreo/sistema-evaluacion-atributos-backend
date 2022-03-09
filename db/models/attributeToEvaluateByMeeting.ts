@@ -8,6 +8,8 @@ import { getNowUtc } from '../utils/db-utc-date';
 export interface IAttributeToEvaluteByMeeting extends Model {
     id:number;
     createAt:string;
+    meetingId:number;
+    attributeId:number;
 	updateAt:string;
 }
 
@@ -17,6 +19,17 @@ export const AttributeToEvaluteByMeetingDAO = db.define<IAttributeToEvaluteByMee
         type: DataTypes.INTEGER,
         autoIncrement:true,
         field:'attribute_evalute_meeting_id'
+    },
+    meetingId:{
+        type: DataTypes.INTEGER,
+        field:'meeting_id', 
+        allowNull: false,
+    },
+    attributeId:{
+            
+        type: DataTypes.INTEGER,
+        field:'attribute_id',
+        allowNull: false,
     },
     createAt:{
         type: DataTypes.DATE,

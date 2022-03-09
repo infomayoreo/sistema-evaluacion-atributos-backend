@@ -4,6 +4,7 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IMeetingValueHeader extends Model {
     id:number;
+    participantId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -14,6 +15,11 @@ export const MeetingValueHeaderDAO = db.define<IMeetingValueHeader>('MeetingValu
         type: DataTypes.INTEGER,
         autoIncrement:true,
         field:'meeting_value_header_id'
+    },
+    participantId:{
+        type: DataTypes.INTEGER,
+        field:'participant_id',
+        allowNull: false,
     },
     createAt:{
         type: DataTypes.DATE,

@@ -19,6 +19,11 @@ export const UserDAO = db.define<IUser>('User', {
             autoIncrement:true,
             field:'user_id'
 		},
+		rolId : {
+			allowNull: false,
+			type: DataTypes.INTEGER,
+			field: 'rol_id'
+		},
 		name: {
 			allowNull: false,
 			type: DataTypes.STRING,

@@ -4,6 +4,8 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IAttributeRange extends Model {
     id:number;
+    attributeId:number;
+    attributeValueId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -15,6 +17,18 @@ export const AttributeRangeDAO = db.define<IAttributeRange>('attributeRange', {
             type: DataTypes.INTEGER,
             autoIncrement:true,
             field:'attribute_range_id'
+        },
+        attributeId:{
+            
+            type: DataTypes.INTEGER,
+            field:'attribute_id',
+            allowNull: false,
+        },
+        attributeValueId:{
+            
+            type: DataTypes.INTEGER,
+            field:'value_id',
+            allowNull: false,
         },
         createAt:{
             type: DataTypes.DATE,

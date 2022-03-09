@@ -5,6 +5,8 @@ import { getNowUtc } from '../utils/db-utc-date';
 /** is the specfit attribute that going to be evaluate in a specifit meeting */
 export interface IAttributeToEvaluateByParticipant extends Model {
     id:number;
+    participantToBeEvaluateId:number;
+    attributeId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -15,6 +17,17 @@ export const AttributeToEvaluateByParticipantDAO = db.define<IAttributeToEvaluat
         type: DataTypes.INTEGER,
         autoIncrement:true,
         field:'attribute_evaluate_participant_id'
+    },
+    participantToBeEvaluateId:{
+        type: DataTypes.INTEGER,
+        field:'participant_to_be_evaluate_id',
+        allowNull: false,
+    },
+    attributeId:{
+            
+        type: DataTypes.INTEGER,
+        field:'attribute_id',
+        allowNull: false,
     },
     createAt:{
         type: DataTypes.DATE,

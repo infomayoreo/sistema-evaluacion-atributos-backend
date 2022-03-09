@@ -4,6 +4,8 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IPerson extends Model {
     id:number;
+    userId:number;
+    dataSourceId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -13,7 +15,18 @@ export const PersonDAO = db.define<IPerson>('Person', {
         primaryKey:true,
         type: DataTypes.INTEGER,
         autoIncrement:true,
-        field:'attribute_id'
+        field:'person_id'
+    },
+    userId:{
+        type: DataTypes.INTEGER,
+        allowNull: true, 
+        unique:true,
+        field:'user_id'
+    },
+    dataSourceId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field:'data_source_id'
     },
     createAt:{
         type: DataTypes.DATE,

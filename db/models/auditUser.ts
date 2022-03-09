@@ -4,6 +4,7 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IAuditUser extends Model {
     id:number;
+    auditableProcessId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -14,6 +15,16 @@ export const AuditUserDAO = db.define<IAuditUser>('auditUser', {
         type: DataTypes.INTEGER,
         autoIncrement:true,
         field:'audit_user_id'
+    },
+    auditableProcessId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field:'auditable_process_id'
+    },
+    userId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field:'user_id'
     },
     createAt:{
         type: DataTypes.DATE,
