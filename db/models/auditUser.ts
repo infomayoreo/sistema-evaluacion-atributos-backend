@@ -5,6 +5,7 @@ import { getNowUtc } from '../utils/db-utc-date';
 export interface IAuditUser extends Model {
     id:number;
     auditableProcessId:number;
+    userId:number;
     createAt:string;
 	updateAt:string;
 }

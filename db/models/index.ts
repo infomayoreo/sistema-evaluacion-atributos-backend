@@ -16,12 +16,12 @@ import { ParticipantAttributeValueDetailDAO, IParticipantAttributeValueDetail } 
 import { ParticipantValueHeaderDAO, IParticipantValueHeader } from './participantValueHeader';
 import { ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetail } from './participantEvaluationPeriodDetail';
 import { ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader } from './participantEvaluationPeriodHeader';
-import { PermissionByRolDAO, IPermissionByRol } from './permissionByRol';
+import { PermissionLevelAccessDAO, IPermissionLevelAccess } from './permissionByLevelAccess';
 import { PermissionByUserDAO, IPermissionByUser } from './permissionByUser';
 import { PermissionToEvaluateMeetingAttributeDAO, IPermissionToEvaluateMeetingAttribute } from './permissionToEvaluateMeetingAttribute';
 import { PermissionToEvaluateParticipantAttributeDAO, IPermissionToEvaluateParticipantAttribute } from './permissionToEvaluateParticipantAttribute';
 import { PersonDAO, IPerson } from './person';
-import { RolDAO, IRol } from './rol';
+import { LevelAccessDAO, ILevelAccess } from './levelAccess';
 import { SystemAuditableProcessDAO, ISystemAuditableProcess } from './systemAuditableProcess';
 import { SystemOptionDAO, ISystemOption } from './systemOption';
 import { UserDAO, IUser } from './user';
@@ -46,12 +46,12 @@ export {
     ParticipantValueHeaderDAO, IParticipantValueHeader,
     ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetail,
     ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader,
-    PermissionByRolDAO, IPermissionByRol,
+    PermissionLevelAccessDAO as PermissionByRolDAO, IPermissionLevelAccess as IPermissionByRol,
     PermissionByUserDAO, IPermissionByUser,
     PermissionToEvaluateMeetingAttributeDAO as PermissionToEvaluateMettingAttributeDAO, IPermissionToEvaluateMeetingAttribute,
     PermissionToEvaluateParticipantAttributeDAO as PermissionToEvaluateParticipanteAttributeDAO, IPermissionToEvaluateParticipantAttribute,
     PersonDAO, IPerson,
-    RolDAO, IRol,
+    LevelAccessDAO as RolDAO, ILevelAccess as IRol,
     SystemAuditableProcessDAO, ISystemAuditableProcess,
     SystemOptionDAO, ISystemOption,
     UserDAO, IUser,

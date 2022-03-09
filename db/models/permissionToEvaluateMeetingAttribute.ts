@@ -3,12 +3,13 @@ import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
 
-/** is the permission that has a participant in a specifit meeting
+/** is the permission that has a participant to evaluate a specifit meeting
  * only on a specifit attribute
 */
 export interface IPermissionToEvaluateMeetingAttribute extends Model {
     id:number;
-    participantId:number;
+    participantEvaluatorId:number;
+    attributeEvaluteMeetingId:number;
     createAt:string;
 	updateAt:string;
 }
@@ -20,10 +21,15 @@ export const PermissionToEvaluateMeetingAttributeDAO = db.define<IPermissionToEv
         autoIncrement:true,
         field:'permission_to_evaluate_meeting_attribute_id'
     },
-    participantId:{
+    participantEvaluatorId:{
         type: DataTypes.INTEGER,
-        field:'participant_id',
+        field:'participant_evaluator_id',
         allowNull: false,
+    },
+    attributeEvaluteMeetingId:{
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        field:'attribute_evalute_meeting_id'
     },
     createAt:{
         type: DataTypes.DATE,

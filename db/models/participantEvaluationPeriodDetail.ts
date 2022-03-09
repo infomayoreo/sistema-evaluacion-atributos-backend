@@ -4,8 +4,9 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IParticipantEvaluationPeriodDetail extends Model {
     id:number;
-    createAt:string;
+    participantEvaluationPeriodHeaderId:number;
     attributeId:number;
+    createAt:string;
 	updateAt:string;
 }
 
@@ -21,6 +22,12 @@ export const ParticipantEvaluationPeriodDetailDAO = db.define<IParticipantEvalua
         type: DataTypes.INTEGER,
         field:'attribute_id',
         allowNull: false,
+    },
+    participantEvaluationPeriodHeaderId: {
+        
+        type: DataTypes.INTEGER,
+        field:'participant_evaluation_period_id',
+        allowNull:false
     },
     createAt:{
         type: DataTypes.DATE,

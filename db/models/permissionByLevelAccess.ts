@@ -2,15 +2,15 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-export interface IPermissionByRol extends Model {
+export interface IPermissionLevelAccess extends Model {
     id:number;
     systemOptionId:number,
-    rolId:number;
+    levelAccessId:number;
     createAt:string;
 	updateAt:string;
 }
 
-export const PermissionByRolDAO = db.define<IPermissionByRol>('PermissionByRol', {
+export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('PermissionByRol', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -22,10 +22,10 @@ export const PermissionByRolDAO = db.define<IPermissionByRol>('PermissionByRol',
             allowNull: false,
             field:'system_option_id'
         },
-        rolId:{
+        levelAccessId:{
             type: DataTypes.INTEGER,
             allowNull: false, 
-            field:'rol_id'
+            field:'level_access_id'
         },
         createAt:{
             type: DataTypes.DATE,
@@ -41,7 +41,7 @@ export const PermissionByRolDAO = db.define<IPermissionByRol>('PermissionByRol',
         }
     },
     {
-        tableName:'permissions_by_rol',
+        tableName:'permissions_by_level_access',
         timestamps:false 
     }
 );
