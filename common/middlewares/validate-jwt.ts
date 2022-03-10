@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import config from '../config/config';
-import { UserDAO } from '../db/models';
+import config from '../../config/config';
+import { UserDAO } from '../../db/models';
 
 const { jwtSecretPrivateKey } = config;
 

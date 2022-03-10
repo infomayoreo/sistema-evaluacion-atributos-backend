@@ -2,11 +2,11 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 
 // Middlewares
-import { validateInputs } from '../middlewares/validate-inputs';
+import { validateInputs } from '../../common/middlewares/validate-inputs';
 
 // Controllers
-import { getAuthState, login } from '../controllers/auth.controller';
-import { validateJWT } from '../middlewares/validate-jwt';
+import { getAuthState, login } from './auth.controller';
+import { validateJWT } from '../../common/middlewares/validate-jwt';
 
 const router = Router();
 
@@ -23,5 +23,6 @@ router.get('/auth-state', [
     validateJWT,
     validateInputs
 ], getAuthState );
+
 
 export default router;

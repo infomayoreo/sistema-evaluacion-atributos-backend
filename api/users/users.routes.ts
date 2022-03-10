@@ -2,10 +2,10 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 
 // Helpers
-import { userExistByUid, userExistWithEmail } from '../helpers/db-validators';
+import { userExistByUid, userExistWithEmail } from '../../common/helpers/db-validators';
 
 // Middlewares
-import { validateInputs } from '../middlewares/validate-inputs';
+import { validateInputs } from '../../common/middlewares/validate-inputs';
 
 // Controllers
 import {
@@ -14,7 +14,7 @@ import {
     createUser,
     updateUser,
     deleteUser
-} from '../controllers/users.controller';
+} from './users.controller';
 
 const router = Router();
 

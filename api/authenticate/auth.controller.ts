@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 
-import { UserDAO } from '../db/models';
-import { generateJWT } from '../helpers/generate-jwt';
+import { UserDAO } from '../../db/models';
+import { generateJWT } from '../../common/helpers/generate-jwt';
 
 export const login = async( req: Request, res: Response ): Promise<void> => {
 

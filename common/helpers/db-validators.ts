@@ -1,4 +1,4 @@
-import { UserDAO } from '../db/models';
+import { UserDAO } from '../../db/models';
 
 // Validate if the user exist by uid
 export const userExistByUid = async(uid = ''): Promise<void> => {

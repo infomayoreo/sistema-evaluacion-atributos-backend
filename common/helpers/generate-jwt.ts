@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import config from '../config/config';
-import { PayloadJWT } from '../interfaces';
+import config from '../../config/config';
+import { PayloadJWT } from '../../interfaces';
 
 export const generateJWT = (payload: PayloadJWT): Promise<string | Error | undefined> => {
     return new Promise( (resolve, reject): void => {

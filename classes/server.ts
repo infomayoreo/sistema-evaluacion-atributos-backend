@@ -9,7 +9,7 @@ import db from '../db';
 import {
     authRoutes,
     usersRoutes,
-} from '../routes';
+} from '../api';
 
 // Add properties to Request
 declare module 'express-serve-static-core' {
