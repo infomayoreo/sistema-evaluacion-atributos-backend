@@ -30,7 +30,7 @@ export const MeetingDAO = db.define<IMeeting>('Meeting', {
     },
     previusMeetingId: {
         type: DataTypes.INTEGER,
-        allowNull:false,
+        allowNull:true,
         field:'previus_meeting_id'
     },
     personId:{

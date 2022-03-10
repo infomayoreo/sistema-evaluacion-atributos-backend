@@ -24,10 +24,6 @@ export const UserDAO = db.define<IUser>('User', {
 			type: DataTypes.INTEGER,
 			field: 'level_access_id'
 		},
-		name: {
-			allowNull: false,
-			type: DataTypes.STRING,
-		},
 		email: {
 			allowNull: false,
 			type: DataTypes.STRING,
@@ -37,10 +33,10 @@ export const UserDAO = db.define<IUser>('User', {
 			allowNull: false,
 			type: DataTypes.STRING
 		},
-		status: {
+		activate: {
 			allowNull: false,
-			type: DataTypes.TINYINT,
-			defaultValue: 1
+			type: DataTypes.BOOLEAN,
+			defaultValue: true
 		},
 		createAt:{
             type: DataTypes.DATE,
