@@ -1,9 +1,9 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import { UserInstance } from '../db/models';
+import { IUser } from '../db/models';
 
 // Database
-import db from '../db/connections';
+import db from '../db';
 
 // Routes
 import {
@@ -14,7 +14,7 @@ import {
 // Add properties to Request
 declare module 'express-serve-static-core' {
     interface Request {
-        user: UserInstance
+        user: IUser
     }
     // tslint:disable-next-line: no-empty-interface
     interface Response {}
@@ -55,8 +55,8 @@ class Server {
             await db.authenticate();
             console.log('Database online');
 
-            await db.sync();
-            // await db.sync({ alter: true });
+            // await db.sync();
+             await db.sync({ force: true });
 
         } catch (error: any) {
             throw new Error( error );

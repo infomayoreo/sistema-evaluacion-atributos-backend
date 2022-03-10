@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
-import { User } from '../db/models';
+import { UserDAO } from '../db/models';
 
 const { jwtSecretPrivateKey } = config;
 
@@ -33,7 +33,7 @@ export const validateJWT = async(req: Request, res: Response, next: NextFunction
         // TODO: Crear validacion de fecha de expiracion
         // console.log(new Date(exp * 1000));
 
-        const user = await User.findByPk(uid);
+        const user = await UserDAO.findByPk(uid);
 
         // Verificar que user no sea undefined
         if ( !user ) {
