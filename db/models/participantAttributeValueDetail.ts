@@ -34,7 +34,7 @@ export const ParticipantAttributeValueDetailDAO = db.define<IParticipantAttribut
     participantWithPermissionsToEvalAnotherParticpantAttributeId : {
         
         type: DataTypes.INTEGER,
-        field:'participant_with_permissions_to_eval_another_particpant_attribute_id',
+        field:'evaluator_participant_by_attribute_id',
         allowNull:false
     },
     participantEvaluationPeriodId: {
