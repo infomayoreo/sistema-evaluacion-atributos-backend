@@ -3,7 +3,7 @@ import { ResponseHeaderKeys } from "../../types/types";
 import { IUser, UserDAO } from '../../db/models';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import * as AuthErrorManager from './authErrorManager'
-import { AppResponseModel } from "../../interfaces/appResponseModel";
+import { BodyResponseModel, AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
 
 const { OAuth2Client } = require('google-auth-library');
@@ -23,64 +23,74 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
        const user = UserDAO.findOne({where: { email:email, activate:true } });
        return user;
     }).then(user => {
-        
-        let appStatusCode;
-        let appStatusName;
-        let info : AppResponseModel;
-        
+    
         if(!user) {
             
+            const appStatusCode = AuthErrorManager.authErrosCodes.NOT_VALID_USER;
+            const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
             
-            appStatusCode = AuthErrorManager.authErrosCodes.NOT_VALID_USER;
-            appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-            info = {
+            const data : AppResponseModel = {
+                httpStatus:401,
                 appStatusCode : appStatusCode,
                 appStatusName: appStatusName,
+                appStatusMessage:'',
             };
-            res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_CODE,appStatusCode);
-            res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_NAME,appStatusName);
-            res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_MESSAGE,"");
-            res.status(401).json(info);
+            mResponse(res, data);
         }
         else {
              generateJWT({
                 userId: user.id,
             }).then( token  => {
                 
-                appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
-                appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-                //res.setHeader('token', token);
-                res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_CODE,appStatusCode);
-                res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_NAME,appStatusName);
-                res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_MESSAGE,"");
+                if(!token){
+                   throw new Error('fail to generate access');
+                }
+                else {
+                    const appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
+                    const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
+                    const extraHeaders = new Map<string,string>();
+                    extraHeaders.set('token',String(token));
+                    const data : AppResponseModel = {
+                        httpStatus:200,
+                        appStatusCode : appStatusCode,
+                        appStatusName: appStatusName,
+                        extraHeaders:extraHeaders,
+                        appStatusMessage:'',
+                    };
+                    mResponse(res, data);
+                }
                 
-                info  = {
+            }).catch(error =>{
+                console.log(error);
+                const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_FAIL_TO_GENERATE_ACCESS;
+                const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
+
+                const data : AppResponseModel = {
+                    httpStatus:500,
                     appStatusCode : appStatusCode,
                     appStatusName: appStatusName,
-                    data:{ user:user }
+                    appStatusMessage:error.message,
+                    errors:[error.message]
                 };
-                res.status(200).json(info);
+                mResponse(res, data);
             });
         }
 
-    }).catch(error => {
-        console.log(error);
-        const errorStatuApp = AuthErrorManager.authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN;
-        const errorStatusName =  CommonErrorManager.getErrorName(errorStatuApp);
-        res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_CODE,errorStatuApp);
-        res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_NAME,errorStatusName);
-        res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_MESSAGE,"");
-        const info : AppResponseModel = {
-            appStatusCode : errorStatuApp,
-            appStatusName: errorStatusName,
-            errors:[error.message]
-        };
-        res.status(401).json(info);
         
+
+    }).catch(error => {
+        const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN;
+        const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
+        const data : AppResponseModel = {
+            httpStatus:401,
+            appStatusCode : appStatusCode,
+            appStatusName: appStatusName,
+        };
+        mResponse(res, data);
     });
 }
 
-const  verifyGoogleToken = async (token:any) => {
+const verifyGoogleToken = async (token:any) => {
     
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -90,3 +100,23 @@ const  verifyGoogleToken = async (token:any) => {
     return {payload:ticket.getPayload()};
 }
 
+const mResponse = (res:Response, common:AppResponseModel) => {
+
+    res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_CODE,common.appStatusCode);
+    res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_NAME,common.appStatusName);
+    res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_MESSAGE,common.appStatusMessage?common.appStatusMessage:'');
+    if(common.extraHeaders) {
+        common.extraHeaders.forEach((key,value) =>{
+            res.setHeader(key,value);
+        });
+    }
+    const body = {
+        appStatusCode : common.appStatusCode,
+        appStatusName: common.appStatusName,
+        appStatusMessage: common.appStatusMessage,
+        data:common.data,
+        erros:common.errors
+    }
+
+    res.status(common.httpStatus).json(body);
+}

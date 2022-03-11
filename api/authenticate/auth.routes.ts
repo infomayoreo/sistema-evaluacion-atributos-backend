@@ -26,7 +26,7 @@ router.get('/auth-state', [
 ], getAuthState );
 
 router.post('/google-login', [
-
+    check('google-id-token','google-id-token is required').notEmpty()
 ], googleLogin);
 
 
