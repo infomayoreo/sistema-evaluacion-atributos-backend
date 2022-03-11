@@ -50,6 +50,6 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 };
 
 export const getAuthState = async(req: Request, res: Response): Promise<void> => {
-	const {uid, email, name } = req.user;
-	res.status(200).json({ uid, email, name });
+	const {id, email, name } = req.user;
+	res.status(200).json({ id, email, name });
 };
