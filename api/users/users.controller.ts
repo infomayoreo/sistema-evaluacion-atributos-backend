@@ -6,7 +6,7 @@ import { UserDAO } from '../../db/models';
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 	try {
-		const users = await UserDAO.findAll({ where: { status: 1 } });
+		const users = await UserDAO.findAll({ where: { status: true } });
 		res.json(users);
 
 	} catch (error) {

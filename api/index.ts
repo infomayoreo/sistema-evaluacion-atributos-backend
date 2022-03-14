@@ -3,5 +3,6 @@ import usersRoutes from './users/users.routes';
 
 export {
     authRoutes,
-    usersRoutes
+    usersRoutes,
+    
 }
