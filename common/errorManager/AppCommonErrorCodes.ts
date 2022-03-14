@@ -31,11 +31,11 @@ const buildErrorDataContainer = (errorCode:number) : CommonErrorDataContainer =>
 errorsSetNames.add(WITHOUT_ERRORS_NAME);
 errorMapNames.set(currentErrorNumber,WITHOUT_ERRORS_NAME);
 
-const COMMON_ERRORS_CODES = {
+const commonErrorsCodes = {
     UNKNOWN_ERROR:nextErrorNumber("UNKNOWN_ERROR"),
     BAD_FORMAT_EMAIL:nextErrorNumber("BAD_FORMAT_EMAIL"),
 }
 
 export {
-    nextErrorNumber, getErrorName, buildErrorDataContainer,WITHOUT_ERRORS, COMMON_ERRORS_CODES
+    nextErrorNumber, getErrorName, buildErrorDataContainer,WITHOUT_ERRORS, commonErrorsCodes
 }

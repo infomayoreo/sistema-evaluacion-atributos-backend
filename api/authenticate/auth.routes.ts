@@ -5,7 +5,8 @@ import { check } from 'express-validator';
 import { validateInputs } from '../../common/middlewares/validate-inputs';
 
 // Controllers
-import { getAuthState, login } from './auth.controller';
+import { getAuthState, login,  } from './auth.controller';
+import { googleLogin } from './google-login.controller'
 import { validateJWT } from '../../common/middlewares/validate-jwt';
 
 const router = Router();
@@ -23,6 +24,11 @@ router.get('/auth-state', [
     validateJWT,
     validateInputs
 ], getAuthState );
+
+router.post('/google-login', [
+    check('google-id-token','google-id-token is required').notEmpty()
+], googleLogin);
+
 
 
 export default router;
