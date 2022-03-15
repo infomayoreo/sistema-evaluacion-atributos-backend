@@ -1,9 +1,3 @@
-
-export interface BodyResponseModel {
-    
-    
-};
-
 export interface AppResponseModel {
     httpStatus:number;
     appStatusCode:number;
