@@ -7,7 +7,9 @@ export interface IMeeting extends Model {
     createByUserId:number;
     meetingPlaformId:number;
     previusMeetingId:number;
-    personId:number;
+    subject:string;
+    meetUrl:string;
+    deleted:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -33,10 +35,19 @@ export const MeetingDAO = db.define<IMeeting>('Meeting', {
         allowNull:true,
         field:'previus_meeting_id'
     },
-    personId:{
-        type: DataTypes.INTEGER,
+    subject:{
+        type:DataTypes.CHAR(150),
+        allowNull: false, 
+    },
+    meetUrl:{
+        type:DataTypes.TEXT,
+        allowNull:true,
+        field:'meet_url'
+    },
+    deleted:{
+        type:DataTypes.BOOLEAN,
         allowNull:false,
-        field:'person_id'
+        defaultValue:false,
     },
     createAt:{
         type: DataTypes.DATE,

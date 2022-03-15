@@ -4,6 +4,9 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IAttributeType extends Model {
     id:number;
+    name:string;
+    description?:string;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -14,6 +17,20 @@ export const AttributeTypeDAO = db.define<IAttributeType>('AttributeType', {
         type: DataTypes.INTEGER,
         autoIncrement:false,
         field:'attribute_type_id'
+    },
+    name:{
+        type: DataTypes.CHAR(100),
+        allowNull:false,
+        unique:true,
+    },
+    description:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
+    activate:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        defaultValue:true,
     },
     createAt:{
         type: DataTypes.DATE,

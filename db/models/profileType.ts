@@ -2,34 +2,28 @@ import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-export interface IAttribute extends Model {
+export interface IProfileType extends Model {
     id:number;
-    name:string;
-    description?:string;
-    activate:boolean;
-    attributeTypeId:number;
+    name:string,
+    description:string,
     createAt:string;
 	updateAt:string;
 }
 
-export const AttributeDAO = db.define<IAttribute>('Attribute', {
+export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'attribute_id'
-        },
-        attributeTypeId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            field:'attribute_type_id'
+            field:'profile_type_id'
         },
         name:{
             type:DataTypes.CHAR(100),
-            allowNull:false            
+            allowNull:false,
+            unique:true
         },
         description:{
-            type:DataTypes.STRING,
+            type:DataTypes.CHAR,
             allowNull:true,
         },
         activate: {
@@ -51,14 +45,8 @@ export const AttributeDAO = db.define<IAttribute>('Attribute', {
         }
     } ,
     { 
-        tableName:'attributes',
-        timestamps:false ,
-        indexes:[
-            {
-                unique:true,
-                fields:['name','attributeTypeId'],
-            }
-        ]
+        tableName:'profile_types',
+        timestamps:false 
     }
 );
 

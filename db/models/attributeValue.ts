@@ -4,27 +4,59 @@ import { getNowUtc } from '../utils/db-utc-date';
 
 export interface IAttributeValue extends Model {
     id:number;
+    name:string;
+    numericValue:number;
+    description?:string;
+    color?:string;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
 export const AttributeValueDAO = db.define<IAttributeValue>('AttributeValue', {
-    id:{
-        primaryKey:true,
-        type: DataTypes.INTEGER,
-        autoIncrement:true,
-        field:'attribute_range_id'
+        id:{
+            primaryKey:true,
+            type: DataTypes.INTEGER,
+            autoIncrement:true,
+            field:'attribute_range_id'
+        },
+        name:{
+            type: DataTypes.CHAR(100),
+            allowNull:false,
+            unique:true
+        },
+        description:{
+            type:DataTypes.STRING,
+            allowNull:true,
+        },
+        color:{
+            type:DataTypes.CHAR(8),
+            allowNull:true,        
+        },
+        numericValue:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            field:'numeric_value'
+        },
+        activate:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true,
+        },
+        createAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'create_at'
+        },
+        updateAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'update_at'
+        }
     },
-    createAt:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:getNowUtc(),
-        field:'create_at'
-    },
-    updateAt:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:getNowUtc(),
-        field:'update_at'
-    }
-},{tableName:'attribute_value', timestamps:false });
+    {
+        tableName:'attribute_value',
+         timestamps:false 
+    });

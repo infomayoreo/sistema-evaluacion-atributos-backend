@@ -15,7 +15,7 @@ import { ParticipantDAO, IParticipant } from './participant';
 import { ParticipantAttributeValueDetailDAO, IParticipantAttributeValueDetail } from './participantAttributeValueDetail';
 import { ParticipantValueHeaderDAO, IParticipantValueHeader } from './participantValueHeader';
 import { ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetail } from './participantEvaluationPeriodDetail';
-import { ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader } from './participantEvaluationPeriodHeader';
+import { PersonExtraEvaluationDAO, IPersonExtraEvaluation } from './personExtraEvaluation';
 import { PermissionLevelAccessDAO, IPermissionLevelAccess } from './permissionByLevelAccess';
 import { PermissionByUserDAO, IPermissionByUser } from './permissionByUser';
 import { PermissionToEvaluateMeetingAttributeDAO, IPermissionToEvaluateMeetingAttribute } from './permissionToEvaluateMeetingAttribute';
@@ -45,7 +45,7 @@ export {
     ParticipantAttributeValueDetailDAO, IParticipantAttributeValueDetail,
     ParticipantValueHeaderDAO, IParticipantValueHeader,
     ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetail,
-    ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader,
+    PersonExtraEvaluationDAO as ParticipantEvaluationPeriodHeaderDAO, IPersonExtraEvaluation as IParticipantEvaluationPeriodHeader,
     PermissionLevelAccessDAO , IPermissionLevelAccess ,
     PermissionByUserDAO, IPermissionByUser,
     PermissionToEvaluateMeetingAttributeDAO , IPermissionToEvaluateMeetingAttribute,

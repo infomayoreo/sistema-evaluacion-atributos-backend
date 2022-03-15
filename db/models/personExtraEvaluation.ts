@@ -2,33 +2,36 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-export interface IAttributeRange extends Model {
+export interface IPersonExtraEvaluation extends Model {
     id:number;
-    attributeId:number;
-    attributeValueId:number;
+    personToBeEvaluate:number;
+    evaluatorPersonId:number;
+    committeeAudioUrl:string;
     createAt:string;
 	updateAt:string;
 }
 
-
-export const AttributeRangeDAO = db.define<IAttributeRange>('AttributeRange', {
+export const PersonExtraEvaluationDAO = db.define<IPersonExtraEvaluation>('PersonExtraEvaluation', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'attribute_range_id'
+            field:'person_extra_evaluation_id'
         },
-        attributeId:{
-            
+        personToBeEvaluate:{
             type: DataTypes.INTEGER,
-            field:'attribute_id',
-            allowNull: false,
+            allowNull:false,
+            field:'person_to_evaluate_id'
         },
-        attributeValueId:{
-            
+        evaluatorPersonId:{
             type: DataTypes.INTEGER,
-            field:'value_id',
-            allowNull: false,
+            allowNull:false,
+            field:'evaluator_user_id'
+        },
+        committeeAudioUrl:{
+            type:DataTypes.TEXT,
+            allowNull:false,
+            field:'committee_audio_url'
         },
         createAt:{
             type: DataTypes.DATE,
@@ -44,13 +47,6 @@ export const AttributeRangeDAO = db.define<IAttributeRange>('AttributeRange', {
         }
     },
     {
-        tableName:'attribute_ranges',
-        timestamps:false,
-        indexes:[
-            {
-                unique:true,
-                fields:['attributeId','attributeValueId'],
-            }
-        ] 
-    }
-);
+        tableName:'person_extra_evaluations', 
+        timestamps:false 
+    });

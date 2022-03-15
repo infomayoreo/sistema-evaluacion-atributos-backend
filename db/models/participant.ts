@@ -10,7 +10,7 @@ export interface IParticipant extends Model {
 	updateAt:string;
 }
 
-export const ParticipantDAO = db.define('participant', {
+export const ParticipantDAO = db.define('Participant', {
     id:{
         primaryKey:true,
         type: DataTypes.INTEGER,
