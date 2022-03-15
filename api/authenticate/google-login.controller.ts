@@ -3,7 +3,7 @@ import { ResponseHeaderKeys } from "../../types/types";
 import { IUser, UserDAO } from '../../db/models';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import * as AuthErrorManager from './authErrorManager'
-import { BodyResponseModel, AppResponseModel } from "../../interfaces/appResponseModel";
+import { AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
 
 const { OAuth2Client } = require('google-auth-library');
@@ -60,6 +60,7 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                         },
                         appStatusMessage:'',
                     };
+                    //insert audit log login with google
                     mResponse(res, data);
                 }
                 
