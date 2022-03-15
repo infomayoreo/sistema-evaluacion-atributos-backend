@@ -48,6 +48,7 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                 else {
                     const appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
                     const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
+                    console.log(appStatusName);
                     const extraHeaders = new Map<string,string>();
                     extraHeaders.set('token',String(token));
                     const data : AppResponseModel = {
@@ -55,6 +56,9 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                         appStatusCode : appStatusCode,
                         appStatusName: appStatusName,
                         extraHeaders:extraHeaders,
+                        data:{
+                            token: String(token)
+                        },
                         appStatusMessage:'',
                     };
                     mResponse(res, data);
@@ -96,7 +100,6 @@ const verifyGoogleToken = async (token:any) => {
         idToken: token,
         audience: [GOOGLE_WEB_CLIENT_ID]
     });
-    console.log(ticket.getPayload());
     return {payload:ticket.getPayload()};
 }
 
