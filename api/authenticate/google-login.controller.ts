@@ -82,12 +82,14 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
         
 
     }).catch(error => {
+        console.log(error);
         const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN;
         const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
         const data : AppResponseModel = {
             httpStatus:401,
             appStatusCode : appStatusCode,
             appStatusName: appStatusName,
+            errors:[error.message],
         };
         mResponse(res, data);
     });
