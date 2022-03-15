@@ -48,7 +48,6 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                 else {
                     const appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
                     const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-                    console.log(appStatusName);
                     const extraHeaders = new Map<string,string>();
                     extraHeaders.set('token',String(token));
                     const data : AppResponseModel = {

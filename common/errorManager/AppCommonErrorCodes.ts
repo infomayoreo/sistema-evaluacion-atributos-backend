@@ -28,8 +28,8 @@ const buildErrorDataContainer = (errorCode:number) : CommonErrorDataContainer =>
     return errorDataContainer;
 }
 
+errorMapNames.set(WITHOUT_ERRORS,WITHOUT_ERRORS_NAME);
 errorsSetNames.add(WITHOUT_ERRORS_NAME);
-errorMapNames.set(currentErrorNumber,WITHOUT_ERRORS_NAME);
 
 const commonErrorsCodes = {
     UNKNOWN_ERROR:nextErrorNumber("UNKNOWN_ERROR"),
