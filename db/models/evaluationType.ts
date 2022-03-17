@@ -2,24 +2,35 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-export interface IGlobalSetting extends Model {
+export interface IEvaluationType extends Model {
     id:number;
     name:string;
+    description?:string;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
-export const GlobalSettingDAO = db.define<IGlobalSetting>('GlobalSetting', {
+export const EvaluationTypeDAO = db.define<IEvaluationType>('EvaluationType', {
     id:{
         primaryKey:true,
         type: DataTypes.INTEGER,
-        autoIncrement:true,
-        field:'global_setting_id'
+        autoIncrement:false,
+        field:'evaluation_type_id'
     },
     name:{
         type: DataTypes.CHAR(100),
         allowNull:false,
         unique:true,
+    },
+    description:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
+    activate:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        defaultValue:true,
     },
     createAt:{
         type: DataTypes.DATE,
@@ -33,4 +44,4 @@ export const GlobalSettingDAO = db.define<IGlobalSetting>('GlobalSetting', {
         defaultValue:getNowUtc(),
         field:'update_at'
     }
-},{tableName:'global_settings', timestamps:false });
+},{tableName:'evaluation_types', timestamps:false });

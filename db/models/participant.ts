@@ -6,6 +6,7 @@ export interface IParticipant extends Model {
     id:number;
     meetingId:number;
     personId:number;
+    deleted:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -26,6 +27,11 @@ export const ParticipantDAO = db.define('Participant', {
         type: DataTypes.INTEGER,
         allowNull:false,
         field:'person_id'
+    },
+    deleted:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        defaultValue:false
     },
     createAt:{
         type: DataTypes.DATE,

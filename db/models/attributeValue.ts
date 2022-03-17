@@ -21,7 +21,7 @@ export const AttributeValueDAO = db.define<IAttributeValue>('AttributeValue', {
             field:'attribute_range_id'
         },
         name:{
-            type: DataTypes.CHAR(100),
+            type:DataTypes.CHAR(100),
             allowNull:false,
             unique:true
         },

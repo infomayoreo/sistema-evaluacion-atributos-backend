@@ -6,7 +6,7 @@ export interface IMeetingValueDetail extends Model {
     id:number;
     meetingValueHeaderId:number;
     valueRangeId:number;
-    feedback:string;
+    feedback?:string;
     createAt:string;
 	updateAt:string;
 }

@@ -5,7 +5,7 @@ import { getNowUtc } from '../utils/db-utc-date';
 export interface IProfileType extends Model {
     id:number;
     name:string,
-    description:string,
+    description?:string,
     createAt:string;
 	updateAt:string;
 }
@@ -23,7 +23,7 @@ export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
             unique:true
         },
         description:{
-            type:DataTypes.CHAR,
+            type:DataTypes.STRING,
             allowNull:true,
         },
         activate: {

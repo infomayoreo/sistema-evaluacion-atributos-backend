@@ -4,7 +4,7 @@ import * as DataBaseModels from './models';
 
 export const setAssociations = (): void => {
     
-    
+    /*
     DataBaseModels.AttributeTypeDAO.hasMany(DataBaseModels.AttributeDAO, { 
         foreignKey: {
             name:'attributeTypeId',
@@ -559,5 +559,5 @@ export const setAssociations = (): void => {
             name:'userId'
         }
     });
-
+*/
 }

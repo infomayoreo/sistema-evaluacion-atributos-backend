@@ -6,16 +6,17 @@ export interface IPermissionLevelAccess extends Model {
     id:number;
     systemOptionId:number,
     levelAccessId:number;
+    allowPermission:boolean;
     createAt:string;
 	updateAt:string;
 }
 
-export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('PermissionByRol', {
+export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('PermissionByLevelAccess', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'permission_by_rol_id'
+            field:'permission_by_level_access_id'
         },
         systemOptionId:{
             type: DataTypes.INTEGER,
@@ -26,6 +27,11 @@ export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('Permi
             type: DataTypes.INTEGER,
             allowNull: false, 
             field:'level_access_id'
+        },
+        allowPermission:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false, 
+            field:'allow_permission'
         },
         createAt:{
             type: DataTypes.DATE,

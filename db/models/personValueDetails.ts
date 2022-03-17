@@ -2,31 +2,37 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-/** */
-export interface IParticipantValueHeader extends Model {
+
+export interface IPersonValueDetail extends Model {
     id:number;
-    evaluateByParticipantId:number;
-    participantToEvaluateId:number;
+    personValueHeaderId:number;
+    valueRangeId:number;
+    feedback?:string;
     createAt:string;
 	updateAt:string;
 }
 
-export const ParticipantValueHeaderDAO = db.define<IParticipantValueHeader>('ParticipantValueHeader', {
+export const PersonValueDetailDAO = db.define<IPersonValueDetail>('PersonValueDetail', {
     id:{
         primaryKey:true,
         type: DataTypes.INTEGER,
         autoIncrement:true,
-        field:'participant_value_header_id'
+        field:'person_value_detail_id'
     },
-    evaluateByParticipantId:{
+    personValueHeaderId:{
         type: DataTypes.INTEGER,
-        field:'evaluate_by_participant_id',
         allowNull: false,
+        field:'person_value_header_id'
     },
-    participantToEvaluateId:{
+    valueRangeId:{
         type: DataTypes.INTEGER,
-        field:'participant_to_evaluate_id',
         allowNull: false,
+        field:'value_range_id'
+    },
+    feedback:{
+        type: DataTypes.STRING,
+        field:'attribute_feedbak',
+        allowNull: true,
     },
     createAt:{
         type: DataTypes.DATE,
@@ -40,4 +46,4 @@ export const ParticipantValueHeaderDAO = db.define<IParticipantValueHeader>('Par
         defaultValue:getNowUtc(),
         field:'update_at'
     }
-},{tableName:'participant_values_header', timestamps:false });
+},{tableName:'person_values_details', timestamps:false });
