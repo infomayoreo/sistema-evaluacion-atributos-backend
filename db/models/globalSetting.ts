@@ -5,6 +5,9 @@ import { getNowUtc } from '../utils/db-utc-date';
 export interface IGlobalSetting extends Model {
     id:number;
     name:string;
+    dataType:string;
+    currentValue?:string;
+    description?:string;
     createAt:string;
 	updateAt:string;
 }
@@ -20,6 +23,20 @@ export const GlobalSettingDAO = db.define<IGlobalSetting>('GlobalSetting', {
         type: DataTypes.CHAR(100),
         allowNull:false,
         unique:true,
+    },
+    dataType:{
+        type: DataTypes.CHAR(100),
+        allowNull:false,
+        field:'data_type'
+    },
+    currentValue:{
+        type: DataTypes.CHAR(100),
+        allowNull:true,
+        field:'current_value'
+    },
+    description:{
+        type: DataTypes.CHAR(100),
+        allowNull:true,
     },
     createAt:{
         type: DataTypes.DATE,

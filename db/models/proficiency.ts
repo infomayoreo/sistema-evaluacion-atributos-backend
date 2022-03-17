@@ -2,21 +2,21 @@ import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-export interface IProfileType extends Model {
+export interface IProficiency extends Model {
     id:number;
     name:string,
-    activate:boolean;
     description?:string;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
-export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
+export const ProficiencyDAO = db.define<IProficiency>('Proficiency', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'profile_type_id'
+            field:'proficiency_id'
         },
         name:{
             type:DataTypes.CHAR(100),
@@ -27,7 +27,7 @@ export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
             type:DataTypes.STRING,
             allowNull:true,
         },
-        activate: {
+        activate:{
             type:DataTypes.BOOLEAN,
             allowNull:false,
             defaultValue:true
@@ -46,8 +46,7 @@ export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
         }
     } ,
     { 
-        tableName:'profile_types',
+        tableName:'proficiencies',
         timestamps:false 
     }
 );
-

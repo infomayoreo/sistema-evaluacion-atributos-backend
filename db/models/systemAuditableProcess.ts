@@ -20,7 +20,7 @@ export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('Sys
     name:{
         type:DataTypes.CHAR(100),
         allowNull:false,
-        unique:true
+        unique:true,
     },
     description:{
         type:DataTypes.STRING,
