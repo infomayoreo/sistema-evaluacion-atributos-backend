@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 
-export interface IAuditUser extends Model {
+export interface IAuditUserDetail extends Model {
     id:number;
     auditableProcessId:number;
     userId:number;
@@ -14,7 +14,7 @@ export interface IAuditUser extends Model {
 	updateAt:string;
 }
 
-export const AuditUserDAO = db.define<IAuditUser>('AuditUserDetail', {
+export const AuditUserDetailDAO = db.define<IAuditUserDetail>('AuditUserDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
