@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { LevelAccessDAO } from './levelAccess';
+import { SystemOptionDAO } from './systemOption';
 
 export interface IPermissionLevelAccess extends Model {
     id:number;
@@ -51,3 +53,22 @@ export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('Permi
         timestamps:false 
     }
 );
+
+export const permissionsByLevelAccessAssociations = () => {
+
+    PermissionLevelAccessDAO.belongsTo(LevelAccessDAO, { 
+        foreignKey: {
+            name:'levelAccessId',
+            allowNull: false
+        }
+    });
+
+    PermissionLevelAccessDAO.belongsTo(SystemOptionDAO,{ 
+        foreignKey: {
+            name:'systemOptionId',
+            allowNull: false
+        }
+    });
+
+    
+};

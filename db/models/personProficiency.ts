@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PersonDAO } from './person';
+import { ProficiencyRangeDAO } from './ProficiencyRange';
 
 export interface IPersonProficiency extends Model {
     id:number;
@@ -50,3 +52,21 @@ export const PersonProficiencyDAO = db.define<IPersonProficiency>('PersonProfici
             }
         ] 
     });
+
+export const personProviciencyAssociations = () => {
+
+    PersonProficiencyDAO.belongsTo(PersonDAO, {
+        foreignKey:{
+            name:'personId',
+            allowNull:false
+        }
+    });
+    
+    PersonProficiencyDAO.belongsTo(ProficiencyRangeDAO, {
+        foreignKey:{
+            name:'valueRangeId',
+            allowNull:false
+        }
+    });
+
+};

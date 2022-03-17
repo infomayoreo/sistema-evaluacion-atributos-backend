@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AttributeDAO } from './attribute';
+import { ProfileTypeDAO } from './profileType';
 
 export interface IAttributeProfile extends Model {
     id:number;
@@ -51,4 +53,21 @@ export const AttributeProfileDAO = db.define<IAttributeProfile>('AttributeProfil
         ]
     }
 );
+
+export const attributeProfileAssociations = () => {
+    
+    AttributeProfileDAO.belongsTo (AttributeDAO, { 
+        foreignKey: {
+            name:'attributeId',
+            allowNull: false
+        }
+    });
+
+    AttributeProfileDAO.belongsTo(ProfileTypeDAO,{
+        foreignKey: {
+            name:'profileTypeId',
+            allowNull: false
+        }
+    });
+};
 

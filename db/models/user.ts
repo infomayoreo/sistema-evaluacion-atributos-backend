@@ -56,3 +56,5 @@ export const UserDAO = db.define<IUser>('User', {
 		timestamps:false 
 	}
 );
+
+

@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PermissionLevelAccessDAO } from './permissionByLevelAccess';
+import { UserDAO } from './user';
 
 export interface ILevelAccess extends Model {
     id:number;
@@ -49,3 +51,23 @@ export const LevelAccessDAO = db.define<ILevelAccess> ('LevelAccess', {
     timestamps:false 
 });
 
+export const levelAccessAssociations = () => {
+
+    LevelAccessDAO.hasMany(UserDAO, {
+        foreignKey: {
+            name:'levelAccessId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+
+    LevelAccessDAO.hasMany(PermissionLevelAccessDAO, {
+        foreignKey: {
+            name:'levelAccessId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+};

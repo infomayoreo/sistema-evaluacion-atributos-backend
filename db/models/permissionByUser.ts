@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { SystemOptionDAO } from './systemOption';
+import { UserDAO } from './user';
 
 export interface IPermissionByUser extends Model {
     id:number;
@@ -49,3 +51,20 @@ export const PermissionByUserDAO = db.define<IPermissionByUser>('PermissionByUse
     tableName:'permissions_by_user',
     timestamps:false 
 });
+
+export const permissionsByUserAssociations = () => {
+
+    PermissionByUserDAO.belongsTo(UserDAO, { 
+        foreignKey: {
+            name:'userId',
+            allowNull: false
+        }
+    });
+
+    PermissionByUserDAO.belongsTo(SystemOptionDAO,{ 
+        foreignKey: {
+            name:'systemOptionId',
+            allowNull: false
+        }
+    });
+};

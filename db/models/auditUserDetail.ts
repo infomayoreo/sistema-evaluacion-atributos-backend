@@ -1,11 +1,11 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AuditUserHeaderDAO } from './auditUserHeader';
 
 export interface IAuditUserDetail extends Model {
     id:number;
-    auditableProcessId:number;
-    userId:number;
+    auditUserId:number;
     atTable:string;
     atColumn:string;
     oldValue:string;
@@ -24,7 +24,7 @@ export const AuditUserDetailDAO = db.define<IAuditUserDetail>('AuditUserDetail',
         auditUserId:{
             type:DataTypes.INTEGER,
             allowNull:false,
-            field:''
+            field:'audit_user_header_id'
         },
         atTable:{
             type:DataTypes.CHAR(100),
@@ -68,3 +68,15 @@ export const AuditUserDetailDAO = db.define<IAuditUserDetail>('AuditUserDetail',
         tableName:'audit_user_details', 
         timestamps:false 
     });
+
+export const auditUserDetailsAssociations = () => {
+
+    AuditUserDetailDAO.belongsTo(AuditUserHeaderDAO,{
+        foreignKey: {
+            name:'auditUserId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+};

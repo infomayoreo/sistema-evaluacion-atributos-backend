@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PersonDAO } from './person';
+import { UserDAO } from './user';
 
 export interface IPersonExtraEvaluation extends Model {
     id:number;
@@ -50,3 +52,20 @@ export const PersonExtraEvaluationDAO = db.define<IPersonExtraEvaluation>('Perso
         tableName:'person_extra_evaluations', 
         timestamps:false 
     });
+
+export const personExtraEvaluationAssociations = () => {
+
+    PersonExtraEvaluationDAO.belongsTo(PersonDAO, {
+        foreignKey:{
+            name:'personToBeEvaluate',
+            allowNull:false
+        }
+    });
+
+    PersonExtraEvaluationDAO.belongsTo(UserDAO, {
+        foreignKey:{
+            name:'evaluatorPersonId',
+            allowNull:false
+        }
+    });
+};

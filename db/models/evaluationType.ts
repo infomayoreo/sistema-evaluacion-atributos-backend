@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PersonValueHeaderDAO } from './personValueHeader';
 
 export interface IEvaluationType extends Model {
     id:number;
@@ -12,36 +13,52 @@ export interface IEvaluationType extends Model {
 }
 
 export const EvaluationTypeDAO = db.define<IEvaluationType>('EvaluationType', {
-    id:{
-        primaryKey:true,
-        type: DataTypes.INTEGER,
-        autoIncrement:false,
-        field:'evaluation_type_id'
+        id:{
+            primaryKey:true,
+            type: DataTypes.INTEGER,
+            autoIncrement:false,
+            field:'evaluation_type_id'
+        },
+        name:{
+            type: DataTypes.CHAR(100),
+            allowNull:false,
+            unique:true,
+        },
+        description:{
+            type:DataTypes.STRING,
+            allowNull:true,
+        },
+        activate:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true,
+        },
+        createAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'create_at'
+        },
+        updateAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'update_at'
+        }
     },
-    name:{
-        type: DataTypes.CHAR(100),
-        allowNull:false,
-        unique:true,
-    },
-    description:{
-        type:DataTypes.STRING,
-        allowNull:true,
-    },
-    activate:{
-        type:DataTypes.BOOLEAN,
-        allowNull:false,
-        defaultValue:true,
-    },
-    createAt:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:getNowUtc(),
-        field:'create_at'
-    },
-    updateAt:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:getNowUtc(),
-        field:'update_at'
-    }
-},{tableName:'evaluation_types', timestamps:false });
+    {
+        tableName:'evaluation_types',
+         timestamps:false
+    });
+
+export const evaluationTypeAssociations = () => {
+
+    EvaluationTypeDAO.hasMany(PersonValueHeaderDAO,{
+        foreignKey: {
+            name:'evaluationTypeId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+};

@@ -1,6 +1,7 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { ProficiencyRangeDAO } from './ProficiencyRange';
 
 export interface IProficiencyValue extends Model {
     id:number;
@@ -61,3 +62,15 @@ export const ProficiencyValueDAO = db.define<IProficiencyValue>('ProficiencyValu
         timestamps:false 
     }
 );
+
+export const profiencyValueAssociations = () => {
+
+    ProficiencyValueDAO.hasMany(ProficiencyRangeDAO,{
+        foreignKey: {
+            name:'proficiencyValueId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+};

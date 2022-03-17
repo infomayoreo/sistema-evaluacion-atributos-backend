@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AttributeRangeDAO } from './attributeRange';
 
 export interface IAttributeValue extends Model {
     id:number;
@@ -60,3 +61,15 @@ export const AttributeValueDAO = db.define<IAttributeValue>('AttributeValue', {
         tableName:'attribute_value',
          timestamps:false 
     });
+
+export const attributeValueAssociations = () => {
+
+    AttributeValueDAO.hasMany(AttributeRangeDAO, {
+        foreignKey: {
+            name:'attributeValueId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+};

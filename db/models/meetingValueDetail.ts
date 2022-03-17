@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AttributeRangeDAO } from './attributeRange';
+import { MeetingValueHeaderDAO } from './meetingValueHeader';
 
 export interface IMeetingValueDetail extends Model {
     id:number;
@@ -49,4 +51,22 @@ export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValu
     {
         tableName:'meeting_value_details', 
         timestamps:false 
+});
+
+
+export const meetingValueDetailAssociations = () => {
+
+    MeetingValueDetailDAO.belongsTo(MeetingValueHeaderDAO, { 
+        foreignKey: {
+            name:'meetingValueHeaderId',
+            allowNull: false
+        }
     });
+
+    MeetingValueDetailDAO.belongsTo(AttributeRangeDAO, { 
+        foreignKey: {
+            name:'valueRangeId',
+            allowNull: false
+        }
+    });
+};

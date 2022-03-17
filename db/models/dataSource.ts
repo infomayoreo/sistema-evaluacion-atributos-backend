@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PersonDAO } from './person';
 
 export interface IDataSource extends Model {
     id:number;
@@ -56,3 +57,15 @@ export const DataSourceDAO = db.define<IDataSource>('DataSource', {
         tableName:'data_sources', 
         timestamps:false
     });
+
+export const dataSourceAssociations = () => {
+
+        DataSourceDAO.hasMany(PersonDAO, {
+            foreignKey: {
+                name:'dataSourceId',
+                allowNull: false
+            }, 
+            onDelete: 'NO ACTION', 
+            onUpdate: 'NO ACTION'
+        });
+};

@@ -1,6 +1,7 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AttributeProfileDAO } from './attributeProfile';
 
 export interface IProfileType extends Model {
     id:number;
@@ -50,4 +51,16 @@ export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
         timestamps:false 
     }
 );
+
+export const profileTyeAssociations = () => {
+
+    ProfileTypeDAO.hasMany(AttributeProfileDAO, {
+        foreignKey: {
+            name:'profileTypeId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+};
 

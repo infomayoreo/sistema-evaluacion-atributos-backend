@@ -1,6 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AuditUserDetailDAO } from './auditUserDetail';
+import { SystemAuditableProcessDAO } from './systemAuditableProcess';
+import { UserDAO } from './user';
 
 export interface IAuditUserHeader extends Model {
     id:number;
@@ -44,3 +47,29 @@ export const AuditUserHeaderDAO = db.define<IAuditUserHeader>('AuditUserHeader',
         tableName:'audit_user_headers', 
         timestamps:false 
     });
+
+export const auditUserHeaderAssociations = () => {
+
+    AuditUserHeaderDAO.hasMany(AuditUserDetailDAO,{
+        foreignKey: {
+            name:'auditUserId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+
+    AuditUserHeaderDAO.belongsTo(UserDAO, { 
+        foreignKey: {
+            name:'userId',
+            allowNull: false
+        }
+    });
+
+    AuditUserHeaderDAO.belongsTo(SystemAuditableProcessDAO, { 
+        foreignKey: {
+            name:'auditableProcessId',
+            allowNull: false
+        }
+    });
+};

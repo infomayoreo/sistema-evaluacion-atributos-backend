@@ -1,6 +1,10 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AttributeDAO } from './attribute';
+import { AttributeValueDAO } from './attributeValue';
+import { MeetingValueDetailDAO } from './meetingValueDetail';
+import { PersonValueDetailDAO } from './personValueDetails';
 
 export interface IAttributeRange extends Model {
     id:number;
@@ -54,3 +58,38 @@ export const AttributeRangeDAO = db.define<IAttributeRange>('AttributeRange', {
         ] 
     }
 );
+
+export const attributeRangeAssociations = () => {
+    
+    AttributeRangeDAO.hasMany(PersonValueDetailDAO, {
+        foreignKey: {
+            name:'valueRangeId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+
+    AttributeRangeDAO.hasMany(MeetingValueDetailDAO, {
+        foreignKey: {
+            name:'valueRangeId',
+            allowNull: false
+        }, 
+        onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+    });
+
+    AttributeRangeDAO.belongsTo(AttributeValueDAO,{
+        foreignKey:{
+            name:'attributeValueId',
+            allowNull:false,
+        }
+    });
+
+    AttributeRangeDAO.belongsTo(AttributeDAO,{
+        foreignKey:{
+            name:'attributeId',
+            allowNull:false,
+        }
+    });
+};

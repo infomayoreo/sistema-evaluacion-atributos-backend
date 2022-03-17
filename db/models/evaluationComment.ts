@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PersonDAO } from './person';
+import { UserDAO } from './user';
 
 export interface IEvaluationComment extends Model {
     id:number;
@@ -49,3 +51,19 @@ export const EvaluationCommentDAO = db.define<IEvaluationComment>('EvaluationCom
         tableName:'evaluation_comments', 
         timestamps:false 
     });
+
+export const evaluationCommentAssociations = () => {
+    
+    EvaluationCommentDAO.belongsTo(PersonDAO, { 
+        foreignKey: {
+            name:'personToBeEvaluate',
+            allowNull: false
+        }
+    });
+    EvaluationCommentDAO.belongsTo(UserDAO, { 
+        foreignKey: {
+            name:'evaluatorPersonId',
+            allowNull: false
+        }
+    });
+};
