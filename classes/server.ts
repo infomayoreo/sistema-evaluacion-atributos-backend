@@ -56,8 +56,9 @@ class Server {
             await db.authenticate();
             console.log('Database online');
 
-             await db.sync();
-             //await db.sync({ force: true });
+            
+             //await db.sync();
+            await db.sync({ force: true });
 
         } catch (error: any) {
             throw new Error( error );
@@ -78,6 +79,7 @@ class Server {
     }
 
     routes(): void {
+        
         this.app.use( this.paths.auth , authRoutes );
         this.app.use( this.paths.users , usersRoutes );
     }

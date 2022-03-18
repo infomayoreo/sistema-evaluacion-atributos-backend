@@ -2,28 +2,29 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 import { AttributeRangeDAO } from './attributeRange';
-import { MeetingValueHeaderDAO } from './meetingValueHeader';
+import { PersonValueHeaderDAO } from './personValueHeader';
 
-export interface IMeetingValueDetail extends Model {
+
+export interface IPersonValueDetail extends Model {
     id:number;
-    meetingValueHeaderId:number;
+    personValueHeaderId:number;
     valueRangeId:number;
     feedback?:string;
     createAt:string;
 	updateAt:string;
 }
 
-export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValueDetail', {
+export const PersonValueDetailDAO = db.define<IPersonValueDetail>('PersonValueDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'meeting_value_detail_id'
+            field:'person_value_detail_id'
         },
-        meetingValueHeaderId:{
+        personValueHeaderId:{
             type: DataTypes.INTEGER,
             allowNull: false,
-            field:'meeting_value_header_id'
+            field:'person_value_header_id'
         },
         valueRangeId:{
             type: DataTypes.INTEGER,
@@ -31,9 +32,9 @@ export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValu
             field:'value_range_id'
         },
         feedback:{
-            type:DataTypes.STRING,
-            allowNull:true,
-            field:'attribute_feedbak'
+            type: DataTypes.STRING,
+            field:'attribute_feedbak',
+            allowNull: true,
         },
         createAt:{
             type: DataTypes.DATE,
@@ -49,24 +50,23 @@ export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValu
         }
     },
     {
-        tableName:'meeting_value_details', 
+        tableName:'person_values_details', 
         timestamps:false 
-});
+    });
 
+export const personValueDetailAssociations = () => {
 
-export const meetingValueDetailAssociations = () => {
-
-    MeetingValueDetailDAO.belongsTo(MeetingValueHeaderDAO, { 
+    PersonValueDetailDAO.belongsTo(PersonValueHeaderDAO, {
         foreignKey: {
-            name:'meetingValueHeaderId',
-            allowNull: false
+            allowNull:false,
+            name:'personValueHeaderId'
         }
     });
 
-    MeetingValueDetailDAO.belongsTo(AttributeRangeDAO, { 
-        foreignKey: {
+    PersonValueDetailDAO.belongsTo(AttributeRangeDAO,{
+        foreignKey:{
             name:'valueRangeId',
-            allowNull: false
+            allowNull:false
         }
     });
 };
