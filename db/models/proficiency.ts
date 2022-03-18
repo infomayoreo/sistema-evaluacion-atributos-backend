@@ -1,7 +1,7 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { ProficiencyRangeDAO } from './ProficiencyRange';
+import { ProficiencyRangeDAO } from './proficiencyRange';
 
 export interface IProficiency extends Model {
     id:number;

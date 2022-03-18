@@ -7,7 +7,7 @@ import { UserDAO } from './user';
 export interface IEvaluationComment extends Model {
     id:number;
     personToBeEvaluate:number;
-    evaluatorPersonId:number;
+    evaluatorUserId:number;
     comment:string;
     createAt:string;
 	updateAt:string;
@@ -25,7 +25,7 @@ export const EvaluationCommentDAO = db.define<IEvaluationComment>('EvaluationCom
             allowNull:false,
             field:'person_to_evaluate_id'
         },
-        evaluatorPersonId:{
+        evaluatorUserId:{
             type: DataTypes.INTEGER,
             allowNull:false,
             field:'evaluator_user_id'
@@ -62,7 +62,7 @@ export const evaluationCommentAssociations = () => {
     });
     EvaluationCommentDAO.belongsTo(UserDAO, { 
         foreignKey: {
-            name:'evaluatorPersonId',
+            name:'evaluatorUserId',
             allowNull: false
         }
     });

@@ -1,37 +1,70 @@
-import { AttributeDAO, IAttribute} from './attribute'
-import { AttributeProfileDAO, IAttributeProfile } from './attributeProfile';
-import { AttributeRangeDAO, IAttributeRange } from './attributeRange';
-import { AttributeTypeDAO, IAttributeType } from './attributeType';
-import { AttributeValueDAO, IAttributeValue } from './attributeValue';
-import { AuditUserDetailDAO,IAuditUserDetail } from './auditUserDetail';
-import { AuditUserHeaderDAO, IAuditUserHeader} from './auditUserHeader'
-import { DataSourceDAO, IDataSource } from './dataSource';
-import { EvaluationCommentDAO, IEvaluationComment } from './evaluationComment';
-import { EvaluationTypeDAO,IEvaluationType } from './evaluationType';
-import { GlobalSettingDAO, IGlobalSetting } from './globalSetting';
-import { LevelAccessDAO, ILevelAccess } from './levelAccess';
-import { MeetingDAO, IMeeting } from './meeting';
-import { MeetingPlatformDAO, IMeetingPlatform } from './meetingPlatform';
-import { MeetingValueDetailDAO, IMeetingValueDetail } from './meetingValueDetail';
-import { MeetingValueHeaderDAO, IMeetingValueHeader } from './meetingValueHeader';
-import { ParticipantDAO, IParticipant } from './participant';
-import { PermissionLevelAccessDAO, IPermissionLevelAccess } from './permissionByLevelAccess';
-import { PermissionByUserDAO, IPermissionByUser } from './permissionByUser';
-import { PersonDAO, IPerson } from './person';
-import { PersonExtraEvaluationDAO, IPersonExtraEvaluation } from './personExtraEvaluation';
-import { PersonProficiencyDAO, IPersonProficiency } from './personProficiency';
-import { PersonValueDetailDAO, IPersonValueDetail } from './personValueDetails';
+import { AttributeDAO, IAttribute, attributeAssociations} from './attribute'
+import { AttributeProfileDAO, IAttributeProfile, attributeProfileAssociations } from './attributeProfile';
+import { AttributeRangeDAO, IAttributeRange, attributeRangeAssociations } from './attributeRange';
+import { AttributeTypeDAO, IAttributeType, attributeTypeAssociations } from './attributeType';
+import { AttributeValueDAO, IAttributeValue, attributeValueAssociations } from './attributeValue';
+import { AuditUserDetailDAO,IAuditUserDetail, auditUserDetailsAssociations } from './auditUserDetail';
+import { AuditUserHeaderDAO, IAuditUserHeader, auditUserHeaderAssociations } from './auditUserHeader'
+import { DataSourceDAO, IDataSource, dataSourceAssociations } from './dataSource';
+import { EvaluationCommentDAO, IEvaluationComment, evaluationCommentAssociations} from './evaluationComment';
+import { EvaluationTypeDAO,IEvaluationType, evaluationTypeAssociations } from './evaluationType';
+import { GlobalSettingDAO, IGlobalSetting, globalSettingAssociations } from './globalSetting';
+import { LevelAccessDAO, ILevelAccess, levelAccessAssociations } from './levelAccess';
+import { MeetingDAO, IMeeting, meetingAssociations } from './meeting';
+import { MeetingPlatformDAO, IMeetingPlatform, meetingPlatformAssociations } from './meetingPlatform';
+import { MeetingValueDetailDAO, IMeetingValueDetail, meetingValueDetailAssociations } from './meetingValueDetail';
+import { MeetingValueHeaderDAO, IMeetingValueHeader, meetingValueHeaderAssociations } from './meetingValueHeader';
+import { ParticipantDAO, IParticipant, participantAssociations } from './participant';
+import { PermissionLevelAccessDAO, IPermissionLevelAccess, permissionsByLevelAccessAssociations } from './permissionByLevelAccess';
+import { PermissionByUserDAO, IPermissionByUser, permissionsByUserAssociations } from './permissionByUser';
+import { PersonDAO, IPerson, personAssociations } from './person';
+import { PersonExtraEvaluationDAO, IPersonExtraEvaluation, personExtraEvaluationAssociations } from './personExtraEvaluation';
+import { PersonProficiencyDAO, IPersonProficiency, personProviciencyAssociations } from './personProficiency';
+import { PersonValueDetailDAO, IPersonValueDetail, personValueDetailAssociations } from './personValueDetails';
 import { PersonValueHeaderDAO, IPersonValueHeader } from './personValueHeader';
-import { ProficiencyDAO, IProficiency } from './proficiency';
-import { ProficiencyRangeDAO, IProficiencyRange } from './ProficiencyRange';
-import { ProficiencyValueDAO, IProficiencyValue } from './proficiencyValue';
-import { ProfileTypeDAO, IProfileType } from './profileType';
-import { SystemAuditableProcessDAO, ISystemAuditableProcess } from './systemAuditableProcess';
-import { SystemOptionDAO, ISystemOption } from './systemOption';
-import { UserDAO, IUser } from './user';
+import { ProficiencyDAO, IProficiency, profiencyAssociations } from './proficiency';
+import { ProficiencyRangeDAO, IProficiencyRange, profiencyRangeAssociations } from './proficiencyRange';
+import { ProficiencyValueDAO, IProficiencyValue, profiencyValueAssociations } from './proficiencyValue';
+import { ProfileTypeDAO, IProfileType, profileTyeAssociations } from './profileType';
+import { SystemAuditableProcessDAO, ISystemAuditableProcess, systemAuditableProcessAssociations } from './systemAuditableProcess';
+import { SystemOptionDAO, ISystemOption, systemOptionAssociations } from './systemOption';
+import { UserDAO, IUser, userAssociations } from './user';
 
+const associations:(()=>void)[] = [ 
+    attributeAssociations,
+    attributeProfileAssociations,
+    attributeRangeAssociations,
+    attributeTypeAssociations,
+    attributeValueAssociations,
+    auditUserDetailsAssociations,
+    auditUserHeaderAssociations,
+    dataSourceAssociations,
+    evaluationCommentAssociations,
+    evaluationTypeAssociations,
+    globalSettingAssociations,
+    levelAccessAssociations,
+    meetingAssociations,
+    meetingPlatformAssociations,
+    meetingValueDetailAssociations,
+    meetingValueHeaderAssociations,
+    participantAssociations,
+    permissionsByLevelAccessAssociations,
+    permissionsByUserAssociations,
+    personAssociations,
+    personExtraEvaluationAssociations,
+    personProviciencyAssociations,
+    personValueDetailAssociations,
+    profiencyAssociations,
+    profiencyRangeAssociations,
+    profiencyValueAssociations,
+    profileTyeAssociations,
+    systemAuditableProcessAssociations,
+    systemOptionAssociations,
+    userAssociations,
+];
 
 export {
+    associations,
     AttributeDAO, IAttribute,
     AttributeProfileDAO, IAttributeProfile,
     AttributeRangeDAO, IAttributeRange,

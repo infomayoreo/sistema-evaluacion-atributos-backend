@@ -49,7 +49,13 @@ export const PermissionByUserDAO = db.define<IPermissionByUser>('PermissionByUse
     }
 },{
     tableName:'permissions_by_user',
-    timestamps:false 
+    timestamps:false,
+    indexes:[
+        {
+            unique:true,
+            fields:['system_option_id','user_id'],
+        }
+    ] 
 });
 
 export const permissionsByUserAssociations = () => {

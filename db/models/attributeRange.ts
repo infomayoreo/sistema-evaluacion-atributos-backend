@@ -53,7 +53,7 @@ export const AttributeRangeDAO = db.define<IAttributeRange>('AttributeRange', {
         indexes:[
             {
                 unique:true,
-                fields:['attributeId','attributeValueId'],
+                fields:['attribute_id','value_id'],
             }
         ] 
     }

@@ -50,7 +50,7 @@ export const ProficiencyRangeDAO = db.define<IProficiencyRange>('ProficiencyRang
         indexes:[
             {
                 unique:true,
-                fields:['proficiencyId','proficiencyValueId'],
+                fields:['proficiency_id','proficiency_value_id'],
             }
         ] 
     }

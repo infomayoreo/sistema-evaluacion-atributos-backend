@@ -50,7 +50,13 @@ export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('Permi
     },
     {
         tableName:'permissions_by_level_access',
-        timestamps:false 
+        timestamps:false,
+        indexes:[
+            {
+                unique:true,
+                fields:['system_option_id','level_access_id'],
+            }
+        ] 
     }
 );
 

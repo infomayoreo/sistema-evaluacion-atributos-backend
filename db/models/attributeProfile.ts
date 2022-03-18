@@ -48,7 +48,7 @@ export const AttributeProfileDAO = db.define<IAttributeProfile>('AttributeProfil
         indexes:[
             {
                 unique:true,
-                fields:['profileTypeId','attributeId'],
+                fields:['profile_type_id','attribute_id'],
             }
         ]
     }

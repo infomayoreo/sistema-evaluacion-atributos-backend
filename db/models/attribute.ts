@@ -59,7 +59,7 @@ export const AttributeDAO = db.define<IAttribute>('Attribute', {
         indexes:[
             {
                 unique:true,
-                fields:['name','attributeTypeId'],
+                fields:['name','attribute_type_id'],
             }
         ]
     }

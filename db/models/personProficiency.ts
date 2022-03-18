@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
 import { PersonDAO } from './person';
-import { ProficiencyRangeDAO } from './ProficiencyRange';
+import { ProficiencyRangeDAO } from './proficiencyRange';
 
 export interface IPersonProficiency extends Model {
     id:number;
@@ -48,7 +48,7 @@ export const PersonProficiencyDAO = db.define<IPersonProficiency>('PersonProfici
         indexes:[
             {
                 unique:true,
-                fields:['personId','valueRangeId'],
+                fields:['person_id','proficiency_range_id'],
             }
         ] 
     });
