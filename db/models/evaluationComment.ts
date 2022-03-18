@@ -1,40 +1,38 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { MeetingDAO } from './meeting';
-import { MeetingValueHeaderDAO } from './meetingValueHeader';
 import { PersonDAO } from './person';
+import { UserDAO } from './user';
 
-export interface IParticipant extends Model {
+export interface IEvaluationComment extends Model {
     id:number;
-    meetingId:number;
-    personId:number;
-    deleted:boolean;
+    personToBeEvaluate:number;
+    evaluatorUserId:number;
+    comment:string;
     createAt:string;
 	updateAt:string;
 }
 
-export const ParticipantDAO = db.define('Participant', {
+export const EvaluationCommentDAO = db.define<IEvaluationComment>('EvaluationComment', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'participant_id'
+            field:'evaluation_comment_id'
         },
-        meetingId:{
+        personToBeEvaluate:{
             type: DataTypes.INTEGER,
             allowNull:false,
-            field:'meeting_id'
+            field:'person_to_evaluate_id'
         },
-        personId:{
+        evaluatorUserId:{
             type: DataTypes.INTEGER,
             allowNull:false,
-            field:'person_id'
+            field:'evaluator_user_id'
         },
-        deleted:{
-            type:DataTypes.BOOLEAN,
-            allowNull:false,
-            defaultValue:false
+        comment:{
+            type:DataTypes.TEXT,
+            allowNull:false,        
         },
         createAt:{
             type: DataTypes.DATE,
@@ -50,31 +48,21 @@ export const ParticipantDAO = db.define('Participant', {
         }
     },
     {
-        tableName:'participants', 
+        tableName:'evaluation_comments', 
         timestamps:false 
     });
 
-export const participantAssociations = () => {
+export const evaluationCommentAssociations = () => {
     
-    ParticipantDAO.hasMany(MeetingValueHeaderDAO, {
+    EvaluationCommentDAO.belongsTo(PersonDAO, { 
         foreignKey: {
-            name:'participantEvaluatorId',
-            allowNull: false
-        }, 
-        onDelete: 'NO ACTION', 
-        onUpdate: 'NO ACTION'
-    });
-
-    ParticipantDAO.belongsTo(MeetingDAO, { 
-        foreignKey: {
-            name:'meetingId',
+            name:'personToBeEvaluate',
             allowNull: false
         }
     });
-
-    ParticipantDAO.belongsTo(PersonDAO, { 
+    EvaluationCommentDAO.belongsTo(UserDAO, { 
         foreignKey: {
-            name:'personId',
+            name:'evaluatorUserId',
             allowNull: false
         }
     });

@@ -1,31 +1,71 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { PersonDAO } from './person';
 
 export interface IDataSource extends Model {
     id:number;
+    name:string;
+    description:string;
+    url:string;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
 
 export const DataSourceDAO = db.define<IDataSource>('DataSource', {
-    id:{
-        primaryKey:true,
-        type: DataTypes.INTEGER,
-        autoIncrement:false,
-        field:'data_source_id'
+        id:{
+            primaryKey:true,
+            type: DataTypes.INTEGER,
+            autoIncrement:false,
+            field:'data_source_id'
+        },
+        url:{
+            type:DataTypes.STRING,
+            allowNull:false,
+            unique:false
+        },
+        name:{
+            type:DataTypes.CHAR,
+            allowNull:false,
+            unique:false
+        },
+        description:{
+            type:DataTypes.STRING,
+            allowNull:true,
+        },
+        activate: {
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
+        },
+        createAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'create_at'
+        },
+        updateAt:{
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue:getNowUtc(),
+            field:'update_at'
+        }
     },
-    createAt:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:getNowUtc(),
-        field:'create_at'
-    },
-    updateAt:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:getNowUtc(),
-        field:'update_at'
-    }
-},{ tableName:'data_sources', timestamps:false });
+    { 
+        tableName:'data_sources', 
+        timestamps:false
+    });
+
+export const dataSourceAssociations = () => {
+
+        DataSourceDAO.hasMany(PersonDAO, {
+            foreignKey: {
+                name:'dataSourceId',
+                allowNull: false
+            }, 
+            onDelete: 'NO ACTION', 
+            onUpdate: 'NO ACTION'
+        });
+};

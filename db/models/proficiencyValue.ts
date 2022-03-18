@@ -1,25 +1,25 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { AttributeRangeDAO } from './attributeRange';
+import { ProficiencyRangeDAO } from './proficiencyRange';
 
-export interface IAttributeValue extends Model {
+export interface IProficiencyValue extends Model {
     id:number;
-    name:string;
+    name:string,
+    color?:string;
     numericValue:number;
     description?:string;
-    color?:string;
     activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
-export const AttributeValueDAO = db.define<IAttributeValue>('AttributeValue', {
+export const ProficiencyValueDAO = db.define<IProficiencyValue>('ProficiencyValue', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'attribute_range_id'
+            field:'proficiency_value_id'
         },
         name:{
             type:DataTypes.CHAR(100),
@@ -42,31 +42,32 @@ export const AttributeValueDAO = db.define<IAttributeValue>('AttributeValue', {
         activate:{
             type:DataTypes.BOOLEAN,
             allowNull:false,
-            defaultValue:true,
+            defaultValue:true
         },
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue: getNowUtc(),
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue: getNowUtc(),
             field:'update_at'
         }
-    },
-    {
-        tableName:'attribute_value',
-         timestamps:false 
-    });
+    } ,
+    { 
+        tableName:'profiencies_values',
+        timestamps:false 
+    }
+);
 
-export const attributeValueAssociations = () => {
+export const profiencyValueAssociations = () => {
 
-    AttributeValueDAO.hasMany(AttributeRangeDAO, {
+    ProficiencyValueDAO.hasMany(ProficiencyRangeDAO,{
         foreignKey: {
-            name:'attributeValueId',
+            name:'proficiencyValueId',
             allowNull: false
         }, 
         onDelete: 'NO ACTION', 

@@ -1,6 +1,14 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
+import { AuditUserHeaderDAO } from './auditUserHeader';
+import { EvaluationCommentDAO } from './evaluationComment';
+import { LevelAccessDAO } from './levelAccess';
+import { MeetingDAO } from './meeting';
+import { PermissionByUserDAO } from './permissionByUser';
+import { PersonDAO } from './person';
+import { PersonExtraEvaluationDAO } from './personExtraEvaluation';
+import { PersonValueHeaderDAO } from './personValueHeader';
 
 export interface IUser extends Model {
 	id: string;
@@ -56,3 +64,70 @@ export const UserDAO = db.define<IUser>('User', {
 		timestamps:false 
 	}
 );
+
+
+export const userAssociations = () => {
+
+	UserDAO.belongsTo(LevelAccessDAO,{
+		foreignKey:{
+			name:'levelAccessId',
+			allowNull:false,
+		}
+	});
+
+	UserDAO.hasOne(PersonDAO,{
+		foreignKey:{
+			name:'userId',
+			allowNull:true,
+		},
+		onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+	});
+
+	UserDAO.hasMany(PersonExtraEvaluationDAO, {
+		foreignKey:{
+			name:'evaluatorPersonId',
+			allowNull:false,
+		},
+		onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+	});
+	UserDAO.hasMany(EvaluationCommentDAO, {
+		foreignKey:{
+			name:'evaluatorUserId',
+			allowNull:false
+		},
+		onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+	});
+	UserDAO.hasMany(AuditUserHeaderDAO, {
+		foreignKey:{
+			name:'userId',
+			allowNull:false,
+		},
+		onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+	});
+	UserDAO.hasMany(PersonValueHeaderDAO, {
+		foreignKey:{
+			name:'evaluatorUserId',
+			allowNull:false
+		},
+		onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+	});
+	UserDAO.hasMany(PermissionByUserDAO, {
+		foreignKey:{
+			name:'userId',
+			allowNull:false
+		},
+		onDelete: 'NO ACTION', 
+        onUpdate: 'NO ACTION'
+	});
+	UserDAO.hasMany(MeetingDAO,{
+		foreignKey:{
+			name:'createByUserId',
+			allowNull:false
+		}
+	});
+};

@@ -1,65 +1,66 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { MeetingDAO } from './meeting';
+import { AttributeProfileDAO } from './attributeProfile';
 
-export interface IMeetingPlatform extends Model {
+export interface IProfileType extends Model {
     id:number;
-    name:string;
-    description?:string;
+    name:string,
     activate:boolean;
+    description?:string;
     createAt:string;
 	updateAt:string;
 }
 
-export const MeetingPlatformDAO = db.define<IMeetingPlatform>('MeetingPlatform', {
+export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'meeting_platform_id'
+            field:'profile_type_id'
         },
-        name: {
-            type: DataTypes.CHAR(100),
+        name:{
+            type:DataTypes.CHAR(100),
             allowNull:false,
-            unique:true,
+            unique:true
         },
-        description: {
+        description:{
             type:DataTypes.STRING,
             allowNull:true,
         },
         activate: {
             type:DataTypes.BOOLEAN,
             allowNull:false,
-            defaultValue:true,
+            defaultValue:true
         },
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue: getNowUtc(),
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue: getNowUtc(),
             field:'update_at'
         }
-    },
-    {
-        tableName:'meeting_platforms',
+    } ,
+    { 
+        tableName:'profile_types',
         timestamps:false 
-});
+    }
+);
 
-export const meetingPlatformAssociations = () => {
+export const profileTyeAssociations = () => {
 
-    MeetingPlatformDAO.hasMany(MeetingDAO, {
+    ProfileTypeDAO.hasMany(AttributeProfileDAO, {
         foreignKey: {
-            name:'meetingPlaformId',
+            name:'profileTypeId',
             allowNull: false
         }, 
         onDelete: 'NO ACTION', 
         onUpdate: 'NO ACTION'
     });
-
 };
+

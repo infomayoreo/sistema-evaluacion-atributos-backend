@@ -1,9 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { MeetingDAO } from './meeting';
+import { PersonValueHeaderDAO } from './personValueHeader';
 
-export interface IMeetingPlatform extends Model {
+export interface IEvaluationType extends Model {
     id:number;
     name:string;
     description?:string;
@@ -12,23 +12,23 @@ export interface IMeetingPlatform extends Model {
 	updateAt:string;
 }
 
-export const MeetingPlatformDAO = db.define<IMeetingPlatform>('MeetingPlatform', {
+export const EvaluationTypeDAO = db.define<IEvaluationType>('EvaluationType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
-            autoIncrement:true,
-            field:'meeting_platform_id'
+            autoIncrement:false,
+            field:'evaluation_type_id'
         },
-        name: {
+        name:{
             type: DataTypes.CHAR(100),
             allowNull:false,
             unique:true,
         },
-        description: {
+        description:{
             type:DataTypes.STRING,
             allowNull:true,
         },
-        activate: {
+        activate:{
             type:DataTypes.BOOLEAN,
             allowNull:false,
             defaultValue:true,
@@ -47,19 +47,18 @@ export const MeetingPlatformDAO = db.define<IMeetingPlatform>('MeetingPlatform',
         }
     },
     {
-        tableName:'meeting_platforms',
-        timestamps:false 
-});
+        tableName:'evaluation_types',
+         timestamps:false
+    });
 
-export const meetingPlatformAssociations = () => {
+export const evaluationTypeAssociations = () => {
 
-    MeetingPlatformDAO.hasMany(MeetingDAO, {
+    EvaluationTypeDAO.hasMany(PersonValueHeaderDAO,{
         foreignKey: {
-            name:'meetingPlaformId',
+            name:'evaluationTypeId',
             allowNull: false
         }, 
         onDelete: 'NO ACTION', 
         onUpdate: 'NO ACTION'
     });
-
 };

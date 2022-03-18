@@ -1,28 +1,28 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { AttributeDAO } from './attribute';
+import { ProficiencyRangeDAO } from './proficiencyRange';
 
-export interface IAttributeType extends Model {
+export interface IProficiency extends Model {
     id:number;
-    name:string;
+    name:string,
     description?:string;
     activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
-export const AttributeTypeDAO = db.define<IAttributeType>('AttributeType', {
+export const ProficiencyDAO = db.define<IProficiency>('Proficiency', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
-            autoIncrement:false,
-            field:'attribute_type_id'
+            autoIncrement:true,
+            field:'proficiency_id'
         },
         name:{
-            type: DataTypes.CHAR(100),
+            type:DataTypes.CHAR(100),
             allowNull:false,
-            unique:true,
+            unique:true
         },
         description:{
             type:DataTypes.STRING,
@@ -31,34 +31,34 @@ export const AttributeTypeDAO = db.define<IAttributeType>('AttributeType', {
         activate:{
             type:DataTypes.BOOLEAN,
             allowNull:false,
-            defaultValue:true,
+            defaultValue:true
         },
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue: getNowUtc(),
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue: getNowUtc(),
             field:'update_at'
         }
     },
-    {   tableName:'attribute_types', 
+    { 
+        tableName:'proficiencies',
         timestamps:false 
     });
 
-export const attributeTypeAssociations = ():void => {
-   
-    AttributeTypeDAO.hasMany(AttributeDAO, { 
-        foreignKey: {
-            name:'attributeTypeId',
-            allowNull: false
-        }, 
-        onDelete: 'NO ACTION', 
-        onUpdate: 'NO ACTION'
+export const profiencyAssociations = () => {
+
+    ProficiencyDAO.hasMany(ProficiencyRangeDAO,{
+        foreignKey:{
+            name:'proficiencyId',
+            allowNull:false
+        },
+        onDelete:'NO ACTION',
+        onUpdate:'NO ACTION'
     });
-    
-} ;
+};

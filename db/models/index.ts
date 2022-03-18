@@ -1,57 +1,98 @@
-import { AttributeDAO, IAttribute} from './attribute'
-import { AttributeRangeDAO, IAttributeRange } from './attributeRange';
-import { AttributeToEvaluteByMeetingDAO, IAttributeToEvaluteByMeeting } from './attributeToEvaluateByMeeting';
-import { AttributeToEvaluateByParticipantDAO, IAttributeToEvaluateByParticipant } from './attributeToEvaluateByParticipant';
-import { AttributeTypeDAO, IAttributeType } from './attributeType';
-import { AttributeValueDAO, IAttributeValue } from './attributeValue';
-import { AuditUserDAO, IAuditUser} from './auditUser'
-import { DataSourceDAO, IDataSource } from './dataSource';
-import { GlobalSettingDAO, IGlobalSetting } from './globalSetting';
-import { MeetingDAO, IMeeting } from './meeting';
-import { MeetingPlatformDAO, IMeetingPlatform } from './meetingPlatform';
-import { MeetingValueDetailDAO, IMeetingValueDetail } from './meetingValueDetail';
-import { MeetingValueHeaderDAO, IMeetingValueHeader } from './meetingValueHeader';
-import { ParticipantDAO, IParticipant } from './participant';
-import { ParticipantAttributeValueDetailDAO, IParticipantAttributeValueDetail } from './participantAttributeValueDetail';
-import { ParticipantValueHeaderDAO, IParticipantValueHeader } from './participantValueHeader';
-import { ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetail } from './participantEvaluationPeriodDetail';
-import { ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader } from './participantEvaluationPeriodHeader';
-import { PermissionLevelAccessDAO, IPermissionLevelAccess } from './permissionByLevelAccess';
-import { PermissionByUserDAO, IPermissionByUser } from './permissionByUser';
-import { PermissionToEvaluateMeetingAttributeDAO, IPermissionToEvaluateMeetingAttribute } from './permissionToEvaluateMeetingAttribute';
-import { PermissionToEvaluateParticipantAttributeDAO, IPermissionToEvaluateParticipantAttribute } from './permissionToEvaluateParticipantAttribute';
-import { PersonDAO, IPerson } from './person';
-import { LevelAccessDAO, ILevelAccess } from './levelAccess';
-import { SystemAuditableProcessDAO, ISystemAuditableProcess } from './systemAuditableProcess';
-import { SystemOptionDAO, ISystemOption } from './systemOption';
-import { UserDAO, IUser } from './user';
+import { AttributeDAO, IAttribute, attributeAssociations} from './attribute'
+import { AttributeProfileDAO, IAttributeProfile, attributeProfileAssociations } from './attributeProfile';
+import { AttributeRangeDAO, IAttributeRange, attributeRangeAssociations } from './attributeRange';
+import { AttributeTypeDAO, IAttributeType, attributeTypeAssociations } from './attributeType';
+import { AttributeValueDAO, IAttributeValue, attributeValueAssociations } from './attributeValue';
+import { AuditUserDetailDAO,IAuditUserDetail, auditUserDetailsAssociations } from './auditUserDetail';
+import { AuditUserHeaderDAO, IAuditUserHeader, auditUserHeaderAssociations } from './auditUserHeader'
+import { DataSourceDAO, IDataSource, dataSourceAssociations } from './dataSource';
+import { EvaluationCommentDAO, IEvaluationComment, evaluationCommentAssociations} from './evaluationComment';
+import { EvaluationTypeDAO,IEvaluationType, evaluationTypeAssociations } from './evaluationType';
+import { GlobalSettingDAO, IGlobalSetting, globalSettingAssociations } from './globalSetting';
+import { LevelAccessDAO, ILevelAccess, levelAccessAssociations } from './levelAccess';
+import { MeetingDAO, IMeeting, meetingAssociations } from './meeting';
+import { MeetingPlatformDAO, IMeetingPlatform, meetingPlatformAssociations } from './meetingPlatform';
+import { MeetingValueDetailDAO, IMeetingValueDetail, meetingValueDetailAssociations } from './meetingValueDetail';
+import { MeetingValueHeaderDAO, IMeetingValueHeader, meetingValueHeaderAssociations } from './meetingValueHeader';
+import { ParticipantDAO, IParticipant, participantAssociations } from './participant';
+import { PermissionLevelAccessDAO, IPermissionLevelAccess, permissionsByLevelAccessAssociations } from './permissionByLevelAccess';
+import { PermissionByUserDAO, IPermissionByUser, permissionsByUserAssociations } from './permissionByUser';
+import { PersonDAO, IPerson, personAssociations } from './person';
+import { PersonExtraEvaluationDAO, IPersonExtraEvaluation, personExtraEvaluationAssociations } from './personExtraEvaluation';
+import { PersonProficiencyDAO, IPersonProficiency, personProviciencyAssociations } from './personProficiency';
+import { PersonValueDetailDAO, IPersonValueDetail, personValueDetailAssociations } from './personValueDetails';
+import { PersonValueHeaderDAO, IPersonValueHeader } from './personValueHeader';
+import { ProficiencyDAO, IProficiency, profiencyAssociations } from './proficiency';
+import { ProficiencyRangeDAO, IProficiencyRange, profiencyRangeAssociations } from './proficiencyRange';
+import { ProficiencyValueDAO, IProficiencyValue, profiencyValueAssociations } from './proficiencyValue';
+import { ProfileTypeDAO, IProfileType, profileTyeAssociations } from './profileType';
+import { SystemAuditableProcessDAO, ISystemAuditableProcess, systemAuditableProcessAssociations } from './systemAuditableProcess';
+import { SystemOptionDAO, ISystemOption, systemOptionAssociations } from './systemOption';
+import { UserDAO, IUser, userAssociations } from './user';
 
+const associations:(()=>void)[] = [ 
+    attributeAssociations,
+    attributeProfileAssociations,
+    attributeRangeAssociations,
+    attributeTypeAssociations,
+    attributeValueAssociations,
+    auditUserDetailsAssociations,
+    auditUserHeaderAssociations,
+    dataSourceAssociations,
+    evaluationCommentAssociations,
+    evaluationTypeAssociations,
+    globalSettingAssociations,
+    levelAccessAssociations,
+    meetingAssociations,
+    meetingPlatformAssociations,
+    meetingValueDetailAssociations,
+    meetingValueHeaderAssociations,
+    participantAssociations,
+    permissionsByLevelAccessAssociations,
+    permissionsByUserAssociations,
+    personAssociations,
+    personExtraEvaluationAssociations,
+    personProviciencyAssociations,
+    personValueDetailAssociations,
+    profiencyAssociations,
+    profiencyRangeAssociations,
+    profiencyValueAssociations,
+    profileTyeAssociations,
+    systemAuditableProcessAssociations,
+    systemOptionAssociations,
+    userAssociations,
+];
 
 export {
+    associations,
     AttributeDAO, IAttribute,
+    AttributeProfileDAO, IAttributeProfile,
     AttributeRangeDAO, IAttributeRange,
-    AttributeToEvaluateByParticipantDAO, IAttributeToEvaluateByParticipant,
-    AttributeToEvaluteByMeetingDAO, IAttributeToEvaluteByMeeting,
     AttributeTypeDAO, IAttributeType,
     AttributeValueDAO, IAttributeValue,
-    AuditUserDAO, IAuditUser,
+    AuditUserDetailDAO, IAuditUserDetail,
+    AuditUserHeaderDAO, IAuditUserHeader,
     DataSourceDAO, IDataSource,
+    EvaluationCommentDAO, IEvaluationComment,
+    EvaluationTypeDAO, IEvaluationType,
     GlobalSettingDAO, IGlobalSetting,
+    LevelAccessDAO, ILevelAccess,
     MeetingDAO, IMeeting,
     MeetingPlatformDAO, IMeetingPlatform,
     MeetingValueDetailDAO, IMeetingValueDetail,
     MeetingValueHeaderDAO, IMeetingValueHeader,
     ParticipantDAO, IParticipant,
-    ParticipantAttributeValueDetailDAO, IParticipantAttributeValueDetail,
-    ParticipantValueHeaderDAO, IParticipantValueHeader,
-    ParticipantEvaluationPeriodDetailDAO, IParticipantEvaluationPeriodDetail,
-    ParticipantEvaluationPeriodHeaderDAO, IParticipantEvaluationPeriodHeader,
     PermissionLevelAccessDAO , IPermissionLevelAccess ,
     PermissionByUserDAO, IPermissionByUser,
-    PermissionToEvaluateMeetingAttributeDAO , IPermissionToEvaluateMeetingAttribute,
-    PermissionToEvaluateParticipantAttributeDAO , IPermissionToEvaluateParticipantAttribute,
     PersonDAO, IPerson,
-    LevelAccessDAO , ILevelAccess,
+    PersonExtraEvaluationDAO, IPersonExtraEvaluation,
+    PersonProficiencyDAO, IPersonProficiency,
+    PersonValueDetailDAO, IPersonValueDetail,
+    PersonValueHeaderDAO , IPersonValueHeader,
+    ProficiencyDAO, IProficiency,
+    ProficiencyRangeDAO, IProficiencyRange,
+    ProficiencyValueDAO, IProficiencyValue,
+    ProfileTypeDAO, IProfileType,
     SystemAuditableProcessDAO, ISystemAuditableProcess,
     SystemOptionDAO, ISystemOption,
     UserDAO, IUser,

@@ -1,40 +1,34 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
 import { getNowUtc } from '../utils/db-utc-date';
-import { MeetingDAO } from './meeting';
-import { MeetingValueHeaderDAO } from './meetingValueHeader';
-import { PersonDAO } from './person';
+import { AuditUserDetailDAO } from './auditUserDetail';
+import { SystemAuditableProcessDAO } from './systemAuditableProcess';
+import { UserDAO } from './user';
 
-export interface IParticipant extends Model {
+export interface IAuditUserHeader extends Model {
     id:number;
-    meetingId:number;
-    personId:number;
-    deleted:boolean;
+    auditableProcessId:number;
+    userId:number;
     createAt:string;
 	updateAt:string;
 }
 
-export const ParticipantDAO = db.define('Participant', {
+export const AuditUserHeaderDAO = db.define<IAuditUserHeader>('AuditUserHeader', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
             autoIncrement:true,
-            field:'participant_id'
+            field:'audit_user_header_id'
         },
-        meetingId:{
+        auditableProcessId: {
             type: DataTypes.INTEGER,
-            allowNull:false,
-            field:'meeting_id'
+            allowNull: false,
+            field:'system_auditable_process_id'
         },
-        personId:{
+        userId:{
             type: DataTypes.INTEGER,
-            allowNull:false,
-            field:'person_id'
-        },
-        deleted:{
-            type:DataTypes.BOOLEAN,
-            allowNull:false,
-            defaultValue:false
+            allowNull: false,
+            field:'user_id'
         },
         createAt:{
             type: DataTypes.DATE,
@@ -48,33 +42,33 @@ export const ParticipantDAO = db.define('Participant', {
             defaultValue:getNowUtc(),
             field:'update_at'
         }
-    },
+    }, 
     {
-        tableName:'participants', 
+        tableName:'audit_user_headers', 
         timestamps:false 
     });
 
-export const participantAssociations = () => {
-    
-    ParticipantDAO.hasMany(MeetingValueHeaderDAO, {
+export const auditUserHeaderAssociations = () => {
+
+    AuditUserHeaderDAO.hasMany(AuditUserDetailDAO,{
         foreignKey: {
-            name:'participantEvaluatorId',
+            name:'auditUserId',
             allowNull: false
         }, 
         onDelete: 'NO ACTION', 
         onUpdate: 'NO ACTION'
     });
 
-    ParticipantDAO.belongsTo(MeetingDAO, { 
+    AuditUserHeaderDAO.belongsTo(UserDAO, { 
         foreignKey: {
-            name:'meetingId',
+            name:'userId',
             allowNull: false
         }
     });
 
-    ParticipantDAO.belongsTo(PersonDAO, { 
+    AuditUserHeaderDAO.belongsTo(SystemAuditableProcessDAO, { 
         foreignKey: {
-            name:'personId',
+            name:'auditableProcessId',
             allowNull: false
         }
     });
