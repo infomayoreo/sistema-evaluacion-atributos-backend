@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { ResponseHeaderKeys } from "../../types/types";
-import { IUser, UserDAO } from '../../db/models';
+import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
+import { IUser, LevelAccessDAO, UserDAO } from '../../db/models';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import * as AuthErrorManager from './authErrorManager'
 import { AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
 
 const { OAuth2Client } = require('google-auth-library');
-const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID;
 const client = new OAuth2Client(GOOGLE_WEB_CLIENT_ID);
 
 
-export const googleLogin = async( req: Request, res: Response ): Promise<void> => {
+export const googleLogin = async( req: Request, res: Response ) : Promise<void> => {
     
     
     const googleToken = req.header('google-id-token');
@@ -20,8 +20,14 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
          const email = userInfo.payload['email'];
          return email;
     }).then(email => {
-       const user = UserDAO.findOne({where: { email:email, activate:true } });
-       return user;
+       const user = UserDAO.findOne({
+           where: { email:email, activate:true }, 
+           include:{ 
+               model:LevelAccessDAO,
+               as:'levelAcess'}
+        });
+        console.log(user);
+        return user;
     }).then(user => {
     
         if(!user) {
@@ -35,7 +41,7 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                 appStatusName: appStatusName,
                 appStatusMessage:'',
             };
-            mResponse(res, data);
+            responseHandler(res, data);
         }
         else {
              generateJWT({
@@ -60,8 +66,8 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                         },
                         appStatusMessage:'',
                     };
-                    //insert audit log login with google
-                    mResponse(res, data);
+                    //todo insert audit log login with google
+                    responseHandler(res, data);
                 }
                 
             }).catch(error =>{
@@ -76,7 +82,7 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
                     appStatusMessage:error.message,
                     errors:[error.message]
                 };
-                mResponse(res, data);
+                responseHandler(res, data);
             });
         }
 
@@ -92,7 +98,7 @@ export const googleLogin = async( req: Request, res: Response ): Promise<void> =
             appStatusName: appStatusName,
             errors:[error.message],
         };
-        mResponse(res, data);
+        responseHandler(res, data);
     });
 }
 
@@ -105,23 +111,3 @@ const verifyGoogleToken = async (token:any) => {
     return {payload:ticket.getPayload()};
 }
 
-const mResponse = (res:Response, common:AppResponseModel) => {
-
-    res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_CODE,common.appStatusCode);
-    res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_NAME,common.appStatusName);
-    res.setHeader(ResponseHeaderKeys.KEY_APP_STATUS_MESSAGE,common.appStatusMessage?common.appStatusMessage:'');
-    if(common.extraHeaders) {
-        common.extraHeaders.forEach((key,value) =>{
-            res.setHeader(key,value);
-        });
-    }
-    const body = {
-        appStatusCode : common.appStatusCode,
-        appStatusName: common.appStatusName,
-        appStatusMessage: common.appStatusMessage,
-        data:common.data,
-        erros:common.errors
-    }
-
-    res.status(common.httpStatus).json(body);
-}
