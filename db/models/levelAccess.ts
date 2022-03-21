@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
 
 import { PermissionLevelAccessDAO } from './permissionByLevelAccess';
@@ -35,15 +35,15 @@ export const LevelAccessDAO = db.define<ILevelAccess> ('LevelAccess', {
         defaultValue:true,
     },
     createAt:{
-        type: DataTypes.DATE,
+        type: 'TIMESTAMP',
         allowNull: false,
         defaultValue: DataTypes.NOW,
         field:'create_at'
     },
     updateAt:{
-        type: DataTypes.DATE,
+        type: 'TIMESTAMP',
         allowNull: false,
-        defaultValue:DataTypes.NOW,
+        defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
         field:'update_at'
     }
 },{

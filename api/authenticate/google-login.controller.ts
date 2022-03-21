@@ -22,9 +22,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
     }).then(email => {
        const user = UserDAO.findOne({
            where: { email:email, activate:true }, 
-           include:{ 
-               model:LevelAccessDAO,
-               as:'levelAcess'}
+           
         });
         console.log(user);
         return user;

@@ -34,13 +34,13 @@ export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
             defaultValue:true
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
             defaultValue: DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
             defaultValue: DataTypes.NOW,
             field:'update_at'

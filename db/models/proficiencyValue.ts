@@ -45,13 +45,13 @@ export const ProficiencyValueDAO = db.define<IProficiencyValue>('ProficiencyValu
             defaultValue:true
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
             defaultValue: DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
             defaultValue: DataTypes.NOW,
             field:'update_at'
