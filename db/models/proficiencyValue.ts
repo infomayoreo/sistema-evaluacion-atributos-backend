@@ -1,6 +1,6 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { ProficiencyRangeDAO } from './proficiencyRange';
 
 export interface IProficiencyValue extends Model {
@@ -47,13 +47,13 @@ export const ProficiencyValueDAO = db.define<IProficiencyValue>('ProficiencyValu
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: getNowUtc(),
+            defaultValue: DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: getNowUtc(),
+            defaultValue: DataTypes.NOW,
             field:'update_at'
         }
     } ,

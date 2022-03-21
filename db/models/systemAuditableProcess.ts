@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AuditUserHeaderDAO } from './auditUserHeader';
 
 export interface ISystemAuditableProcess extends Model {
@@ -30,13 +30,13 @@ export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('Sys
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'update_at'
         }
     },

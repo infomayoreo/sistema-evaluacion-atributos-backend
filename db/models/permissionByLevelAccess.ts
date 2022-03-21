@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { LevelAccessDAO } from './levelAccess';
 import { SystemOptionDAO } from './systemOption';
 
@@ -38,13 +38,13 @@ export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('Permi
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'update_at'
         }
     },

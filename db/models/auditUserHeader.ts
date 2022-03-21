@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AuditUserDetailDAO } from './auditUserDetail';
 import { SystemAuditableProcessDAO } from './systemAuditableProcess';
 import { UserDAO } from './user';
@@ -33,13 +33,13 @@ export const AuditUserHeaderDAO = db.define<IAuditUserHeader>('AuditUserHeader',
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'update_at'
         }
     }, 

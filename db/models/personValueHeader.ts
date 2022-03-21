@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { EvaluationTypeDAO } from './evaluationType';
 import { MeetingDAO } from './meeting';
 import { PersonDAO } from './person';
@@ -53,13 +53,13 @@ export const PersonValueHeaderDAO = db.define<IPersonValueHeader>('PersonValueHe
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:DataTypes.NOW,
             field:'update_at'
         }
     },
