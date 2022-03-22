@@ -6,7 +6,7 @@ import { UserDAO } from '../../db/models';
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 	try {
-		const users = await UserDAO.findAll({ where: { status: true } });
+		const users = await UserDAO.findAll({ where: { activate: true } });
 		res.json(users);
 
 	} catch (error) {
@@ -37,14 +37,14 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 	const { password, ...restUser } = req.body;
 
 	// Encrypt password
-	const salt = bcrypt.genSaltSync();
-	const bcryptPassword = bcrypt.hashSync(password, salt);
+	// const salt = bcrypt.genSaltSync();
+	// const bcryptPassword = bcrypt.hashSync(password, salt);
 
 	try {
 		// Create and save
 		const user = await UserDAO.create({
 			...restUser,
-			password: bcryptPassword
+			// password: bcryptPassword
 		});
 
 		res.json({ msg: 'User created successfully', user: {...restUser} });
@@ -84,7 +84,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
 		const user = await UserDAO.findByPk(uid);
 
 		// Logic delete
-		if (user) await user.update({ status: 0 });
+		if (user) await user.update({ activate: true });
 
 		res.json({ msg: `User delete successfully` });
 

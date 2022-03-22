@@ -65,10 +65,10 @@ export const UserDAO = db.define<IUser>('user', {
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
-	}, 
+	},
 	{
 		tableName: 'users',
-		timestamps:false 
+		timestamps:false
 	}
 );
 
@@ -88,7 +88,7 @@ export const userAssociations = () => {
 			name:'userId',
 			allowNull:true,
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 
@@ -97,7 +97,7 @@ export const userAssociations = () => {
 			name:'evaluatorPersonId',
 			allowNull:false,
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(EvaluationCommentDAO, {
@@ -105,7 +105,7 @@ export const userAssociations = () => {
 			name:'evaluatorUserId',
 			allowNull:false
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(AuditUserHeaderDAO, {
@@ -113,7 +113,7 @@ export const userAssociations = () => {
 			name:'userId',
 			allowNull:false,
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(PersonValueHeaderDAO, {
@@ -121,7 +121,7 @@ export const userAssociations = () => {
 			name:'evaluatorUserId',
 			allowNull:false
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(PermissionByUserDAO, {
@@ -129,7 +129,7 @@ export const userAssociations = () => {
 			name:'userId',
 			allowNull:false
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(MeetingDAO,{

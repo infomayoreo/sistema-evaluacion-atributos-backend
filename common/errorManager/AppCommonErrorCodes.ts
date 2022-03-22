@@ -6,7 +6,7 @@ const WITHOUT_ERRORS_NAME = "WITHOUT_ERRORS";
 const errorsSetNames = new Set<string>();
 const errorMapNames = new Map<number, string>();
 
-const nextErrorNumber = (erroName :string) : number =>{ 
+const nextErrorNumber = (erroName :string) : number =>{
 
     if(errorsSetNames.has(erroName)) {
         throw new Error(`The error name is repeated: ${erroName}`);
@@ -19,7 +19,7 @@ const nextErrorNumber = (erroName :string) : number =>{
 
 const getErrorName = (errorCode:number) : string => {
     const errorName = errorMapNames.get(errorCode);
-    return (errorName != null &&  errorName != undefined)? errorName: "unknown error";
+    return (errorName !== null &&  errorName !== undefined)? errorName: "unknown error";
 }
 
 const buildErrorDataContainer = (errorCode:number) : CommonErrorDataContainer => {
@@ -34,6 +34,7 @@ errorsSetNames.add(WITHOUT_ERRORS_NAME);
 const commonErrorsCodes = {
     UNKNOWN_ERROR:nextErrorNumber("UNKNOWN_ERROR"),
     BAD_FORMAT_EMAIL:nextErrorNumber("BAD_FORMAT_EMAIL"),
+    EMAIL_IS_REQUIRED:nextErrorNumber("EMAIL_IS_REQUIRED"),
 }
 
 export {
