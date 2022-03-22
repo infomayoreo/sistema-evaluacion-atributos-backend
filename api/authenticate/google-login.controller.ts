@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
 import db from "../../db";
-import { IUser, LevelAccessDAO, PermissionByUserDAO, PersonDAO, SystemOptionDAO, UserDAO } from '../../db/models';
+import { IUser, LevelAccessDAO, PersonDAO, UserDAO } from '../../db/models';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import * as AuthErrorManager from './authErrorManager'
 import { AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
-import { QueryTypes } from "sequelize/types";
 
 import { OAuth2Client } from 'google-auth-library';
 const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';
@@ -27,12 +26,12 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
            where: { email:email?.toUpperCase(), activate:true },
            attributes:{
                exclude:['password','createAt','updateAt','activate']
-            }, 
-           include:[{ 
+            },
+           include:[{
                model:LevelAccessDAO,
                attributes:{
                 exclude:['createAt','updateAt','activate']
-             }, 
+             },
            },
            {
                model:PersonDAO,
@@ -91,9 +90,9 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                         };
                         // todo insert audit log login with google
                         responseHandler(res, data);
-                        
+
                     }).catch(error =>{
-                        
+
                         console.log(error);
                         const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS;
                         const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
@@ -107,8 +106,8 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                         };
                         responseHandler(res, data);
                     });
-                    
-                    
+
+
                 }
 
             }).catch(error =>{
@@ -154,24 +153,29 @@ const verifyGoogleToken = async (token:any) => {
 
 const userPermissions = async (user:IUser) => {
     const [results, metadata]  = await db.query(
-    `SELECT DISTINCT (systemOption.system_option_id) AS id, 
-        systemOption.name AS name, 
-        systemOption.description AS description, 
-        ( systemOption.activate AND 
-            ( case 
-                WHEN permissionByUser.allow_permission is null 
-                    THEN permissionByLevel.allow_permission 
-                    ELSE permissionByUser.allow_permission 
+    `SELECT DISTINCT (systemOption.system_option_id) AS id,
+        systemOption.name AS name,
+        systemOption.description AS description,
+        ( systemOption.activate AND
+            ( case
+                WHEN permissionByUser.allow_permission is null
+                    THEN permissionByLevel.allow_permission
+                    ELSE permissionByUser.allow_permission
               END
-            )  
-         ) AS allow 
+            )
+         ) AS allow
     FROM system_options AS systemOption
-        LEFT JOIN permissions_by_level_access permissionByLevel ON systemOption.system_option_id = permissionByLevel.system_option_id 
-        LEFT JOIN permissions_by_user permissionByUser ON systemOption.system_option_id = permissionByUser.system_option_id 
+        LEFT JOIN permissions_by_level_access permissionByLevel ON systemOption.system_option_id = permissionByLevel.system_option_id
+        LEFT JOIN permissions_by_user permissionByUser ON systemOption.system_option_id = permissionByUser.system_option_id
         LEFT JOIN users AS usersP ON  permissionByUser.user_id  = usersP.user_id
 	    LEFT JOIN users AS users ON permissionByLevel.level_access_id =  users.level_access_id
     WHERE  usersP.user_id = :userPId OR users.user_id = :userId;`
-    ,  {replacements:{userPId:user.id, userId:user.id} });
+    , {
+        replacements: {
+            userPId:user.id,
+            userId:user.id
+        } 
+    });
 
     return results;
 }

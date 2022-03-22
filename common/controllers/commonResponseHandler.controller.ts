@@ -7,7 +7,7 @@ interface mBody {
     appStatusName:string;
     appStatusMessage?:string;
     data?:any;
-    errors?:[any];
+    errors?:any[];
 }
 
 export const responseHandler = (res:Response, responseData:AppResponseModel) : void => {
@@ -28,6 +28,6 @@ export const responseHandler = (res:Response, responseData:AppResponseModel) : v
         data:responseData.data,
         errors:responseData.errors
     };
-    
+
     res.status(responseData.httpStatus).json(body);
 }
