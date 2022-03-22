@@ -14,7 +14,7 @@ export interface IPersonValueDetail extends Model {
 	updateAt:string;
 }
 
-export const PersonValueDetailDAO = db.define<IPersonValueDetail>('PersonValueDetail', {
+export const PersonValueDetailDAO = db.define<IPersonValueDetail>('personValueDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

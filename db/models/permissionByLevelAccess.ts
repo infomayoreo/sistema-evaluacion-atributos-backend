@@ -13,7 +13,7 @@ export interface IPermissionLevelAccess extends Model {
 	updateAt:string;
 }
 
-export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('PermissionByLevelAccess', {
+export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('permissionByLevelAccess', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

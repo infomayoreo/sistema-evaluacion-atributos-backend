@@ -11,7 +11,7 @@ export interface ISystemAuditableProcess extends Model {
 	updateAt:string;
 }
 
-export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('SystemAuditableProcess', {
+export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('systemAuditableProcess', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

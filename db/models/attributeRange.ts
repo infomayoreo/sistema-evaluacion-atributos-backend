@@ -15,7 +15,7 @@ export interface IAttributeRange extends Model {
 }
 
 
-export const AttributeRangeDAO = db.define<IAttributeRange>('AttributeRange', {
+export const AttributeRangeDAO = db.define<IAttributeRange>('attributeRange', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

@@ -7,12 +7,13 @@ import { PermissionByUserDAO } from './permissionByUser';
 export interface ISystemOption extends Model {
     id:number;
     name:string;
+    activate:boolean;
     description?:string;
     createAt:string;
 	updateAt:string;
 }
 
-export const SystemOptionDAO = db.define<ISystemOption>('SystemOption', {
+export const SystemOptionDAO = db.define<ISystemOption>('systemOption', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -23,6 +24,11 @@ export const SystemOptionDAO = db.define<ISystemOption>('SystemOption', {
             type:DataTypes.CHAR(100),
             allowNull:false,
             unique:true
+        },
+        activate: {
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         },
         description:{
             type:DataTypes.STRING,

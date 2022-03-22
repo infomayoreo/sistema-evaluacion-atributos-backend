@@ -7,14 +7,14 @@ export interface IDataSource extends Model {
     id:number;
     name:string;
     description:string;
-    url:string;
+    url?:string;
     activate:boolean;
     createAt:string;
 	updateAt:string;
 }
 
 
-export const DataSourceDAO = db.define<IDataSource>('DataSource', {
+export const DataSourceDAO = db.define<IDataSource>('dataSource', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ export const DataSourceDAO = db.define<IDataSource>('DataSource', {
         },
         url:{
             type:DataTypes.STRING,
-            allowNull:false,
+            allowNull:true,
             unique:false
         },
         name:{

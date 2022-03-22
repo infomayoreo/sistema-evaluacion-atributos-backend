@@ -3,7 +3,7 @@ import { UserDAO } from '../../db/models';
 // Validate if the user exist by uid
 export const userExistByUid = async(uid = ''): Promise<void> => {
     const userExist = await UserDAO.findOne({ where: { uid } });
-    if (!userExist || userExist.status === 0) {
+    if (!userExist || userExist.activate === 0) {
         throw new Error(`The user with uid '${uid}' doesn't exist`);
     }
 };

@@ -12,7 +12,7 @@ export interface IMeetingPlatform extends Model {
 	updateAt:string;
 }
 
-export const MeetingPlatformDAO = db.define<IMeetingPlatform>('MeetingPlatform', {
+export const MeetingPlatformDAO = db.define<IMeetingPlatform>('meetingPlatform', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

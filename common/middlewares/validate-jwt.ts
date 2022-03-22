@@ -44,7 +44,7 @@ export const validateJWT = async(req: Request, res: Response, next: NextFunction
         }
 
         // Verificar si el user tiene status diferente de 0
-        if ( user.status === 0) {
+        if ( !user.activate) {
             res.status(401).json({
                 msg: 'Invalid token'
             });

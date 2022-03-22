@@ -13,7 +13,7 @@ export interface IPermissionByUser extends Model {
 	updateAt:string;
 }
 
-export const PermissionByUserDAO = db.define<IPermissionByUser>('PermissionByUser', {
+export const PermissionByUserDAO = db.define<IPermissionByUser>('permissionByUser', {
     id:{
         primaryKey:true,
         type: DataTypes.INTEGER,

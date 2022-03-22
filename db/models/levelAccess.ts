@@ -13,7 +13,7 @@ export interface ILevelAccess extends Model {
 	updateAt:string;
 }
 
-export const LevelAccessDAO = db.define<ILevelAccess> ('LevelAccess', {
+export const LevelAccessDAO = db.define<ILevelAccess> ('levelAccess', {
     id:{
         primaryKey:true,
         type: DataTypes.INTEGER,

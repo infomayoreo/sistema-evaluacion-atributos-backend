@@ -14,7 +14,7 @@ export interface IProficiencyValue extends Model {
 	updateAt:string;
 }
 
-export const ProficiencyValueDAO = db.define<IProficiencyValue>('ProficiencyValue', {
+export const ProficiencyValueDAO = db.define<IProficiencyValue>('proficiencyValue', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

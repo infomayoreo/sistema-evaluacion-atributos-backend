@@ -12,7 +12,7 @@ export interface IMeetingValueHeader extends Model {
 	updateAt:string;
 }
 
-export const MeetingValueHeaderDAO = db.define<IMeetingValueHeader>('MeetingValueHeader', {
+export const MeetingValueHeaderDAO = db.define<IMeetingValueHeader>('meetingValueHeader', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

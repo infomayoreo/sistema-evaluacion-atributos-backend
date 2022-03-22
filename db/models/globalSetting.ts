@@ -12,7 +12,7 @@ export interface IGlobalSetting extends Model {
 	updateAt:string;
 }
 
-export const GlobalSettingDAO = db.define<IGlobalSetting>('GlobalSetting', {
+export const GlobalSettingDAO = db.define<IGlobalSetting>('globalSetting', {
     id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

@@ -13,7 +13,7 @@ export interface IAuditUserHeader extends Model {
 	updateAt:string;
 }
 
-export const AuditUserHeaderDAO = db.define<IAuditUserHeader>('AuditUserHeader', {
+export const AuditUserHeaderDAO = db.define<IAuditUserHeader>('auditUserHeader', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
