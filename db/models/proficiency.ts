@@ -12,7 +12,7 @@ export interface IProficiency extends Model {
 	updateAt:string;
 }
 
-export const ProficiencyDAO = db.define<IProficiency>('Proficiency', {
+export const ProficiencyDAO = db.define<IProficiency>('proficiency', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

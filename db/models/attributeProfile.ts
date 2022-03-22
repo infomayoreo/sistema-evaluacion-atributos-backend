@@ -12,7 +12,7 @@ export interface IAttributeProfile extends Model {
 	updateAt:string;
 }
 
-export const AttributeProfileDAO = db.define<IAttributeProfile>('AttributeProfile', {
+export const AttributeProfileDAO = db.define<IAttributeProfile>('attributeProfile', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

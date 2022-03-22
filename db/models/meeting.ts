@@ -18,7 +18,7 @@ export interface IMeeting extends Model {
 	updateAt:string;
 }
 
-export const MeetingDAO = db.define<IMeeting>('Meeting', {
+export const MeetingDAO = db.define<IMeeting>('meeting', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

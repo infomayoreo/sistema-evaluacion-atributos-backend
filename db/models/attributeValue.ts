@@ -14,7 +14,7 @@ export interface IAttributeValue extends Model {
 	updateAt:string;
 }
 
-export const AttributeValueDAO = db.define<IAttributeValue>('AttributeValue', {
+export const AttributeValueDAO = db.define<IAttributeValue>('attributeValue', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

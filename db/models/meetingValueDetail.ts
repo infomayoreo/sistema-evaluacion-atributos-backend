@@ -13,7 +13,7 @@ export interface IMeetingValueDetail extends Model {
 	updateAt:string;
 }
 
-export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValueDetail', {
+export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('meetingValueDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

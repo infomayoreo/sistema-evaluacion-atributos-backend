@@ -14,7 +14,7 @@ export interface IAuditUserDetail extends Model {
 	updateAt:string;
 }
 
-export const AuditUserDetailDAO = db.define<IAuditUserDetail>('AuditUserDetail', {
+export const AuditUserDetailDAO = db.define<IAuditUserDetail>('auditUserDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

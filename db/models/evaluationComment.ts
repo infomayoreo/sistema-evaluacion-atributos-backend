@@ -13,7 +13,7 @@ export interface IEvaluationComment extends Model {
 	updateAt:string;
 }
 
-export const EvaluationCommentDAO = db.define<IEvaluationComment>('EvaluationComment', {
+export const EvaluationCommentDAO = db.define<IEvaluationComment>('evaluationComment', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

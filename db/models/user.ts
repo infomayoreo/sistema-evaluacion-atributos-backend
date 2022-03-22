@@ -12,7 +12,8 @@ import { PersonValueHeaderDAO } from './personValueHeader';
 
 export interface IUser extends Model {
 	id: string;
-	levelAccessId: number;
+	levelAccessId:number;
+	name: string;
 	email: string;
 	password: string;
 	activate: number;
@@ -20,7 +21,7 @@ export interface IUser extends Model {
 	updateAt:string;
 }
 
-export const UserDAO = db.define<IUser>('User', {
+export const UserDAO = db.define<IUser>('user', {
 		id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER,
@@ -35,7 +36,13 @@ export const UserDAO = db.define<IUser>('User', {
 		email: {
 			allowNull: false,
 			type: DataTypes.STRING,
-			unique: true
+			unique: true,
+			set (value:string ){
+				this.setDataValue('email',value.toUpperCase());
+			},
+			get(){
+				return this.getDataValue('email').toUpperCase();
+			}
 		},
 		password: {
 			allowNull: false,
@@ -72,7 +79,8 @@ export const userAssociations = () => {
 		foreignKey:{
 			name:'levelAccessId',
 			allowNull:false,
-		}
+		},
+		
 	});
 
 	UserDAO.hasOne(PersonDAO,{

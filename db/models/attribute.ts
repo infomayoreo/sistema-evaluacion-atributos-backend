@@ -15,7 +15,7 @@ export interface IAttribute extends Model {
 	updateAt:string;
 }
 
-export const AttributeDAO = db.define<IAttribute>('Attribute', {
+export const AttributeDAO = db.define<IAttribute>('attribute', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

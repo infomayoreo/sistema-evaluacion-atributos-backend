@@ -18,7 +18,7 @@ export interface IPersonValueHeader extends Model {
 	updateAt:string;
 }
 
-export const PersonValueHeaderDAO = db.define<IPersonValueHeader>('PersonValueHeader', {
+export const PersonValueHeaderDAO = db.define<IPersonValueHeader>('personValueHeader', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

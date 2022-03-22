@@ -14,7 +14,7 @@ export interface IProficiencyRange extends Model {
 }
 
 
-export const ProficiencyRangeDAO = db.define<IProficiencyRange>('ProficiencyRange', {
+export const ProficiencyRangeDAO = db.define<IProficiencyRange>('proficiencyRange', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

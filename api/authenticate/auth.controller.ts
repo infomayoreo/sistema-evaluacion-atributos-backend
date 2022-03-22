@@ -20,7 +20,9 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 		}
 
 		// Verify if user is active (status === 1)
+
 		if ( !user.activate ) {
+
 			res.status(400).json({
 				msg: 'Wrong email or password'
 			});

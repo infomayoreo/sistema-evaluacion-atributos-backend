@@ -13,7 +13,7 @@ export interface IPersonExtraEvaluation extends Model {
 	updateAt:string;
 }
 
-export const PersonExtraEvaluationDAO = db.define<IPersonExtraEvaluation>('PersonExtraEvaluation', {
+export const PersonExtraEvaluationDAO = db.define<IPersonExtraEvaluation>('personExtraEvaluation', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

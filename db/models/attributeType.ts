@@ -12,7 +12,7 @@ export interface IAttributeType extends Model {
 	updateAt:string;
 }
 
-export const AttributeTypeDAO = db.define<IAttributeType>('AttributeType', {
+export const AttributeTypeDAO = db.define<IAttributeType>('attributeType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

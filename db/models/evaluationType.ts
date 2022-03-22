@@ -12,7 +12,7 @@ export interface IEvaluationType extends Model {
 	updateAt:string;
 }
 
-export const EvaluationTypeDAO = db.define<IEvaluationType>('EvaluationType', {
+export const EvaluationTypeDAO = db.define<IEvaluationType>('evaluationType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,

@@ -12,7 +12,7 @@ export interface IPersonProficiency extends Model {
 	updateAt:string;
 }
 
-export const PersonProficiencyDAO = db.define<IPersonProficiency>('PersonProficiency', {
+export const PersonProficiencyDAO = db.define<IPersonProficiency>('personProficiency', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
