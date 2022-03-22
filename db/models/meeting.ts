@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { MeetingPlatformDAO } from './meetingPlatform';
 import { ParticipantDAO } from './participant';
 import { PersonValueHeaderDAO } from './personValueHeader';
@@ -18,7 +18,7 @@ export interface IMeeting extends Model {
 	updateAt:string;
 }
 
-export const MeetingDAO = db.define<IMeeting>('Meeting', {
+export const MeetingDAO = db.define<IMeeting>('meeting', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -54,15 +54,15 @@ export const MeetingDAO = db.define<IMeeting>('Meeting', {
             defaultValue:false,
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

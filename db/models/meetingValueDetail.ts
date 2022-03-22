@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AttributeRangeDAO } from './attributeRange';
 import { MeetingValueHeaderDAO } from './meetingValueHeader';
 
@@ -13,7 +13,7 @@ export interface IMeetingValueDetail extends Model {
 	updateAt:string;
 }
 
-export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValueDetail', {
+export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('meetingValueDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -36,15 +36,15 @@ export const MeetingValueDetailDAO = db.define<IMeetingValueDetail>('MeetingValu
             field:'attribute_feedbak'
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

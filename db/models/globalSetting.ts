@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 
 export interface IGlobalSetting extends Model {
     id:number;
@@ -12,7 +12,7 @@ export interface IGlobalSetting extends Model {
 	updateAt:string;
 }
 
-export const GlobalSettingDAO = db.define<IGlobalSetting>('GlobalSetting', {
+export const GlobalSettingDAO = db.define<IGlobalSetting>('globalSetting', {
     id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -39,15 +39,15 @@ export const GlobalSettingDAO = db.define<IGlobalSetting>('GlobalSetting', {
             allowNull:true,
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

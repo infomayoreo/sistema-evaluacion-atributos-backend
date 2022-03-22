@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { PersonValueHeaderDAO } from './personValueHeader';
 
 export interface IEvaluationType extends Model {
@@ -12,7 +12,7 @@ export interface IEvaluationType extends Model {
 	updateAt:string;
 }
 
-export const EvaluationTypeDAO = db.define<IEvaluationType>('EvaluationType', {
+export const EvaluationTypeDAO = db.define<IEvaluationType>('evaluationType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -34,15 +34,15 @@ export const EvaluationTypeDAO = db.define<IEvaluationType>('EvaluationType', {
             defaultValue:true,
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

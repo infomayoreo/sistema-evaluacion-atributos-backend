@@ -1,18 +1,19 @@
-import { DataTypes, Model } from 'sequelize'
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { PermissionLevelAccessDAO } from './permissionByLevelAccess';
 import { PermissionByUserDAO } from './permissionByUser';
 
 export interface ISystemOption extends Model {
     id:number;
     name:string;
+    activate:boolean;
     description?:string;
     createAt:string;
 	updateAt:string;
 }
 
-export const SystemOptionDAO = db.define<ISystemOption>('SystemOption', {
+export const SystemOptionDAO = db.define<ISystemOption>('systemOption', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -24,20 +25,25 @@ export const SystemOptionDAO = db.define<ISystemOption>('SystemOption', {
             allowNull:false,
             unique:true
         },
+        activate: {
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
+        },
         description:{
             type:DataTypes.STRING,
             allowNull:true,  
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AuditUserHeaderDAO } from './auditUserHeader';
 
 export interface ISystemAuditableProcess extends Model {
@@ -11,7 +11,7 @@ export interface ISystemAuditableProcess extends Model {
 	updateAt:string;
 }
 
-export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('SystemAuditableProcess', {
+export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('systemAuditableProcess', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -28,15 +28,15 @@ export const SystemAuditableProcessDAO = db.define<ISystemAuditableProcess>('Sys
             allowNull:true,  
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

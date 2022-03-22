@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AttributeTypeDAO } from './attributeType';
 import { AttributeRangeDAO } from './attributeRange';
 import { AttributeProfileDAO } from './attributeProfile';
@@ -15,7 +15,7 @@ export interface IAttribute extends Model {
 	updateAt:string;
 }
 
-export const AttributeDAO = db.define<IAttribute>('Attribute', {
+export const AttributeDAO = db.define<IAttribute>('attribute', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -41,15 +41,15 @@ export const AttributeDAO = db.define<IAttribute>('Attribute', {
             defaultValue:true
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue: getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue: getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     } ,

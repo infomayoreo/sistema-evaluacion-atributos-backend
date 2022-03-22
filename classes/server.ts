@@ -57,8 +57,8 @@ class Server {
             console.log('Database online');
 
             
-             //await db.sync();
-            await db.sync({ force: true });
+            await db.sync();
+             //await db.sync({ force: true });
 
         } catch (error: any) {
             throw new Error( error );

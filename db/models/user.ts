@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AuditUserHeaderDAO } from './auditUserHeader';
 import { EvaluationCommentDAO } from './evaluationComment';
 import { LevelAccessDAO } from './levelAccess';
@@ -12,15 +12,16 @@ import { PersonValueHeaderDAO } from './personValueHeader';
 
 export interface IUser extends Model {
 	id: string;
+	levelAccessId:number;
 	name: string;
 	email: string;
 	password: string;
-	status: number;
+	activate: number;
 	createAt:string;
 	updateAt:string;
 }
 
-export const UserDAO = db.define<IUser>('User', {
+export const UserDAO = db.define<IUser>('user', {
 		id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER,
@@ -35,7 +36,13 @@ export const UserDAO = db.define<IUser>('User', {
 		email: {
 			allowNull: false,
 			type: DataTypes.STRING,
-			unique: true
+			unique: true,
+			set (value:string ){
+				this.setDataValue('email',value.toUpperCase());
+			},
+			get(){
+				return this.getDataValue('email').toUpperCase();
+			}
 		},
 		password: {
 			allowNull: false,
@@ -47,21 +54,21 @@ export const UserDAO = db.define<IUser>('User', {
 			defaultValue: true
 		},
 		createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
-	}, 
+	},
 	{
 		tableName: 'users',
-		timestamps:false 
+		timestamps:false
 	}
 );
 
@@ -72,7 +79,8 @@ export const userAssociations = () => {
 		foreignKey:{
 			name:'levelAccessId',
 			allowNull:false,
-		}
+		},
+		
 	});
 
 	UserDAO.hasOne(PersonDAO,{
@@ -80,7 +88,7 @@ export const userAssociations = () => {
 			name:'userId',
 			allowNull:true,
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 
@@ -89,7 +97,7 @@ export const userAssociations = () => {
 			name:'evaluatorPersonId',
 			allowNull:false,
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(EvaluationCommentDAO, {
@@ -97,7 +105,7 @@ export const userAssociations = () => {
 			name:'evaluatorUserId',
 			allowNull:false
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(AuditUserHeaderDAO, {
@@ -105,7 +113,7 @@ export const userAssociations = () => {
 			name:'userId',
 			allowNull:false,
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(PersonValueHeaderDAO, {
@@ -113,7 +121,7 @@ export const userAssociations = () => {
 			name:'evaluatorUserId',
 			allowNull:false
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(PermissionByUserDAO, {
@@ -121,7 +129,7 @@ export const userAssociations = () => {
 			name:'userId',
 			allowNull:false
 		},
-		onDelete: 'NO ACTION', 
+		onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
 	});
 	UserDAO.hasMany(MeetingDAO,{

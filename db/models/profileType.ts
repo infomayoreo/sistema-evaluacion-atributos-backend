@@ -1,6 +1,6 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AttributeProfileDAO } from './attributeProfile';
 
 export interface IProfileType extends Model {
@@ -12,7 +12,7 @@ export interface IProfileType extends Model {
 	updateAt:string;
 }
 
-export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
+export const ProfileTypeDAO = db.define<IProfileType>('profileType', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -34,15 +34,15 @@ export const ProfileTypeDAO = db.define<IProfileType>('ProfileType', {
             defaultValue:true
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue: getNowUtc(),
+            defaultValue: DataTypes.NOW,
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue: getNowUtc(),
+            defaultValue: DataTypes.NOW,
             field:'update_at'
         }
     } ,

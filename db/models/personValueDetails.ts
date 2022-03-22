@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import db from '../connections';
-import { getNowUtc } from '../utils/db-utc-date';
+
 import { AttributeRangeDAO } from './attributeRange';
 import { PersonValueHeaderDAO } from './personValueHeader';
 
@@ -14,7 +14,7 @@ export interface IPersonValueDetail extends Model {
 	updateAt:string;
 }
 
-export const PersonValueDetailDAO = db.define<IPersonValueDetail>('PersonValueDetail', {
+export const PersonValueDetailDAO = db.define<IPersonValueDetail>('personValueDetail', {
         id:{
             primaryKey:true,
             type: DataTypes.INTEGER,
@@ -37,15 +37,15 @@ export const PersonValueDetailDAO = db.define<IPersonValueDetail>('PersonValueDe
             allowNull: true,
         },
         createAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: DataTypes.DATE,
+            type: 'TIMESTAMP',
             allowNull: false,
-            defaultValue:getNowUtc(),
+            defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },
