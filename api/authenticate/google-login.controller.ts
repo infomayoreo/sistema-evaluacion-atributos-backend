@@ -6,37 +6,37 @@ import * as AuthErrorManager from './authErrorManager'
 import { AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
 
-const { OAuth2Client } = require('google-auth-library');
-const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID;
+import { OAuth2Client } from 'google-auth-library';
+const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';
 const client = new OAuth2Client(GOOGLE_WEB_CLIENT_ID);
 
 
 export const googleLogin = async( req: Request, res: Response ) : Promise<void> => {
-    
-    
+
+
     const googleToken = req.header('google-id-token');
     verifyGoogleToken(googleToken)
      .then( userInfo => {
-         const email = userInfo.payload['email'];
+         const email = userInfo.payload?.email;
          return email;
     }).then(email => {
        const user = UserDAO.findOne({
-           where: { email:email, activate:true }, 
-           
+           where: { email, activate:true },
+
         });
         console.log(user);
         return user;
     }).then(user => {
-    
+
         if(!user) {
-            
+
             const appStatusCode = AuthErrorManager.authErrosCodes.NOT_VALID_USER;
             const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-            
+
             const data : AppResponseModel = {
                 httpStatus:401,
-                appStatusCode : appStatusCode,
-                appStatusName: appStatusName,
+                appStatusCode,
+                appStatusName,
                 appStatusMessage:'',
             };
             responseHandler(res, data);
@@ -45,7 +45,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
              generateJWT({
                 userId: user.id,
             }).then( token  => {
-                
+
                 if(!token){
                    throw new Error('fail to generate access');
                 }
@@ -56,18 +56,18 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                     extraHeaders.set('token',String(token));
                     const data : AppResponseModel = {
                         httpStatus:200,
-                        appStatusCode : appStatusCode,
-                        appStatusName: appStatusName,
-                        extraHeaders:extraHeaders,
+                        appStatusCode,
+                        appStatusName,
+                        extraHeaders,
                         data:{
                             token: String(token)
                         },
                         appStatusMessage:'',
                     };
-                    //todo insert audit log login with google
+                    // todo insert audit log login with google
                     responseHandler(res, data);
                 }
-                
+
             }).catch(error =>{
                 console.log(error);
                 const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_FAIL_TO_GENERATE_ACCESS;
@@ -75,8 +75,8 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 
                 const data : AppResponseModel = {
                     httpStatus:500,
-                    appStatusCode : appStatusCode,
-                    appStatusName: appStatusName,
+                    appStatusCode,
+                    appStatusName,
                     appStatusMessage:error.message,
                     errors:[error.message]
                 };
@@ -84,7 +84,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
             });
         }
 
-        
+
 
     }).catch(error => {
         console.log(error);
@@ -92,8 +92,8 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
         const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
         const data : AppResponseModel = {
             httpStatus:401,
-            appStatusCode : appStatusCode,
-            appStatusName: appStatusName,
+            appStatusCode,
+            appStatusName,
             errors:[error.message],
         };
         responseHandler(res, data);
@@ -101,7 +101,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 }
 
 const verifyGoogleToken = async (token:any) => {
-    
+
     const ticket = await client.verifyIdToken({
         idToken: token,
         audience: [GOOGLE_WEB_CLIENT_ID]

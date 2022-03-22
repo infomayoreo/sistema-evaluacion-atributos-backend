@@ -5,6 +5,6 @@ export interface AppResponseModel {
     appStatusMessage?:string;
     extraHeaders?:Map<string,string>;
     data?:any;
-    errors?:[any];
+    errors?: any[];
 }
 
