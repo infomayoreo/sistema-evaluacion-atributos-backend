@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Result, ValidationError, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
 import { responseHandler } from '../controllers/commonResponseHandler.controller';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 
@@ -18,7 +18,7 @@ export const validateInputs = (req: Request, res: Response, next: NextFunction):
             appStatusCode,
             appStatusName,
             // appStatusMessage: msg,
-            // errors: [msg],
+            errors: errors.array(),
         };
 
         return responseHandler(res, responseData);

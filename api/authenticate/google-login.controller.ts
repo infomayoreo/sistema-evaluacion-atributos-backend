@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
-import db from "../../db";
-import { IUser, LevelAccessDAO, PersonDAO, UserDAO } from '../../db/models';
+
+import { UserDAO } from '../../db/models';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
-import * as AuthErrorManager from './authErrorManager'
+import { authErrosCodes } from './authErrorManager'
 import { AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
+import { getUserPermissions} from './permissionsByUser.controller'
+import { userAditionalData} from './userQuearyIncludes.controller'
 
 import { OAuth2Client } from 'google-auth-library';
 const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';
@@ -23,23 +25,11 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
          return email;
     }).then(email => {
        const user = UserDAO.findOne({
-           where: { email:email?.toUpperCase(), activate:true },
-           attributes:{
-               exclude:['password','createAt','updateAt','activate']
+           where: { 
+               email:email?.toUpperCase(),
+               activate:true 
             },
-           include:[{
-               model:LevelAccessDAO,
-               attributes:{
-                exclude:['createAt','updateAt','activate']
-             },
-           },
-           {
-               model:PersonDAO,
-               attributes:{
-                exclude:['createAt','updateAt']
-             },
-           }]
-
+            ...userAditionalData
         });
 
         return user;
@@ -47,7 +37,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 
         if(!user) {
 
-            const appStatusCode = AuthErrorManager.authErrosCodes.NOT_VALID_USER;
+            const appStatusCode = authErrosCodes.AUTH_NOT_VALID_USER;
             const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
 
             const data : AppResponseModel = {
@@ -68,11 +58,11 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                 }
                 else {
 
-                    userPermissions(user)
+                    getUserPermissions(user)
                     .then(permissions => {
                         const userJson = user.toJSON();
                         const userWithPermissions = {...userJson,permissions};
-                        console.log(userWithPermissions);
+                       
                         const appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
                         const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
                         const extraHeaders = new Map<string,string>();
@@ -94,7 +84,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                     }).catch(error =>{
 
                         console.log(error);
-                        const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS;
+                        const appStatusCode = authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS;
                         const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
 
                         const data : AppResponseModel = {
@@ -112,7 +102,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 
             }).catch(error =>{
                 console.log(error);
-                const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_FAIL_TO_GENERATE_ACCESS;
+                const appStatusCode = authErrosCodes.AUTH_FAIL_TO_GENERATE_ACCESS;
                 const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
 
                 const data : AppResponseModel = {
@@ -126,11 +116,9 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
             });
         }
 
-
-
     }).catch(error => {
         console.log(error);
-        const appStatusCode = AuthErrorManager.authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN;
+        const appStatusCode = authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN;
         const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
         const data : AppResponseModel = {
             httpStatus:401,
@@ -149,33 +137,4 @@ const verifyGoogleToken = async (token:any) => {
         audience: [GOOGLE_WEB_CLIENT_ID]
     });
     return {payload:ticket.getPayload()};
-}
-
-const userPermissions = async (user:IUser) => {
-    const [results, metadata]  = await db.query(
-    `SELECT DISTINCT (systemOption.system_option_id) AS id,
-        systemOption.name AS name,
-        systemOption.description AS description,
-        ( systemOption.activate AND
-            ( case
-                WHEN permissionByUser.allow_permission is null
-                    THEN permissionByLevel.allow_permission
-                    ELSE permissionByUser.allow_permission
-              END
-            )
-         ) AS allow
-    FROM system_options AS systemOption
-        LEFT JOIN permissions_by_level_access permissionByLevel ON systemOption.system_option_id = permissionByLevel.system_option_id
-        LEFT JOIN permissions_by_user permissionByUser ON systemOption.system_option_id = permissionByUser.system_option_id
-        LEFT JOIN users AS usersP ON  permissionByUser.user_id  = usersP.user_id
-	    LEFT JOIN users AS users ON permissionByLevel.level_access_id =  users.level_access_id
-    WHERE  usersP.user_id = :userPId OR users.user_id = :userId;`
-    , {
-        replacements: {
-            userPId:user.id,
-            userId:user.id
-        } 
-    });
-
-    return results;
 }
