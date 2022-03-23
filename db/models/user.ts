@@ -11,7 +11,7 @@ import { PersonExtraEvaluationDAO } from './personExtraEvaluation';
 import { PersonValueHeaderDAO } from './personValueHeader';
 
 export interface IUser extends Model {
-	id: string;
+	id: number;
 	levelAccessId:number;
 	name: string;
 	email: string;
