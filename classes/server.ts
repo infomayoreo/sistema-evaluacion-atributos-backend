@@ -6,11 +6,7 @@ import { IUser } from '../db/models';
 import db from '../db';
 
 // Routes
-import {
-    authRoutes,
-    usersRoutes,
-    
-} from '../api';
+import { routes} from '../api';
 
 // Add properties to Request
 declare module 'express-serve-static-core' {
@@ -26,18 +22,10 @@ class Server {
 
     private app: Application;
     private port: string;
-    private paths;
-    private apiVersion = '/api/v1';
 
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '8010';
-
-        // Add new routes
-        this.paths = {
-            auth: this.apiVersion,
-            users: this.apiVersion + '/users',
-        };
 
         // Conectar DB
         this.dbConnection();
@@ -80,8 +68,8 @@ class Server {
 
     routes(): void {
         
-        this.app.use( this.paths.auth , authRoutes );
-        this.app.use( this.paths.users , usersRoutes );
+        this.app.use( '/' , routes );
+        
     }
 
     listen(): void {

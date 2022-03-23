@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { commonErrorsCodes } from '../../common/errorManager/AppCommonErrorCodes';
+import { currentApiPath, usersModule } from '../routerPaths';
 
 // Helpers
 import { userExistByUid, userExistWithEmail } from '../../common/helpers/db-validators';
@@ -20,16 +21,16 @@ import {
 const router = Router();
 
 // Get all Users
-router.get('/', getUsers );
+router.get(currentApiPath + usersModule, getUsers );
 
 // Get a User by uid
-router.get('/:uid', [
+router.get(currentApiPath + usersModule + '/:uid', [
     check('uid').custom( userExistByUid ),
     validateInputs
 ], getUserByUid );
 
 // Create a User
-router.post('/', [
+router.post(currentApiPath + usersModule + '/', [
     check('name', commonErrorsCodes.EMAIL_IS_REQUIRED).not().isEmpty(),
     check('password', 'The password must contain at least 6 characters').isLength({ min: 6 }),
     check('email', 'This isn\'t a valid email').isEmail(),
@@ -38,13 +39,13 @@ router.post('/', [
 ], createUser );
 
 // Update a User
-router.put('/:uid', [
+router.put(currentApiPath + usersModule + '/:uid', [
     check('uid').custom( userExistByUid ),
     validateInputs
 ], updateUser );
 
 // Delete a User
-router.delete('/:uid', [
+router.delete(currentApiPath + usersModule + '/:uid', [
     check('uid').custom( userExistByUid ),
     validateInputs
 ], deleteUser );
