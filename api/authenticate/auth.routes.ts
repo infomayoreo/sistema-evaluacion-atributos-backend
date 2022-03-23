@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { check } from 'express-validator';
+import { header,body } from 'express-validator';
 
 // Middlewares
 import { validateInputs } from '../../common/middlewares/validate-inputs';
@@ -15,21 +15,21 @@ const router = Router();
 
 // Login a User
 router.post(currentApiPath + emailAndPassLogin, [
-    check('email', commonErrorsCodes.EMAIL_IS_REQUIRED).not().isEmpty(),
-    check('email', commonErrorsCodes.BAD_FORMAT_EMAIL).isEmail(),
-    check('password', authErrosCodes.AUTH_PASSWORD_REQUIRED).not().isEmpty(),
+    body('email', commonErrorsCodes.EMAIL_IS_REQUIRED).not().isEmpty(),
+    body('email', commonErrorsCodes.BAD_FORMAT_EMAIL).isEmail(),
+    body('password', authErrosCodes.AUTH_PASSWORD_REQUIRED).not().isEmpty(),
     validateInputs
 ], login );
 
 
 router.get(currentApiPath + userAuthState, [
-    check('token',authErrosCodes.AUTH_MISSING_TOKEN),
-    check('token').custom(validateJWT),
+    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token',authErrosCodes.AUTH_NOT_VALID_TOKEN).custom(validateJWT),
     validateInputs
 ], getAuthState );
 
 router.post(currentApiPath + loginWithGoogle, [
-    check('google-id-token',authErrosCodes.AUTH_MISSING_GOOGLE_TOKEN).not().isEmpty(),
+    header('google-id-token',authErrosCodes.AUTH_MISSING_GOOGLE_TOKEN).not().isEmpty(),
     validateInputs
 ], googleLogin);
 

@@ -1,3 +1,5 @@
+import { getErrorName } from "../common/errorManager/AppCommonErrorCodes";
+
 export interface AppResponseModel {
     httpStatus:number;
     appStatusCode:number;
@@ -8,3 +10,21 @@ export interface AppResponseModel {
     errors?: any[];
 }
 
+export const CommonErrorResponseBuilder = (httpStatus:number,appStatusCode:number,errors:any[]=[])  : AppResponseModel => {
+
+    const appStatusName = getErrorName(appStatusCode);
+    const appStatusMessage = getErrorMessage(appStatusCode)? getErrorMessage(appStatusCode) :'';
+    const data : AppResponseModel = {
+        httpStatus,
+        appStatusCode,
+        appStatusName,
+        appStatusMessage,
+        errors
+    };
+
+    return data;
+}
+
+const getErrorMessage = (appStatusCode:number) : string | undefined=> {
+    return undefined;
+}

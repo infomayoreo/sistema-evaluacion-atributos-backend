@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
 import { UserDAO } from '../../db/models';
-import { SystemAuditableEnum } from '../../db/initialRecords';
 import jwt from 'jsonwebtoken';
 import { generateJWT } from '../../common/helpers/generate-jwt';
 import config from '../../config/config';
 import { getUserPermissions} from './permissionsByUser.controller'
-import { userAditionalData, goodAuthResponseBuilder } from './authUserUtils.controller'
-import { AppResponseModel } from '../../interfaces/appResponseModel';
+import { userAditionalData } from './authUserUtils'
+import { goodAuthResponseBuilder } from './authResponseDataBuilder';
+import { CommonErrorResponseBuilder } from '../../interfaces/appResponseModel';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './authErrorManager'
 const { jwtSecretPrivateKey } = config;
@@ -62,7 +62,7 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 export const getAuthState = async(req: Request, res: Response): Promise<void> => {
 	const token = req.header('token');
 	const jwtPayload = jwt.verify(String(token), jwtSecretPrivateKey);
-	console.log(jwtPayload);
+	
 	UserDAO.findOne({
 		where:{
 			id:jwtPayload.id,
@@ -70,20 +70,12 @@ export const getAuthState = async(req: Request, res: Response): Promise<void> =>
 		},
 		...userAditionalData
 	}).then(user => {
-		if(!user)
-		{
-			const appStatusCode = authErrosCodes.AUTH_NOT_VALID_USER;
-            const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-
-            const data : AppResponseModel = {
-                httpStatus:401,
-                appStatusCode,
-                appStatusName,
-                appStatusMessage:'',
-            };
+		if(!user){
+			
+			const data = CommonErrorResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_USER);
             responseHandler(res, data);
 		}
-		else{
+		else {
 			
 			getUserPermissions(user.id)
 			.then(permissions => {
@@ -92,32 +84,16 @@ export const getAuthState = async(req: Request, res: Response): Promise<void> =>
 			})
 			.catch(error => {
 				console.log(error);
-				const appStatusCode = authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS;
-				const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-
-				const data : AppResponseModel = {
-					httpStatus:500,
-					appStatusCode,
-					appStatusName,
-					appStatusMessage:error.message,
-					errors:[error.message]
-				};
+				const data = CommonErrorResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
+                data.appStatusMessage = error.message;
 				responseHandler(res, data);
 			});
 		}
 		
-	})
-	.catch(error => {
+	}).catch(error => {
 		console.log(error);
-		const appStatusCode = CommonErrorManager.commonErrorsCodes.UNKNOWN_ERROR;
-		const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-		const data : AppResponseModel = {
-			httpStatus:500,
-			appStatusCode,
-			appStatusName,
-			appStatusMessage:error.message,
-			errors:[error.message]
-		};
+		const data = CommonErrorResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
+		data.appStatusMessage = error.message;
 		responseHandler(res, data);
 	});
 	
