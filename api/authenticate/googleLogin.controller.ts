@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
-
-import { UserDAO } from '../../db/models';
+import { UserDAO, AuditUserHeaderDAO } from '../../db/models';
+import { SystemAuditableEnum } from '../../db/initialRecords';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './authErrorManager'
 import { AppResponseModel } from "../../interfaces/appResponseModel";
@@ -62,9 +62,12 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                     getUserPermissions(user.id)
                     .then(permissions => {
 
-                        const data = goodAuthResponseBuilder(String(token),user,permissions)
-                        // todo insert audit log login with google
+                        const data = goodAuthResponseBuilder(String(token),user,permissions);
                         responseHandler(res, data);
+                        AuditUserHeaderDAO.create({
+                            auditableProcessId:SystemAuditableEnum.LOGIN_WITH_GOOGLE.id,
+                            userId:user.id
+                        }).catch(console.log);
 
                     }).catch(error =>{
 

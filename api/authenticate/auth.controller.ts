@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
 import { UserDAO } from '../../db/models';
+import { SystemAuditableEnum } from '../../db/initialRecords';
 import jwt from 'jsonwebtoken';
 import { generateJWT } from '../../common/helpers/generate-jwt';
 import config from '../../config/config';

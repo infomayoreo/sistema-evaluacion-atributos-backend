@@ -35,7 +35,7 @@ const commonErrorsCodes = {
     UNKNOWN_ERROR:nextErrorNumber("UNKNOWN_ERROR"),
     BAD_FORMAT_EMAIL:nextErrorNumber("BAD_FORMAT_EMAIL"),
     EMAIL_IS_REQUIRED:nextErrorNumber("EMAIL_IS_REQUIRED"),
-}
+} as const;
 
 export {
     nextErrorNumber, getErrorName, buildErrorDataContainer,WITHOUT_ERRORS, commonErrorsCodes

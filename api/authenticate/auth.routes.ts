@@ -6,7 +6,7 @@ import { validateInputs } from '../../common/middlewares/validate-inputs';
 
 // Controllers
 import { getAuthState, login,  } from './auth.controller';
-import { googleLogin } from './google-login.controller'
+import { googleLogin } from './googleLogin.controller'
 import { validateJWT } from '../../common/middlewares/validate-jwt';
 import { commonErrorsCodes } from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './authErrorManager';
