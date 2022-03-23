@@ -1,8 +1,8 @@
 
 import db from "../../db";
-import { IUser } from '../../db/models';
 
-export const getUserPermissions = async (user:IUser) => {
+
+export const getUserPermissions = async (userId:number) => {
     const [results, metadata]  = await db.query(
     `SELECT DISTINCT (systemOption.system_option_id) AS id,
         systemOption.name AS name,
@@ -19,12 +19,12 @@ export const getUserPermissions = async (user:IUser) => {
         LEFT JOIN permissions_by_level_access permissionByLevel ON systemOption.system_option_id = permissionByLevel.system_option_id
         LEFT JOIN permissions_by_user permissionByUser ON systemOption.system_option_id = permissionByUser.system_option_id
         LEFT JOIN users AS usersP ON  permissionByUser.user_id  = usersP.user_id
-	    LEFT JOIN users AS users ON permissionByLevel.level_access_id =  users.level_access_id
+	    LEFT JOIN users AS users ON permissionByLevel.level_access_id = users.level_access_id
     WHERE  usersP.user_id = :userPId OR users.user_id = :userId;`
     , {
         replacements: {
-            userPId:user.id,
-            userId:user.id
+            userPId:userId,
+            userId:userId
         } 
     });
 

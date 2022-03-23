@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { generateJWT } from '../../common/helpers/generate-jwt';
 import config from '../../config/config';
 import { getUserPermissions} from './permissionsByUser.controller'
-import { userAditionalData} from './userQuearyIncludes.controller'
+import { userAditionalData, goodAuthResponseBuilder } from './authUserUtils.controller'
 import { AppResponseModel } from '../../interfaces/appResponseModel';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './authErrorManager'
@@ -47,7 +47,7 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 
 		// Generar el JWT
 		const token = await generateJWT({
-            uid: user.id,
+            id: user.id,
         });
 
 		res.status(200).json({ user, token });
@@ -61,10 +61,10 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 export const getAuthState = async(req: Request, res: Response): Promise<void> => {
 	const token = req.header('token');
 	const jwtPayload = jwt.verify(String(token), jwtSecretPrivateKey);
-	
+	console.log(jwtPayload);
 	UserDAO.findOne({
 		where:{
-			id:jwtPayload.userId,
+			id:jwtPayload.id,
 			activate:true
 		},
 		...userAditionalData
@@ -84,25 +84,9 @@ export const getAuthState = async(req: Request, res: Response): Promise<void> =>
 		}
 		else{
 			
-			getUserPermissions(user)
+			getUserPermissions(user.id)
 			.then(permissions => {
-				const userWithPermissions = {...user.toJSON(),permissions};
-				const appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
-				const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-				const extraHeaders = new Map<string,string>();
-				extraHeaders.set('token',String(token));
-				const data : AppResponseModel = {
-					httpStatus:200,
-					appStatusCode,
-					appStatusName,
-					extraHeaders,
-					data:{
-						token: String(token),
-						user: userWithPermissions,
-					},
-					appStatusMessage:'',
-				};
-				// todo insert audit log login with google
+				const data = goodAuthResponseBuilder(String(token),user,permissions); 
 				responseHandler(res, data);
 			})
 			.catch(error => {

@@ -15,7 +15,7 @@ export const validateJWT = async(token = ''): Promise<void> => {
         }
 
         // Se obtiene el uid
-        const { userId } = jwtPayload;
+        const { id } = jwtPayload;
 
         // TODO: Crear validacion de fecha de expiracion
         // console.log(new Date(exp * 1000));

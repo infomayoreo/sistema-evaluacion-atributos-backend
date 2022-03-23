@@ -7,7 +7,8 @@ import { authErrosCodes } from './authErrorManager'
 import { AppResponseModel } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
 import { getUserPermissions} from './permissionsByUser.controller'
-import { userAditionalData} from './userQuearyIncludes.controller'
+import { userAditionalData, goodAuthResponseBuilder } from './authUserUtils.controller'
+
 
 import { OAuth2Client } from 'google-auth-library';
 const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';
@@ -50,7 +51,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
         }
         else {
              generateJWT({
-                userId: user.id,
+                id: user.id,
             }).then( token  => {
 
                 if(!token){
@@ -58,26 +59,10 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                 }
                 else {
 
-                    getUserPermissions(user)
+                    getUserPermissions(user.id)
                     .then(permissions => {
-                        const userJson = user.toJSON();
-                        const userWithPermissions = {...userJson,permissions};
-                       
-                        const appStatusCode = CommonErrorManager.WITHOUT_ERRORS;
-                        const appStatusName =  CommonErrorManager.getErrorName(appStatusCode);
-                        const extraHeaders = new Map<string,string>();
-                        extraHeaders.set('token',String(token));
-                        const data : AppResponseModel = {
-                            httpStatus:200,
-                            appStatusCode,
-                            appStatusName,
-                            extraHeaders,
-                            data:{
-                                token: String(token),
-                                user: userWithPermissions,
-                            },
-                            appStatusMessage:'',
-                        };
+
+                        const data = goodAuthResponseBuilder(String(token),user,permissions)
                         // todo insert audit log login with google
                         responseHandler(res, data);
 
