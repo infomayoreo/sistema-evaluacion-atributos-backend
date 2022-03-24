@@ -9,6 +9,7 @@ export interface IPermissionByUser extends Model {
     systemOptionId:number;
     userId:number;
     allowPermission:boolean;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -33,7 +34,13 @@ export const PermissionByUserDAO = db.define<IPermissionByUser>('permissionByUse
     allowPermission:{
         type: DataTypes.BOOLEAN,
         allowNull: false, 
-        field:'allow_permission'
+        field:'allow_permission',
+        defaultValue:true
+    },
+    activate:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        defaultValue:true
     },
     createAt:{
         type: 'TIMESTAMP',
