@@ -11,6 +11,7 @@ import { goodAuthResponseBuilder } from './authResponseDataBuilder';
 import { CommonErrorResponseBuilder } from '../../interfaces/appResponseModel';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './authErrorManager'
+import { decodeToken } from '../../common/middlewares/validate-jwt';
 const { jwtSecretPrivateKey } = config;
 
 export const login = async( req: Request, res: Response ): Promise<void> => {
@@ -61,7 +62,7 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 
 export const getAuthState = async(req: Request, res: Response): Promise<void> => {
 	const token = req.header('token');
-	const jwtPayload = jwt.verify(String(token), jwtSecretPrivateKey);
+	const jwtPayload = decodeToken(String(token));
 	
 	UserDAO.findOne({
 		where:{

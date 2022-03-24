@@ -69,7 +69,7 @@ class Server {
     routes(): void {
         
         this.app.use( '/' , routes );
-        
+        console.log(routes);
     }
 
     listen(): void {

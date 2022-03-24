@@ -24,8 +24,16 @@ export const validateJWT = async(token = ''): Promise<void> => {
 
     } catch (error ) {
         const e = new Error(authErrosCodes.AUTH_NOT_VALID_TOKEN.toString())
-        e.stack = error?.message;
+        e.stack = (error instanceof Error)?error?.stack:'Invalid token';
         throw e;
     }
 
 };
+
+export const decodeToken = (token:string) : jwt.JwtPayload => {
+    const jwtPayload = jwt.verify(token, jwtSecretPrivateKey);
+    if (typeof jwtPayload === 'string') {
+        throw new Error('Invalid token type');
+    }
+    return jwtPayload;
+}

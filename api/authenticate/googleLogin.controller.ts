@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
 import { UserDAO, AuditUserHeaderDAO } from '../../db/models';
 import { SystemAuditableEnum } from '../../db/initialRecords';
-import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './authErrorManager'
 import { CommonErrorResponseBuilder } from "../../interfaces/appResponseModel";
 import { generateJWT } from '../../common/helpers/generate-jwt';
