@@ -21,8 +21,8 @@ router.get(currentApiPath + profileTypes, [
 router.get(currentApiPath + attributesModule, [
     header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
-    param('page',).optional(),
-    param('limit').optional(),
+    param('page',commonErrorsCodes.PAGE_NOT_VALID_DATA_TYPE).optional().isInt(),
+    param('limit',commonErrorsCodes.LIMIT_NOT_VALID_DATA_TYPE).optional().isInt(),
     validateInputs,
 ], allAttributes );
 
