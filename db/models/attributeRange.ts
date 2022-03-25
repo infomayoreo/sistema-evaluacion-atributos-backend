@@ -10,6 +10,7 @@ export interface IAttributeRange extends Model {
     id:number;
     attributeId:number;
     attributeValueId:number;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -33,6 +34,11 @@ export const AttributeRangeDAO = db.define<IAttributeRange>('attributeRange', {
             type: DataTypes.INTEGER,
             field:'value_id',
             allowNull: false,
+        },
+        activate:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true,
         },
         createAt:{
             type: DataTypes.DATE,

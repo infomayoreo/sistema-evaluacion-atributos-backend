@@ -3,7 +3,7 @@ import { AttributeDAO, AttributeRangeDAO, AttributeTypeDAO, AttributeValueDAO, P
 import { CommonResponseBuilder } from "../../../interfaces/appResponseModel";
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
 import { responseHandler } from "../../../common/controllers/commonResponseHandler.controller";
-import { Pagination, PaginationResults } from "../../../common/helpers/pagination";
+import { Pagination } from "../../../common/helpers/pagination";
 
 export const allProfileTypes = async( req: Request, res: Response ) : Promise<void> => {
 
@@ -27,12 +27,18 @@ export const allProfileTypes = async( req: Request, res: Response ) : Promise<vo
 
 export const allAttributes = async( req: Request, res: Response ) : Promise<void> => {
     
-    AttributeDAO.findAll({
-        where:{ activate:true },
-        attributes:{
-            exclude:['createAt','updateAt','activate']
-        },
-        include:[{
+    const whereCondition = req.query.attributeTypeId? { activate:true, attributeTypeId:Number(req.query.attributeTypeId)}:{ activate:true };
+    
+    AttributeDAO.count({where:whereCondition}).then(count => {
+        return Pagination(count,req.query.page,req.query.limit);
+    }).then(pagination => {
+        const dataRange = { offset:pagination.skip, limit:pagination.limit};
+        const baseQuery = { 
+            where:whereCondition,
+            attributes:{
+                exclude:['createAt','updateAt','activate']
+            },
+            include:[{
                 model:AttributeTypeDAO,
                 attributes:{
                     exclude:['createAt','updateAt']
@@ -40,9 +46,10 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
             },
             {
                 model:AttributeRangeDAO,
+                where:{ activate:true },
                 attributes:{
                     exclude:['createAt','updateAt']
-                },
+                },                    
                 include:[{
                     model:AttributeValueDAO,
                     attributes:{
@@ -50,21 +57,33 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
                     }
                 }]
             }]
-    }).then(attributes => {
-        const pagination = Pagination(attributes.length,req.params.page,req.params.limit);
-        const results = PaginationResults(attributes,pagination);
-        const data = CommonResponseBuilder(200,CommonErrorManager.WITHOUT_ERRORS);
-        data.data = {
-            attributes: results.dataSet,
-            pagination:results.pagination
         };
-        responseHandler(res, data);
+        let query = baseQuery;
+        if(pagination.currentPage !== 0) {
+            query = { ...baseQuery, ...dataRange}
+        }
+        AttributeDAO.findAll(query)
+        .then(attributes => {
+
+            const data = CommonResponseBuilder(200,CommonErrorManager.WITHOUT_ERRORS);
+            data.data = {
+                attributes,
+                pagination
+            };
+            responseHandler(res, data); 
+
+        }).catch(error => {
+            
+            console.log(error);
+            const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
+            data.appStatusMessage = error.message;
+            responseHandler(res, data);
+        });
 
     }).catch(error => {
         console.log(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
-    });
-    
+    });    
 }
