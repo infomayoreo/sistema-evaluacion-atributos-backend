@@ -10,7 +10,7 @@ export interface AppResponseModel {
     errors?: any[];
 }
 
-export const CommonErrorResponseBuilder = (httpStatus:number,appStatusCode:number,errors:any[]=[])  : AppResponseModel => {
+export const CommonResponseBuilder = (httpStatus:number,appStatusCode:number,errors:any[]=[])  : AppResponseModel => {
 
     const appStatusName = getErrorName(appStatusCode);
     const appStatusMessage = getErrorMessage(appStatusCode)? getErrorMessage(appStatusCode) :'';

@@ -1,6 +1,6 @@
-import { IUser } from '../../db/models';
-import { AppResponseModel } from '../../interfaces/appResponseModel';
-import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
+import { IUser } from '../../../db/models';
+import { AppResponseModel } from '../../../interfaces/appResponseModel';
+import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
 
 
 export const goodAuthResponseBuilder = (token:string, user:IUser, permissions:unknown[]) : AppResponseModel => {

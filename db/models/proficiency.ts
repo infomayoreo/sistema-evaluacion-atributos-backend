@@ -34,15 +34,15 @@ export const ProficiencyDAO = db.define<IProficiency>('proficiency', {
             defaultValue:true
         },
         createAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     },

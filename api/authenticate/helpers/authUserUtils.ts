@@ -1,4 +1,4 @@
-import { IUser, LevelAccessDAO, PersonDAO } from '../../db/models';
+import { IUser, LevelAccessDAO, PersonDAO } from '../../../db/models';
 
 export const userAditionalData = {
   attributes:{

@@ -5,17 +5,17 @@ import { header,body } from 'express-validator';
 import { validateInputs } from '../../common/middlewares/validate-inputs';
 import { currentApiPath, emailAndPassLogin,userAuthState, loginWithGoogle } from '../routerPaths';
 // Controllers
-import { getAuthState, login } from './auth.controller';
-import { googleLogin } from './googleLogin.controller'
+import { getAuthState, login } from './controllers/auth.controller';
+import { googleLogin } from './controllers/googleLogin.controller'
 import { validateJWT } from '../../common/middlewares/validate-jwt';
 import { commonErrorsCodes } from '../../common/errorManager/AppCommonErrorCodes';
-import { authErrosCodes } from './authErrorManager';
+import { authErrosCodes } from './helpers/authErrorManager';
 
 const router = Router();
 
 // Login a User
 router.post(currentApiPath + emailAndPassLogin, [
-    body('email', commonErrorsCodes.EMAIL_IS_REQUIRED).not().isEmpty(),
+    body('email', commonErrorsCodes.EMAIL_IS_REQUIRED).not().isEmpty().normalizeEmail(),
     body('email', commonErrorsCodes.BAD_FORMAT_EMAIL).isEmail(),
     body('password', authErrosCodes.AUTH_PASSWORD_REQUIRED).not().isEmpty(),
     validateInputs
@@ -24,7 +24,7 @@ router.post(currentApiPath + emailAndPassLogin, [
 
 router.get(currentApiPath + userAuthState, [
     header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
-    header('token',authErrosCodes.AUTH_NOT_VALID_TOKEN).custom(validateJWT),
+    header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     validateInputs
 ], getAuthState );
 

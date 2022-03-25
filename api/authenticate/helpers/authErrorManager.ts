@@ -1,4 +1,4 @@
-import {nextErrorNumber} from '../../common/errorManager/AppCommonErrorCodes'
+import {nextErrorNumber} from '../../../common/errorManager/AppCommonErrorCodes'
 
 const authErrosCodes = {
     AUTH_MISSING_TOKEN:nextErrorNumber('AUTH_MISSING_TOKEN'),
