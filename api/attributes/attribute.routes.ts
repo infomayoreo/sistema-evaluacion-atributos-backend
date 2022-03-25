@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { header, query } from 'express-validator';
 import { validateInputs, validateJWT } from '../../common/middlewares';
-import { allProfileTypes,allAttributes } from './controllers/profileType.controller';
+import { allProfileTypes, allAttributes, allAttributesTypes } from './controllers/profileType.controller';
 import { commonErrorsCodes } from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from '../authenticate/helpers/authErrorManager';
-import { currentApiPath, profileTypes,attributesModule } from '../routerPaths';
+import { currentApiPath, profileTypes,attributesModule,attributeTypes } from '../routerPaths';
 import { attributeErrosCodes } from './helpers/attributeErrorManager';
 
 
@@ -26,5 +26,12 @@ router.get(currentApiPath + attributesModule, [
     query('attributeTypeId',attributeErrosCodes.ATTRIBUTE_TYPE_ID_IS_NOT_NUMERIC).optional().isNumeric(),
     validateInputs,
 ], allAttributes );
+
+
+router.get(currentApiPath + attributeTypes, [
+    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
+    validateInputs,
+], allAttributesTypes)
 
 export default router;

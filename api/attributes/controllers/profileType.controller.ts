@@ -25,6 +25,24 @@ export const allProfileTypes = async( req: Request, res: Response ) : Promise<vo
 
 }
 
+export const allAttributesTypes = async( req: Request, res: Response ) : Promise<void> => {
+    AttributeTypeDAO.findAll({
+        where:{ activate:true }, 
+        attributes:{ 
+            exclude:['createAt','updateAt','activate']
+        }
+    }).then(attributeTypes => {
+        const data = CommonResponseBuilder(200,CommonErrorManager.WITHOUT_ERRORS);
+        data.data = { attributeTypes };
+        responseHandler(res, data);
+    }).catch(error => {
+        console.log(error);
+		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
+		data.appStatusMessage = error.message;
+		responseHandler(res, data);
+    });
+}
+
 export const allAttributes = async( req: Request, res: Response ) : Promise<void> => {
     
     const whereCondition = req.query.attributeTypeId? { activate:true, attributeTypeId:Number(req.query.attributeTypeId)}:{ activate:true };
@@ -87,3 +105,4 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
 		responseHandler(res, data);
     });    
 }
+
