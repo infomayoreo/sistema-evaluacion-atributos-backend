@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AttributeDAO, AttributeRangeDAO, AttributeTypeDAO, AttributeValueDAO, ProfileTypeDAO } from '../../../db/models';
+import { AttributeDAO, AttributeProfileDAO, AttributeRangeDAO, AttributeTypeDAO, AttributeValueDAO, IAttributeProfile, ProfileTypeDAO } from '../../../db/models';
 import { CommonResponseBuilder } from "../../../interfaces/appResponseModel";
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
 import { responseHandler } from "../../../common/controllers/commonResponseHandler.controller";
@@ -64,16 +64,18 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
             },
             {
                 model:AttributeRangeDAO,
-                where:{ activate:true },
+                where:{activate:true},
+                separate:true,
                 attributes:{
                     exclude:['createAt','updateAt']
-                },                    
+                },                   
                 include:[{
                     model:AttributeValueDAO,
                     attributes:{
                         exclude:['createAt','updateAt']
                     }
-                }]
+                }],
+               
             }]
         };
         let query = baseQuery;
@@ -105,4 +107,44 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
 		responseHandler(res, data);
     });    
 }
+
+
+export const allAttributeByProfiles = async( req: Request, res: Response ) : Promise<void> => {
+
+    const profileId = 1;
+    AttributeDAO.findAll({
+        include:[{
+            model:AttributeProfileDAO,
+            where:{profileTypeId:profileId},
+            right:true,
+            attributes:[]
+        },
+        {
+            model:AttributeTypeDAO,
+            attributes:{
+                exclude:['createAt','updateAt']
+            }
+        },
+        {
+            model:AttributeRangeDAO,
+            where:{activate:true},
+            separate:true,
+            attributes:{
+                exclude:['createAt','updateAt']
+            },                   
+            include:[{
+                model:AttributeValueDAO,
+                attributes:{
+                    exclude:['createAt','updateAt']
+                }
+            }]
+        }]
+    })
+    .then(attributes => {
+        
+        res.json(attributes);
+    })
+    
+}
+
 

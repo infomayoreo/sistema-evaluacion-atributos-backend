@@ -8,6 +8,7 @@ export interface IAttributeProfile extends Model {
     id:number;
     profileTypeId:number;
     attributeId:number;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -28,6 +29,11 @@ export const AttributeProfileDAO = db.define<IAttributeProfile>('attributeProfil
             type:DataTypes.INTEGER,
             field:'attribute_id',
             allowNull:false
+        },
+        activate:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true,
         },
         createAt:{
             type: DataTypes.DATE,
