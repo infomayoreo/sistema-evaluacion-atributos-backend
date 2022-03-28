@@ -38,7 +38,9 @@ router.get(currentApiPath + attributeTypes, [
 router.get(currentApiPath + attributesProfiles , [
     header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
-    query('profileId',attributeErrosCodes.ATTRIBUTE_PROFILE_TYPE_ID_IS_NOT_NUMERIC).optional().isNumeric().toInt(),
+    query('page',commonErrorsCodes.PAGE_NOT_VALID_DATA_TYPE).optional().isInt(),
+    query('limit',commonErrorsCodes.LIMIT_NOT_VALID_DATA_TYPE).optional().isInt(),
+    query('profileId',attributeErrosCodes.ATTRIBUTE_PROFILE_TYPE_ID_IS_NOT_NUMERIC).optional().isInt(),
     validateInputs,
 ], allAttributeByProfiles)
 

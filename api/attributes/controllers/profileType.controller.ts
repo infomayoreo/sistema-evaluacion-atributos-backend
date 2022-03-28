@@ -59,7 +59,7 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
             include:[{
                 model:AttributeTypeDAO,
                 attributes:{
-                    exclude:['createAt','updateAt']
+                    exclude:['createAt','updateAt','activate']
                 }
             },
             {
@@ -67,7 +67,7 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
                 where:{activate:true},
                 separate:true,
                 attributes:{
-                    exclude:['createAt','updateAt']
+                    exclude:['createAt','updateAt','activate']
                 },                   
                 include:[{
                     model:AttributeValueDAO,
@@ -111,40 +111,78 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
 
 export const allAttributeByProfiles = async( req: Request, res: Response ) : Promise<void> => {
 
-    const profileId = 1;
-    AttributeDAO.findAll({
+    const whereCondition = req.query.attributeTypeId? { activate:true, attributeTypeId:Number(req.query.attributeTypeId)}:{ activate:true };
+    
+    AttributeDAO.count({
+        where:{activate:true},
         include:[{
             model:AttributeProfileDAO,
-            where:{profileTypeId:profileId},
+            where:whereCondition,
             right:true,
-            attributes:[]
-        },
-        {
-            model:AttributeTypeDAO,
-            attributes:{
-                exclude:['createAt','updateAt']
-            }
-        },
-        {
-            model:AttributeRangeDAO,
-            where:{activate:true},
-            separate:true,
-            attributes:{
-                exclude:['createAt','updateAt']
-            },                   
-            include:[{
-                model:AttributeValueDAO,
-                attributes:{
-                    exclude:['createAt','updateAt']
-                }
-            }]
         }]
     })
-    .then(attributes => {
-        
-        res.json(attributes);
+    .then(count => Pagination(count,req.query.page,req.query.limit))
+    .then(pagination => {
+
+        const dataRange = { offset:pagination.skip, limit:pagination.limit};
+        const baseQuery = {
+            where:{activate:true},
+            attributes:{
+                exclude:['createAt','updateAt','activate']
+            },
+            include:[{
+                model:AttributeProfileDAO,
+                where:whereCondition,
+                right:true,
+                attributes:[]
+            },
+            {
+                model:AttributeTypeDAO,
+                attributes:{
+                    exclude:['createAt','updateAt','activate']
+                }
+            },
+            {
+                model:AttributeRangeDAO,
+                where:{activate:true},
+                separate:true,
+                attributes:{
+                    exclude:['createAt','updateAt','activate']
+                },                   
+                include:[{
+                    model:AttributeValueDAO,
+                    attributes:{
+                        exclude:['createAt','updateAt']
+                    }
+                }]
+            }]
+        }
+        let query = baseQuery;
+        if(pagination.currentPage !== 0) {
+            query = { ...baseQuery, ...dataRange}
+        }
+        AttributeDAO.findAll(query)
+        .then(attributes => {
+            const data = CommonResponseBuilder(200,CommonErrorManager.WITHOUT_ERRORS);
+            data.data = {
+                attributes,
+                pagination
+            };
+            responseHandler(res, data)
+        })
+        .catch(error => {
+            console.log(error);
+            const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
+            data.appStatusMessage = error.message;
+            responseHandler(res, data);
+        });
     })
-    
+    .catch(error =>{
+        console.log(error);
+		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
+		data.appStatusMessage = error.message;
+		responseHandler(res, data);
+    });  
 }
 
 
