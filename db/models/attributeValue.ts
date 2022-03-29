@@ -45,13 +45,13 @@ export const AttributeValueDAO = db.define<IAttributeValue>('attributeValue', {
             defaultValue:true,
         },
         createAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'

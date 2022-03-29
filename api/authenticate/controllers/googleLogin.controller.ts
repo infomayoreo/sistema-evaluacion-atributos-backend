@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
-import { UserDAO, AuditUserHeaderDAO } from '../../db/models';
-import { SystemAuditableEnum } from '../../db/initialRecords';
-import { authErrosCodes } from './authErrorManager'
-import { CommonErrorResponseBuilder } from "../../interfaces/appResponseModel";
-import { generateJWT } from '../../common/helpers/generate-jwt';
-import { getUserPermissions} from './permissionsByUser.controller'
-import { userAditionalData } from './authUserUtils'
-import { goodAuthResponseBuilder } from './authResponseDataBuilder';
+import { responseHandler } from '../../../common/controllers/commonResponseHandler.controller'
+import { UserDAO, AuditUserHeaderDAO } from '../../../db/models';
+import { SystemAuditableEnum } from '../../../db/initialRecords';
+import { authErrosCodes } from '../helpers/authErrorManager'
+import { CommonResponseBuilder } from "../../../interfaces/appResponseModel";
+import { generateJWT } from '../../../common/helpers/generate-jwt';
+import { getUserPermissions} from '../helpers/permissionsByUser.controller'
+import { userAditionalData } from '../helpers/authUserUtils'
+import { goodAuthResponseBuilder } from '../helpers/authResponseDataBuilder';
 
 
 import { OAuth2Client } from 'google-auth-library';
@@ -36,7 +36,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
     }).then(user => {
 
         if(!user) {
-            const data = CommonErrorResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_USER);
+            const data = CommonResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_USER);
             responseHandler(res, data);
         }
         else {
@@ -61,7 +61,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 
                     }).catch(error =>{
                         console.log(error);
-                        const data = CommonErrorResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
+                        const data = CommonResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
                         data.appStatusMessage = error.message;
                         responseHandler(res, data);
                     });
@@ -69,7 +69,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 
             }).catch(error =>{
                 console.log(error);
-                const data = CommonErrorResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_ACCESS,[error.message]);
+                const data = CommonResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_ACCESS,[error.message]);
                 data.appStatusMessage = error.message;
                 responseHandler(res, data);
             });
@@ -77,7 +77,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
 
     }).catch(error => {
         console.log(error);
-        const data = CommonErrorResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN,[error.message]);
+        const data = CommonResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_GOOGLE_TOKEN,[error.message]);
         data.appStatusMessage = error.message;
         responseHandler(res, data);
     });

@@ -10,6 +10,7 @@ export interface IAttributeRange extends Model {
     id:number;
     attributeId:number;
     attributeValueId:number;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -34,14 +35,19 @@ export const AttributeRangeDAO = db.define<IAttributeRange>('attributeRange', {
             field:'value_id',
             allowNull: false,
         },
+        activate:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true,
+        },
         createAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'

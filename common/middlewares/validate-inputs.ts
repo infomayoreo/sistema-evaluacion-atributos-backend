@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { responseHandler } from '../controllers/commonResponseHandler.controller';
 import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
-import { authErrosCodes } from '../../api/authenticate/authErrorManager';
+import { authErrosCodes } from '../../api/authenticate/helpers/authErrorManager';
 
 export const validateInputs = (req: Request, res: Response, next: NextFunction):
     Response<any, Record<string, any>> | undefined | void => {

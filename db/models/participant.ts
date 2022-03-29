@@ -37,13 +37,13 @@ export const ParticipantDAO = db.define('participant', {
             defaultValue:false
         },
         createAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
             defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'

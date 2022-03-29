@@ -36,6 +36,8 @@ const commonErrorsCodes = {
     BAD_FORMAT_EMAIL:nextErrorNumber("BAD_FORMAT_EMAIL"),
     EMAIL_IS_REQUIRED:nextErrorNumber("EMAIL_IS_REQUIRED"),
     FAIL_TO_GET_RECORD:nextErrorNumber("FAIL_TO_GET_RECORD"),
+    PAGE_NOT_VALID_DATA_TYPE:nextErrorNumber("PAGE_NOT_VALID_DATA_TYPE"),
+    LIMIT_NOT_VALID_DATA_TYPE:nextErrorNumber("LIMIT_NOT_VALID_DATA_TYPE"),
 } as const;
 
 export {

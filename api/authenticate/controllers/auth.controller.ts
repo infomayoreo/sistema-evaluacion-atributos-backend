@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { responseHandler } from '../../common/controllers/commonResponseHandler.controller'
-import { UserDAO } from '../../db/models';
+import { responseHandler } from '../../../common/controllers/commonResponseHandler.controller'
+import { UserDAO } from '../../../db/models';
 import jwt from 'jsonwebtoken';
-import { generateJWT } from '../../common/helpers/generate-jwt';
-import config from '../../config/config';
-import { getUserPermissions} from './permissionsByUser.controller'
-import { userAditionalData } from './authUserUtils'
-import { goodAuthResponseBuilder } from './authResponseDataBuilder';
-import { CommonErrorResponseBuilder } from '../../interfaces/appResponseModel';
-import * as CommonErrorManager from '../../common/errorManager/AppCommonErrorCodes';
-import { authErrosCodes } from './authErrorManager'
-import { decodeToken } from '../../common/middlewares/validate-jwt';
+import { generateJWT } from '../../../common/helpers/generate-jwt';
+import config from '../../../config/config';
+import { getUserPermissions} from '../helpers/permissionsByUser.controller'
+import { userAditionalData } from '../helpers/authUserUtils'
+import { goodAuthResponseBuilder } from '../helpers/authResponseDataBuilder';
+import { CommonResponseBuilder } from '../../../interfaces/appResponseModel';
+import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
+import { authErrosCodes } from '../helpers/authErrorManager'
+import { decodeToken } from '../../../common/middlewares/validate-jwt';
 const { jwtSecretPrivateKey } = config;
 
 export const login = async( req: Request, res: Response ): Promise<void> => {
@@ -73,7 +73,7 @@ export const getAuthState = async(req: Request, res: Response): Promise<void> =>
 	}).then(user => {
 		if(!user){
 			
-			const data = CommonErrorResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_USER);
+			const data = CommonResponseBuilder(401,authErrosCodes.AUTH_NOT_VALID_USER);
             responseHandler(res, data);
 		}
 		else {
@@ -85,7 +85,7 @@ export const getAuthState = async(req: Request, res: Response): Promise<void> =>
 			})
 			.catch(error => {
 				console.log(error);
-				const data = CommonErrorResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
+				const data = CommonResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
                 data.appStatusMessage = error.message;
 				responseHandler(res, data);
 			});
@@ -93,7 +93,7 @@ export const getAuthState = async(req: Request, res: Response): Promise<void> =>
 		
 	}).catch(error => {
 		console.log(error);
-		const data = CommonErrorResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
+		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
 	});

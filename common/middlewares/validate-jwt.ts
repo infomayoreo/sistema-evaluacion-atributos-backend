@@ -1,6 +1,6 @@
 
 import jwt from 'jsonwebtoken';
-import { authErrosCodes } from '../../api/authenticate/authErrorManager';
+import { authErrosCodes } from '../../api/authenticate/helpers/authErrorManager';
 import config from '../../config/config';
 
 const { jwtSecretPrivateKey } = config;
@@ -23,9 +23,7 @@ export const validateJWT = async(token = ''): Promise<void> => {
 
 
     } catch (error ) {
-        const e = new Error(authErrosCodes.AUTH_NOT_VALID_TOKEN.toString())
-        e.stack = (error instanceof Error)?error?.stack:'Invalid token';
-        throw e;
+        throw error;
     }
 
 };

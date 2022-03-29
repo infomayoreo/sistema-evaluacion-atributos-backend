@@ -8,6 +8,7 @@ export interface IAttributeProfile extends Model {
     id:number;
     profileTypeId:number;
     attributeId:number;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -29,16 +30,21 @@ export const AttributeProfileDAO = db.define<IAttributeProfile>('attributeProfil
             field:'attribute_id',
             allowNull:false
         },
+        activate:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:true,
+        },
         createAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'create_at'
         },
         updateAt:{
-            type: 'TIMESTAMP',
+            type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             field:'update_at'
         }
     } ,
