@@ -56,7 +56,8 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
         const allAttributesFields = getAttributes();
         const baseQuery = { 
             where:whereCondition,
-            allAttributesFields
+            attributes: allAttributesFields.attributes,
+            include:allAttributesFields.include
         };
         let query = baseQuery;
         if(pagination.currentPage !== 0) {
