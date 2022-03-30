@@ -35,6 +35,16 @@ export const PersonDAO = db.define<IPerson>('person', {
             allowNull: false,
             field:'data_source_id'
         },
+		email: {
+			type: DataTypes.STRING,
+            allowNull: true,
+			set (value:string ){
+				this.setDataValue('email',value.toUpperCase());
+			},
+			get(){
+				return this.getDataValue('email').toUpperCase();
+			}
+		},
         createAt:{
             type: DataTypes.DATE,
             allowNull: false,

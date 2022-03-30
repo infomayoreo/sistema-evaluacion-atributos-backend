@@ -8,31 +8,35 @@ import { generateJWT } from '../../../common/helpers/generate-jwt';
 import { getUserPermissions} from '../helpers/permissionsByUser.controller'
 import { userAditionalData } from '../helpers/authUserUtils'
 import { goodAuthResponseBuilder } from '../helpers/authResponseDataBuilder';
-
-
 import { OAuth2Client } from 'google-auth-library';
+import { getNowUtc } from "../../../db/utils/db-utc-date";
+import { Op } from 'sequelize';
+
+const frontendServerAddress = process.env.FRONTEND_SERVER_ADDRESS || '';
 const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';
 const client = new OAuth2Client(GOOGLE_WEB_CLIENT_ID);
 
 
 export const googleLogin = async( req: Request, res: Response ) : Promise<void> => {
 
-
     const googleToken = req.header('google-id-token');
     verifyGoogleToken(googleToken)
      .then( userInfo => {
-         const email = userInfo.payload?.email;
-         return email;
-    }).then(email => {
-       const user = UserDAO.findOne({
-           where: { 
-               email:email?.toUpperCase(),
-               activate:true 
+        console.log(userInfo);
+        const email = userInfo.payload?.email;
+        const googleEmailId = userInfo?.payload?.sub;
+        const user = UserDAO.findOne({
+            where: { 
+                activate:true,
+                [Op.or]:[
+                    { email: email},
+                    { googleId: googleEmailId}
+                ]
             },
             ...userAditionalData
-        });
-
-        return user;
+         });
+ 
+         return user;
     }).then(user => {
 
         if(!user) {
@@ -40,8 +44,10 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
             responseHandler(res, data);
         }
         else {
-             generateJWT({
+
+            generateJWT({
                 id: user.id,
+                createAt:getNowUtc()
             }).then( token  => {
 
                 if(!token){
@@ -49,22 +55,37 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                 }
                 else {
 
-                    getUserPermissions(user.id)
-                    .then(permissions => {
-
-                        const data = goodAuthResponseBuilder(String(token),user,permissions);
+                    if(!user.googleId) {
+                        
+                        const data = CommonResponseBuilder(401,authErrosCodes.AUTH_MUST_VERIFY_YOUR_EMAIL);
+                        const verifyUserUrl = new URL(`${frontendServerAddress}/verify-user-signup/google/`);
+                        verifyUserUrl.searchParams.append("service-token",String(googleToken));
+                        verifyUserUrl.searchParams.append("token", String(token));
+                        /*data.data = {
+                            url:verifyUserUrl
+                        };*/
                         responseHandler(res, data);
-                        AuditUserHeaderDAO.create({
-                            auditableProcessId:SystemAuditableEnum.LOGIN_WITH_GOOGLE.id,
-                            userId:user.id
-                        }).catch(console.log);
+                        //send email
+                    }
+                    else {
 
-                    }).catch(error =>{
-                        console.log(error);
-                        const data = CommonResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
-                        data.appStatusMessage = error.message;
-                        responseHandler(res, data);
-                    });
+                        getUserPermissions(user.id)
+                        .then(permissions => {
+    
+                            const data = goodAuthResponseBuilder(String(token),user,permissions);
+                            responseHandler(res, data);
+                            AuditUserHeaderDAO.create({
+                                auditableProcessId:SystemAuditableEnum.LOGIN_WITH_GOOGLE.id,
+                                userId:user.id
+                            }).catch(console.log);
+    
+                        }).catch(error =>{
+                            console.log(error);
+                            const data = CommonResponseBuilder(500,authErrosCodes.AUTH_FAIL_TO_GENERATE_PERMISSIONS,[error.message]);
+                            data.appStatusMessage = error.message;
+                            responseHandler(res, data);
+                        });
+                    }
                 }
 
             }).catch(error =>{
