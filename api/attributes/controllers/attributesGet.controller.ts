@@ -19,7 +19,7 @@ export const allProfileTypes = async( req: Request, res: Response ) : Promise<vo
         data.data = { profiles };
         responseHandler(res, data);
     }).catch(error => {
-        console.log(error);
+        console.error(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
@@ -38,7 +38,7 @@ export const allAttributesTypes = async( req: Request, res: Response ) : Promise
         data.data = { attributeTypes };
         responseHandler(res, data);
     }).catch(error => {
-        console.log(error);
+        console.error(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
@@ -75,14 +75,14 @@ export const allAttributes = async( req: Request, res: Response ) : Promise<void
 
         }).catch(error => {
             
-            console.log(error);
+            console.error(error);
             const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
             data.appStatusMessage = error.message;
             responseHandler(res, data);
         });
 
     }).catch(error => {
-        console.log(error);
+        console.error(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
@@ -134,14 +134,14 @@ export const allAttributeByProfiles = async( req: Request, res: Response ) : Pro
             responseHandler(res, data)
         })
         .catch(error => {
-            console.log(error);
+            console.error(error);
             const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
             data.appStatusMessage = error.message;
             responseHandler(res, data);
         });
     })
     .catch(error =>{
-        console.log(error);
+        console.error(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
@@ -174,7 +174,7 @@ export const attributeById = async( req: Request, res: Response ) : Promise<void
         }
 
     }).catch(error => {
-        console.log(error);
+        console.error(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);

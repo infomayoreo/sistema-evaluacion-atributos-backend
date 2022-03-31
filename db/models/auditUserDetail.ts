@@ -6,10 +6,12 @@ import { AuditUserHeaderDAO } from './auditUserHeader';
 export interface IAuditUserDetail extends Model {
     id:number;
     auditUserId:number;
+    recordId:number;
     atTable:string;
     atColumn:string;
-    oldValue:string;
-    newValue:string
+    oldValue?:string;
+    newValue?:string
+    dataType:string;
     createAt:string;
 	updateAt:string;
 }
@@ -26,6 +28,11 @@ export const AuditUserDetailDAO = db.define<IAuditUserDetail>('auditUserDetail',
             allowNull:false,
             field:'audit_user_header_id'
         },
+        recordId:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            field:'record_id'
+        },
         atTable:{
             type:DataTypes.CHAR(100),
             field:'at_table',
@@ -39,12 +46,12 @@ export const AuditUserDetailDAO = db.define<IAuditUserDetail>('auditUserDetail',
         oldValue:{
             type:DataTypes.STRING,
             field:'old_value',
-            allowNull:false
+            allowNull:true
         },
         newValue:{
             type:DataTypes.STRING,
             field:'new_value',
-            allowNull:false
+            allowNull:true
         },
         dataType:{
             type:DataTypes.CHAR(100),
