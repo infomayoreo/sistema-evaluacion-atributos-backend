@@ -62,7 +62,7 @@ export const googleLogin = async( req: Request, res: Response ) : Promise<void> 
                             verifyUserUrl.searchParams.append("token", String(token));
                             verifyUserUrl.searchParams.append("service-token",String(googleToken));
                             responseHandler(res, data);
-                            sendHtmlEmail(String(email),"verificar email",`<p>${verifyUserUrl}</p>`)
+                            sendHtmlEmail(String(email),`<p>${verifyUserUrl}</p>`,"verificar email");
                         }
                         else {
     
@@ -175,17 +175,21 @@ export const verifyGoogleEmail = async( req: Request, res: Response ) : Promise<
                                                 userId:user.id
                                             }).then(auditHeader => {
                                                 const column = UserDAO.getAttributes().googleId;
-                                                AuditUserDetailDAO.create({
+                                                const mType = column.type.toString({});
+                                                const auditDetail = {
                                                     auditUserId:auditHeader.id,
                                                     recordId:user.id,
                                                     atTable:UserDAO.tableName,
                                                     atColumn:column.field,
                                                     oldValue:user.googleId,
                                                     newValue:userInfo.payload?.sub,
-                                                    dataType:column.type.toString,
+                                                    dataType:mType,
                                                     
-                                                }).then(() => {
-                                                    UserDAO.update({googleId:user.googleId},{where:{id:user.id}})
+                                                };
+                                                console.log(auditDetail);
+                                                AuditUserDetailDAO.create(auditDetail).then(() => {
+                                                    UserDAO.update({googleId:user.googleId},{where:{id:user.id}
+                                                    }).catch(console.error);
                                                 }).catch(console.error);
 
                                             }).catch(console.error);
