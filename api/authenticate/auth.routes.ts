@@ -3,10 +3,10 @@ import { header,body } from 'express-validator';
 
 // Middlewares
 import { validateInputs } from '../../common/middlewares/validate-inputs';
-import { currentApiPath, emailAndPassLogin,userAuthState, loginWithGoogle } from '../routerPaths';
+import { currentApiPath, emailAndPassLogin,userAuthState, loginWithGoogle, verifyGoogleEmailPath } from '../routerPaths';
 // Controllers
 import { getAuthState, login } from './controllers/auth.controller';
-import { googleLogin } from './controllers/googleLogin.controller'
+import { googleLogin, verifyGoogleEmail } from './controllers/googleLogin.controller'
 import { validateJWT } from '../../common/middlewares/validate-jwt';
 import { commonErrorsCodes } from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from './helpers/authErrorManager';
@@ -33,6 +33,12 @@ router.post(currentApiPath + loginWithGoogle, [
     validateInputs
 ], googleLogin);
 
+router.post(currentApiPath + verifyGoogleEmailPath, [
+    header('service-token',authErrosCodes.AUTH_MISSING_GOOGLE_TOKEN).not().isEmpty(),
+    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
+    validateInputs
+], verifyGoogleEmail);
 
 
 export default router;

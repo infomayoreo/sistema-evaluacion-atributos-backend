@@ -5,6 +5,7 @@ const currentApiPath = apiVersion1;
 const emailAndPassLogin = '/login';
 const userAuthState = '/auth-state';
 const loginWithGoogle = '/google-login';
+const verifyGoogleEmailPath = '/verify-google-email';
 const usersModule = '/users';
 const attributesModule = '/attributes';
 const attributeTypes = attributesModule + '/types';
@@ -17,6 +18,7 @@ export {
     emailAndPassLogin,
     userAuthState,
     loginWithGoogle,
+    verifyGoogleEmailPath,
     usersModule,
     attributesModule,
     attributeTypes,

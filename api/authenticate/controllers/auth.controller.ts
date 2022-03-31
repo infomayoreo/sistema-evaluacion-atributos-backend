@@ -39,7 +39,7 @@ export const login = async( req: Request, res: Response ): Promise<void> => {
 		}
 
 		// Verify password
-		const validPassword = bcrypt.compareSync(password, user.password);
+		const validPassword = bcrypt.compareSync(password, 'user.password');
 		if ( !validPassword ) {
             res.status(400).json({
                 msg: 'Wrong email or password'

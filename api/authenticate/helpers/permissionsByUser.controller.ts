@@ -9,7 +9,7 @@ export const getUserPermissions = async (userId:number) => {
         systemOption.description AS description,
         ( systemOption.activate AND
             ( CASE
-                WHEN (permissionByUser.allow_permission IS NULL OR permissionByUser.activate = false)
+                WHEN (permissionByUser.allow_permission IS NULL)
                     THEN permissionByLevel.activate AND permissionByLevel.allow_permission
                     ELSE permissionByUser.allow_permission
               END

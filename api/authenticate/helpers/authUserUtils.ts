@@ -2,7 +2,7 @@ import { IUser, LevelAccessDAO, PersonDAO } from '../../../db/models';
 
 export const userAditionalData = {
   attributes:{
-    exclude:['password','createAt','updateAt','activate']
+    exclude:['googleId','password','createAt','updateAt','activate']
   },
   include:[{
     model:LevelAccessDAO,

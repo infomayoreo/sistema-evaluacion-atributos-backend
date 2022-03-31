@@ -13,9 +13,8 @@ import { PersonValueHeaderDAO } from './personValueHeader';
 export interface IUser extends Model {
 	id: number;
 	levelAccessId:number;
-	name: string;
 	email: string;
-	password: string;
+	googleId:string;
 	activate: number;
 	createAt:string;
 	updateAt:string;
@@ -33,20 +32,20 @@ export const UserDAO = db.define<IUser>('user', {
 			type: DataTypes.INTEGER,
 			field: 'level_access_id'
 		},
+		googleId:{
+			allowNull: true,
+			type: DataTypes.STRING,
+			field:'google_id',
+		},
 		email: {
 			allowNull: false,
 			type: DataTypes.STRING,
-			unique: true,
 			set (value:string ){
-				this.setDataValue('email',value.toUpperCase());
+				this.setDataValue('email',value?.toUpperCase());
 			},
 			get(){
-				return this.getDataValue('email').toUpperCase();
+				return this.getDataValue('email')?.toUpperCase();
 			}
-		},
-		password: {
-			allowNull: false,
-			type: DataTypes.STRING
 		},
 		activate: {
 			allowNull: false,
