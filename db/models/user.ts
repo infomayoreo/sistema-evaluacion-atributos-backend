@@ -41,10 +41,10 @@ export const UserDAO = db.define<IUser>('user', {
 			allowNull: false,
 			type: DataTypes.STRING,
 			set (value:string ){
-				this.setDataValue('email',value.toUpperCase());
+				this.setDataValue('email',value?.toUpperCase());
 			},
 			get(){
-				return this.getDataValue('email').toUpperCase();
+				return this.getDataValue('email')?.toUpperCase();
 			}
 		},
 		activate: {

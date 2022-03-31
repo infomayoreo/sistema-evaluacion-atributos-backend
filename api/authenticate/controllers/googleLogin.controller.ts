@@ -14,6 +14,7 @@ import { Op } from 'sequelize';
 import { sendHtmlEmail } from "../../../common/controllers/emailSender";
 import { decodeToken } from "../../../common/middlewares/validate-jwt";
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
+import { updateUser } from "../../users/users.controller";
 
 const frontendServerAddress = process.env.FRONTEND_SERVER_ADDRESS || '';
 const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';
@@ -137,7 +138,7 @@ export const verifyGoogleEmail = async( req: Request, res: Response ) : Promise<
                         auditableProcessId:SystemAuditableEnum.VERIFY_EMAIL_COMPLETE.id
                     }
                 }).then(isVerify => {
-
+                    
                     if(isVerify || user.googleId) {
                         const data = CommonResponseBuilder(401,authErrosCodes.AUTH_USER_IS_ALREADY_VERIFY);
                         responseHandler(res, data);
@@ -186,12 +187,11 @@ export const verifyGoogleEmail = async( req: Request, res: Response ) : Promise<
                                                     dataType:mType,
                                                     
                                                 };
-                                                console.log(auditDetail);
+                                                
                                                 AuditUserDetailDAO.create(auditDetail).then(() => {
-                                                    UserDAO.update({googleId:user.googleId},{where:{id:user.id}
+                                                    UserDAO.update({googleId:userInfo.payload?.sub},{where:{id:user.id}
                                                     }).catch(console.error);
                                                 }).catch(console.error);
-
                                             }).catch(console.error);
         
                                         }).catch(error =>{
