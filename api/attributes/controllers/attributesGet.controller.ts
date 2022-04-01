@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AttributeDAO, AttributeProfileDAO, AttributeRangeDAO, AttributeTypeDAO, AttributeValueDAO, ProfileTypeDAO } from '../../../db/models';
+import { AttributeDAO, AttributeProfileDAO, AttributeTypeDAO, AttributeValueDAO, ProfileTypeDAO } from '../../../db/models';
 import { CommonResponseBuilder } from "../../../interfaces/appResponseModel";
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
 import { responseHandler } from "../../../common/controllers/commonResponseHandler.controller";

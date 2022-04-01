@@ -12,7 +12,9 @@ import { UserDAO } from './user';
 export interface IPerson extends Model {
     id:number;
     userId:number;
+    email?:string;
     dataSourceId:number;
+    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -35,14 +37,19 @@ export const PersonDAO = db.define<IPerson>('person', {
             allowNull: false,
             field:'data_source_id'
         },
+        activate: {
+            type:DataTypes.BOOLEAN,
+            allowNull:true,
+            defaultValue:false
+        },
 		email: {
 			type: DataTypes.STRING,
             allowNull: true,
 			set (value:string ){
-				this.setDataValue('email',value.toUpperCase());
+				this.setDataValue('email',value?.toUpperCase());
 			},
 			get(){
-				return this.getDataValue('email').toUpperCase();
+				return this.getDataValue('email')?.toUpperCase();
 			}
 		},
         createAt:{

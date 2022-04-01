@@ -28,5 +28,6 @@ export {
     attributeTypes,
     profileTypes,
     attributesProfiles,
-    attributeValues
+    attributeValues,
+    personModule,
 }
