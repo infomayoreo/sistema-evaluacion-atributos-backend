@@ -58,7 +58,7 @@ export const AttributeValueDAO = db.define<IAttributeValue>('attributeValue', {
         }
     },
     {
-        tableName:'attribute_value',
+        tableName:'attribute_values',
          timestamps:false 
     });
 

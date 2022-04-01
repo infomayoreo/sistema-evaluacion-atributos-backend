@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { header, query,param } from 'express-validator';
 import { validateInputs, validateJWT } from '../../common/middlewares';
-import { allProfileTypes, allAttributes, allAttributesTypes,allAttributeByProfiles, attributeById } from './controllers/attributesGet.controller';
+import { allProfileTypes, allAttributes, allAttributesTypes,allAttributeByProfiles, attributeById, allAttributesValues } from './controllers/attributesGet.controller';
 import { commonErrorsCodes } from '../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from '../authenticate/helpers/authErrorManager';
-import { currentApiPath, profileTypes,attributesModule,attributeTypes,attributesProfiles } from '../routerPaths';
+import { currentApiPath, attributeByIdPath, profileTypes,attributesModule,attributeTypes,attributesProfiles,attributeValues } from '../routerPaths';
 import { attributeErrosCodes } from './helpers/attributeErrorManager';
 
 
@@ -44,11 +44,17 @@ router.get(currentApiPath + attributesProfiles , [
     validateInputs,
 ], allAttributeByProfiles);
 
-router.get(currentApiPath + attributesModule + '/:id',[
+router.get(currentApiPath + attributeByIdPath + '/:id',[
     header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     param('id',attributeErrosCodes.ATTRIBUTE_ID_IS_NOT_NUMERIC).isInt(),
     validateInputs,
 ],attributeById);
+
+router.get(currentApiPath + attributeValues, [
+    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
+    validateInputs,
+],allAttributesValues);
 
 export default router;
