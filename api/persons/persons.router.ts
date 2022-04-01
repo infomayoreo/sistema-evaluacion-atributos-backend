@@ -10,7 +10,7 @@ import { allPersons } from './controllers/personGet.controller';
 const router = Router();
 
 router.get( currentApiPath + personModule, [
-    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     query('page',commonErrorsCodes.PAGE_NOT_VALID_DATA_TYPE).optional().isInt(),
     query('limit',commonErrorsCodes.LIMIT_NOT_VALID_DATA_TYPE).optional().isInt(),

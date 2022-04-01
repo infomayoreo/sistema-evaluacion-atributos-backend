@@ -23,7 +23,7 @@ router.post(currentApiPath + emailAndPassLogin, [
 
 
 router.get(currentApiPath + userAuthState, [
-    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     validateInputs
 ], getAuthState );
@@ -35,7 +35,7 @@ router.post(currentApiPath + loginWithGoogle, [
 
 router.post(currentApiPath + verifyGoogleEmailPath, [
     header('service-token',authErrosCodes.AUTH_MISSING_GOOGLE_TOKEN).not().isEmpty(),
-    header('token',authErrosCodes.AUTH_MISSING_TOKEN).notEmpty(),
+    header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     validateInputs
 ], verifyGoogleEmail);
