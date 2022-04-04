@@ -7,6 +7,7 @@ import { authErrosCodes } from '../authenticate/helpers/authErrorManager';
 import { currentApiPath, attributeByIdPath, profileTypes,attributesModule,attributeTypes,attributesProfiles,attributeValues } from '../routerPaths';
 import { attributeErrosCodes } from './helpers/attributeErrorManager';
 import { createAttribute } from './controllers/attributesDataConfiguration.controller';
+import { validateActivateUser } from '../users/middlewares/checkActivateUser';
 
 
 const router = Router();
@@ -16,6 +17,7 @@ router.get(currentApiPath + profileTypes, [
     header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     validateInputs,
+    validateActivateUser,
 ], allProfileTypes );
 
 //attributes by type
@@ -26,6 +28,7 @@ router.get(currentApiPath + attributesModule, [
     query('limit',commonErrorsCodes.LIMIT_NOT_VALID_DATA_TYPE).optional().isInt(),
     query('attributeTypeId',attributeErrosCodes.ATTRIBUTE_TYPE_ID_IS_NOT_NUMERIC).optional().isNumeric().toInt(),
     validateInputs,
+    validateActivateUser,
 ], allAttributes );
 
 //profiles types
@@ -33,6 +36,7 @@ router.get(currentApiPath + attributeTypes, [
     header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     validateInputs,
+    validateActivateUser,
 ], allAttributesTypes);
 
 //attributes by profiles
@@ -43,19 +47,22 @@ router.get(currentApiPath + attributesProfiles , [
     query('limit',commonErrorsCodes.LIMIT_NOT_VALID_DATA_TYPE).optional().isInt(),
     query('profileId',attributeErrosCodes.ATTRIBUTE_PROFILE_TYPE_ID_IS_NOT_NUMERIC).optional().isInt(),
     validateInputs,
+    validateActivateUser,
 ], allAttributeByProfiles);
 
 router.get(currentApiPath + attributeByIdPath + '/:id',[
     header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     param('id',attributeErrosCodes.ATTRIBUTE_ID_IS_NOT_NUMERIC).isInt(),
-    validateInputs,
+    validateInputs, 
+    validateActivateUser,
 ],attributeById);
 
 router.get(currentApiPath + attributeValues, [
     header('token', authErrosCodes.AUTH_MISSING_TOKEN).exists({checkFalsy:true}).notEmpty(),
     header('token').custom(validateJWT).withMessage(authErrosCodes.AUTH_NOT_VALID_TOKEN),
     validateInputs,
+    validateActivateUser,
 ],allAttributesValues);
 
 router.post(currentApiPath + attributesModule,[
@@ -74,6 +81,7 @@ router.post(currentApiPath + attributesModule,[
         .isArray()
         .custom((arr) => { return arr.every(Number.isInteger)}).withMessage(attributeErrosCodes.ATTRIBUTE_PROFILE_ARRAY_BAD_FORMAT),
     validateInputs,
+    validateActivateUser,
 ],createAttribute);
 
 export default router;
