@@ -9,7 +9,6 @@ export interface IPermissionLevelAccess extends Model {
     systemOptionId:number,
     levelAccessId:number;
     allowPermission:boolean;
-    activate:boolean;
     createAt:string;
 	updateAt:string;
 }
@@ -35,11 +34,6 @@ export const PermissionLevelAccessDAO = db.define<IPermissionLevelAccess>('permi
             type: DataTypes.BOOLEAN,
             allowNull: false, 
             field:'allow_permission',
-            defaultValue:true
-        },
-        activate:{
-            type:DataTypes.BOOLEAN,
-            allowNull:false,
             defaultValue:true
         },
         createAt:{

@@ -14,7 +14,7 @@ import { Op } from 'sequelize';
 import { sendHtmlEmail } from "../../../common/controllers/emailSender";
 import { decodeToken } from "../../../common/middlewares/validate-jwt";
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
-import { updateUser } from "../../users/controllers/users.controller";
+
 
 const frontendServerAddress = process.env.FRONTEND_SERVER_ADDRESS || '';
 const GOOGLE_WEB_CLIENT_ID = process.env.GOOGLE_WEB_CLIENT_ID || '';

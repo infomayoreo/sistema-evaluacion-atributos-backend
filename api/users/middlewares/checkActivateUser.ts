@@ -33,5 +33,5 @@ export const validateActivateUser  = (req: Request, res: Response, next: NextFun
             const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
             data.appStatusMessage = error.message;
             responseHandler(res, data);
-        })
+        });
 }
