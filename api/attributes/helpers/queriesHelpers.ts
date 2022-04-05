@@ -47,6 +47,20 @@ export const getAttributes = () => {
                     exclude:['createAt','updateAt']
                 }
             }],
+        },
+        {
+            model:AttributeProfileDAO,
+            where:{activate:true},
+            separate:true,
+            attributes:{
+                exclude:['createAt','updateAt','activate']
+            },                   
+            include:[{
+                model:ProfileTypeDAO,
+                attributes:{
+                    exclude:['createAt','updateAt']
+                }
+            }],
         }]
     }
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AttributeDAO, AttributeProfileDAO, AttributeTypeDAO, AttributeValueDAO, ProfileTypeDAO } from '../../../db/models';
+import { AttributeDAO, AttributeProfileDAO, AttributeTypeDAO, AttributeValueDAO, IAttribute, ProfileTypeDAO } from '../../../db/models';
 import { CommonResponseBuilder } from "../../../interfaces/appResponseModel";
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
 import { responseHandler } from "../../../common/controllers/commonResponseHandler.controller";
@@ -124,8 +124,8 @@ export const allAttributeByProfiles = async( req: Request, res: Response ) : Pro
     .then(pagination => {
 
         const {attributes, include} = getAttributes();
-        
-        const joinsTable = [...include,{
+        const filterInclude = include.filter(item => { return item.model.name !== AttributeProfileDAO.name});
+        const joinsTable = [...filterInclude,{
             model:AttributeProfileDAO,
             where:whereCondition,
             right:true,
@@ -167,16 +167,11 @@ export const allAttributeByProfiles = async( req: Request, res: Response ) : Pro
 }
 
 
-export const attributeById = async( req: Request, res: Response ) : Promise<void> => {
+export const attributeByIdAndResponse = async( req: Request, res: Response ) : Promise<void> => {
     
     const attributeId = Number(req.params.id);
-    const where = whereCondtionAttributeById(attributeId);
-    const query = getAttributes();
-    AttributeDAO.findOne({
-        where,
-        ...query,
-    }).then(attribute => {
-        
+    
+    getAttributeById(attributeId).then(attribute => {
         if(!attribute) {
             const data = CommonResponseBuilder(404,attributeErrosCodes.ATTRIBUTE_ID_NOT_VALID);
             data.appStatusMessage = `attribute with id = ${attributeId} not found`;
@@ -190,12 +185,27 @@ export const attributeById = async( req: Request, res: Response ) : Promise<void
             };
             responseHandler(res, data)
         }
-
     }).catch(error => {
         console.error(error);
 		const data = CommonResponseBuilder(500,CommonErrorManager.commonErrorsCodes.FAIL_TO_GET_RECORD,[error.message]);
 		data.appStatusMessage = error.message;
 		responseHandler(res, data);
     });
+}
+
+export const getAttributeById = async (attributeId:number) : Promise<IAttribute | undefined | null>   =>  {
     
+    const where = whereCondtionAttributeById(attributeId);
+    const query = getAttributes();
+    try {
+        const attribute = await AttributeDAO.findOne({
+            where,
+            ...query,
+        });
+        return attribute;
+    }
+    catch( error ) {
+        throw error;
+    }
+
 }
