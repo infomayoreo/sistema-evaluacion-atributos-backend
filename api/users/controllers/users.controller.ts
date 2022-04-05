@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
 
-import { UserDAO } from '../../db/models';
+import { UserDAO } from '../../../db/models';
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
 

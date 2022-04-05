@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { responseHandler } from '../../../common/controllers/commonResponseHandler.controller'
 import { UserDAO } from '../../../db/models';
-import jwt from 'jsonwebtoken';
 import { generateJWT } from '../../../common/helpers/generate-jwt';
-import config from '../../../config/config';
 import { getUserPermissions} from '../helpers/permissionsByUser.controller'
 import { userAditionalData } from '../helpers/authUserUtils'
 import { goodAuthResponseBuilder } from '../helpers/authResponseDataBuilder';
@@ -12,7 +10,7 @@ import { CommonResponseBuilder } from '../../../interfaces/appResponseModel';
 import * as CommonErrorManager from '../../../common/errorManager/AppCommonErrorCodes';
 import { authErrosCodes } from '../helpers/authErrorManager'
 import { decodeToken } from '../../../common/middlewares/validate-jwt';
-const { jwtSecretPrivateKey } = config;
+
 
 export const login = async( req: Request, res: Response ): Promise<void> => {
 

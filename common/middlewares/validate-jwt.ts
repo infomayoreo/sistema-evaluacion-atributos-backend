@@ -1,6 +1,5 @@
 
 import jwt from 'jsonwebtoken';
-import { authErrosCodes } from '../../api/authenticate/helpers/authErrorManager';
 import config from '../../config/config';
 
 const { jwtSecretPrivateKey } = config;
