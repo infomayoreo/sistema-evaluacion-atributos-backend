@@ -62,7 +62,7 @@ export const getAttributes = () => {
                 }
             }],
         }]
-    }
+    };
 
     return query;
 }
