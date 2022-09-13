@@ -44,8 +44,14 @@ const getErrorName = (errorCode:number) : string => {
 }
 
 const buildErrorDataContainer = (errorCode:number) : CommonErrorDataContainer => {
+
+    if(errorCode === WITHOUT_ERRORS) 
+    {
+      return new CommonErrorDataContainer(WITHOUT_ERRORS, WITHOUT_ERRORS_NAME);
+    }
     const errorName = getErrorName(errorCode);
-    const hash = hashCodeOfNameMap.get(errorCode) ? hashCodeOfNameMap.get(errorCode) : hashCodeOfNameMap.get(commonErrorsCodes.UNKNOWN_ERROR);
+    const temp = hashCodeOfNameMap.get(errorCode);
+    const hash =  (temp !== null &&  temp !== undefined)? hashCodeOfNameMap.get(errorCode) : hashCodeOfNameMap.get(commonErrorsCodes.UNKNOWN_ERROR);
     const errorDataContainer = new CommonErrorDataContainer(hash ? hash : -1, errorName);
     return errorDataContainer;
 }
